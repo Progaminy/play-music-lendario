@@ -2,6 +2,7 @@
    MUSICA ALENDARIA - Do Zero ao Infinito
    Criado por Pensador Sem Fronteira
    ARQUIVO: player.js - Player Completo (15s)
+   CORRIGIDO: Play funcional + UI instantânea
    ============================================= */
 
 const CONFIG_PLAYER = {
@@ -19,6 +20,7 @@ const estadoPlayer = {
     timer15s: null,
     segundosRestantes: CONFIG_PLAYER.tempoGratuito,
     iframeElement: null,
+    iframePronto: false,
     videoIdAtual: null,
     likesRegistados: {},
     desbloqueiosRegistados: {}
@@ -28,6 +30,15 @@ const estadoPlayer = {
 function inicializarPlayer() {
     carregarDados();
     configurarPlayerFixo();
+    
+    // Listener para atualizar UI quando desbloquear
+    document.addEventListener('player-destrancado', () => {
+        atualizarBotaoDestrancar();
+        atualizarTimer15sDisplay();
+        if (typeof atualizarUIHome === 'function') atualizarUIHome();
+        if (typeof carregarPostesHome === 'function') carregarPostesHome();
+    });
+    
     console.log('🎧 Player pronto! (15s grátis)');
 }
 
@@ -53,18 +64,23 @@ function salvarDesbloqueios() {
 
 // ========== PARAR PLAYER ATUAL ==========
 function pararPlayerAtual() {
-    if (estadoPlayer.iframeElement) {
-        estadoPlayer.iframeElement.contentWindow?.postMessage(
-            JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), '*'
-        );
-        estadoPlayer.iframeElement.contentWindow?.postMessage(
-            JSON.stringify({ event: 'command', func: 'stopVideo', args: [] }), '*'
-        );
+    if (estadoPlayer.iframeElement && estadoPlayer.iframePronto) {
+        try {
+            estadoPlayer.iframeElement.contentWindow?.postMessage(
+                JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), '*'
+            );
+            estadoPlayer.iframeElement.contentWindow?.postMessage(
+                JSON.stringify({ event: 'command', func: 'stopVideo', args: [] }), '*'
+            );
+        } catch (e) {
+            console.warn('Erro ao parar vídeo:', e);
+        }
     }
     if (estadoPlayer.videoIdAtual) {
         const playerContainer = document.getElementById('player-iframe-container');
         if (playerContainer) playerContainer.innerHTML = '';
         estadoPlayer.iframeElement = null;
+        estadoPlayer.iframePronto = false;
     }
     pararTimer15s();
     estadoPlayer.estaTocando = false;
@@ -75,6 +91,44 @@ function pararPlayerAtual() {
     atualizarInfoPlayerVazia();
     atualizarTimer15sDisplay();
     atualizarBotaoDestrancar();
+}
+
+// ========== ENVIAR COMANDO PARA O IFRAME ==========
+function enviarComandoIframe(comando, args = []) {
+    if (!estadoPlayer.iframeElement) return false;
+    
+    const mensagem = JSON.stringify({ 
+        event: 'command', 
+        func: comando, 
+        args: args 
+    });
+    
+    try {
+        estadoPlayer.iframeElement.contentWindow?.postMessage(mensagem, '*');
+        return true;
+    } catch (e) {
+        console.warn(`Erro ao enviar comando ${comando}:`, e);
+        return false;
+    }
+}
+
+function tentarPlayComRetry(tentativas = 0) {
+    if (tentativas > 25) {
+        console.warn('❌ Desistindo de tocar após 25 tentativas');
+        return;
+    }
+    
+    if (estadoPlayer.iframeElement && estadoPlayer.iframePronto) {
+        const sucesso = enviarComandoIframe('playVideo');
+        if (sucesso) {
+            console.log('▶ Play enviado com sucesso');
+            estadoPlayer.estaTocando = true;
+            atualizarBotaoPlay();
+            return;
+        }
+    }
+    
+    setTimeout(() => tentarPlayComRetry(tentativas + 1), 200);
 }
 
 // ========== TOCAR VÍDEO ==========
@@ -126,10 +180,11 @@ function tocarVideo(poste) {
     atualizarInfoPlayer(poste);
     atualizarTimer15sDisplay();
     atualizarBotaoDestrancar();
-
-    // Iniciar
-    estadoPlayer.estaTocando = true;
     atualizarBotaoPlay();
+
+    // Iniciar reprodução com retry
+    estadoPlayer.estaTocando = true;
+    tentarPlayComRetry();
 
     if (!estadoPlayer.estaDestrancado) {
         iniciarTimer15s();
@@ -140,12 +195,19 @@ function tocarVideo(poste) {
             registrarLikeAutomatico(poste.id);
         }
     }
+    
+    // Atualizar UI da home se existir
+    if (typeof atualizarUIHome === 'function') {
+        setTimeout(atualizarUIHome, 300);
+    }
 }
 
 // ========== CRIAR IFRAME (BLOQUEADO) ==========
 function criarIframePlayer(videoId) {
     const container = document.getElementById('player-iframe-container');
     if (!container) return;
+
+    estadoPlayer.iframePronto = false;
 
     container.innerHTML = `
         <div style="position: relative; width: 100%; height: 100%;">
@@ -164,14 +226,28 @@ function criarIframePlayer(videoId) {
     `;
 
     estadoPlayer.iframeElement = document.getElementById('player-iframe');
+    
+    // Aguardar iframe carregar
+    if (estadoPlayer.iframeElement) {
+        estadoPlayer.iframeElement.addEventListener('load', () => {
+            estadoPlayer.iframePronto = true;
+            console.log('✅ Iframe do player carregado e pronto');
+        });
+        
+        // Timeout de segurança
+        setTimeout(() => {
+            if (!estadoPlayer.iframePronto) {
+                estadoPlayer.iframePronto = true;
+                console.log('⏰ Iframe marcado como pronto por timeout');
+            }
+        }, 3000);
+    }
 }
 
 // ========== PAUSAR ==========
 function pausarVideo() {
-    if (estadoPlayer.iframeElement) {
-        estadoPlayer.iframeElement.contentWindow?.postMessage(
-            JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), '*'
-        );
+    if (estadoPlayer.iframeElement && estadoPlayer.iframePronto) {
+        enviarComandoIframe('pauseVideo');
     }
     estadoPlayer.estaTocando = false;
     pararTimer15s();
@@ -180,7 +256,10 @@ function pausarVideo() {
 
 // ========== ALTERNAR PLAY/PAUSE ==========
 function alternarPlayPause() {
-    if (!estadoPlayer.posteAtual) return;
+    if (!estadoPlayer.posteAtual) {
+        mostrarToast('Selecione uma música primeiro', 'info');
+        return;
+    }
 
     if (estadoPlayer.estaTocando) {
         pausarVideo();
@@ -196,11 +275,8 @@ function alternarPlayPause() {
     estadoPlayer.estaTocando = true;
     atualizarBotaoPlay();
 
-    if (estadoPlayer.iframeElement) {
-        estadoPlayer.iframeElement.contentWindow?.postMessage(
-            JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*'
-        );
-    }
+    // Tentar play com retry
+    tentarPlayComRetry();
 
     if (!estadoPlayer.estaDestrancado) {
         iniciarTimer15s();
@@ -253,9 +329,7 @@ function destrancarVideo(posteId) {
         // Callback após pagamento
         estadoPlayer.estaDestrancado = true;
         pararTimer15s();
-        atualizarBotaoDestrancar();
-        atualizarTimer15sDisplay();
-
+        
         // Guardar desbloqueio PERMANENTE
         const chave = `${usuario.id}_${poste.id}`;
         estadoPlayer.desbloqueiosRegistados[chave] = true;
@@ -264,19 +338,31 @@ function destrancarVideo(posteId) {
         // Registrar like automático
         registrarLikeAutomatico(poste.id);
 
-        // Retomar reprodução
-        estadoPlayer.estaTocando = true;
+        // Atualizar UI IMEDIATAMENTE
+        atualizarBotaoDestrancar();
+        atualizarTimer15sDisplay();
         atualizarBotaoPlay();
-
-        if (estadoPlayer.iframeElement) {
-            estadoPlayer.iframeElement.contentWindow?.postMessage(
-                JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*'
-            );
-        }
-
         animarDestrancar();
+        
+        // Disparar evento para atualizar home
+        document.dispatchEvent(new CustomEvent('player-destrancado', { 
+            detail: { posteId: poste.id } 
+        }));
+
+        // Retomar reprodução com retry
+        estadoPlayer.estaTocando = true;
+        tentarPlayComRetry();
+
         mostrarToast('🔓 Conteúdo destrancado!', 'sucesso');
         console.log('🔓 Desbloqueado:', poste.artista);
+        
+        // Atualizar UI da home
+        if (typeof atualizarUIHome === 'function') {
+            setTimeout(atualizarUIHome, 100);
+        }
+        if (typeof carregarPostesHome === 'function') {
+            setTimeout(carregarPostesHome, 200);
+        }
     });
 }
 
@@ -294,7 +380,10 @@ function darLikeManual(posteId) {
 
     estadoPlayer.likesRegistados[chave] = true;
     salvarLikes();
-    window.postagem?.darLike(posteId);
+    
+    if (window.postagem?.darLike) {
+        window.postagem.darLike(posteId);
+    }
 
     const btnFav = document.querySelector('.player-fixo .btn-favorito');
     if (btnFav) {
@@ -304,6 +393,12 @@ function darLikeManual(posteId) {
     }
 
     mostrarToast('❤️ Like registado!', 'sucesso');
+    
+    // Atualizar home
+    if (typeof carregarPostesHome === 'function') {
+        setTimeout(carregarPostesHome, 300);
+    }
+    
     return true;
 }
 
@@ -316,7 +411,9 @@ function registrarLikeAutomatico(posteId) {
     if (!estadoPlayer.likesRegistados[chave]) {
         estadoPlayer.likesRegistados[chave] = true;
         salvarLikes();
-        window.postagem?.registrarLike(posteId);
+        if (window.postagem?.registrarLike) {
+            window.postagem.registrarLike(posteId);
+        }
         console.log('❤️ Like automático registado');
     }
 }
@@ -568,17 +665,26 @@ function atualizarTimer15sDisplay() {
 }
 
 function atualizarBotaoDestrancar() {
-    document.querySelectorAll('.btn-destrancar-player').forEach(btn => {
+    const botoes = document.querySelectorAll('.btn-destrancar-player');
+    botoes.forEach(btn => {
         if (estadoPlayer.estaDestrancado) {
             btn.classList.add('destrancado');
             btn.innerHTML = '🔓 Livre';
             btn.style.background = 'var(--gradiente-acento)';
+            btn.style.display = 'none';
         } else {
             btn.classList.remove('destrancado');
             btn.innerHTML = '🔓 Destrancar';
             btn.style.background = 'var(--gradiente-primario)';
+            btn.style.display = '';
         }
     });
+    
+    // Atualizar também botões de baixar/offline
+    const btnBaixar = document.querySelector('.player-fixo .btn-baixar');
+    const btnOffline = document.querySelector('.player-fixo .btn-offline');
+    if (btnBaixar) btnBaixar.classList.toggle('hidden', !estadoPlayer.estaDestrancado);
+    if (btnOffline) btnOffline.classList.toggle('hidden', !estadoPlayer.estaDestrancado);
 }
 
 function animarDestrancar() {
@@ -662,9 +768,8 @@ document.addEventListener('DOMContentLoaded', inicializarPlayer);
 
 console.log('🎧 Player completo pronto!');
 console.log('   ✅ 15s grátis com bloqueio');
-console.log('   ✅ Dono não vê bloqueio');
+console.log('   ✅ Play com retry automático');
+console.log('   ✅ UI instantânea ao destrancar');
 console.log('   ✅ Desbloqueio PERMANENTE');
-console.log('   ✅ Play/Pause + Destrancar lado a lado');
 console.log('   ✅ Iframe bloqueado (anti-clique)');
 console.log('   ✅ Pagamento simulado');
-console.log('   ✅ Download/Offline só após desbloquear');
