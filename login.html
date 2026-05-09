@@ -4,166 +4,560 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Musica Alendaria - Do Zero ao Infinito</title>
+    
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/lit.css">
+    <link rel="stylesheet" href="css/dark.css">
     <link rel="stylesheet" href="css/mobile.css">
     <link rel="stylesheet" href="css/animacoes.css">
+    <link rel="stylesheet" href="css/componentes.css">
+    
+    <meta name="theme-color" content="#6c3ce0">
+    
+    <style>
+        /* ========== FUNDO ANIMADO ========== */
+        .login-bg {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 25%, #fdf2f8 50%, #f0f9ff 75%, #f5f3ff 100%);
+            background-size: 400% 400%;
+            animation: bgMove 15s ease infinite;
+            z-index: 0;
+        }
+
+        @keyframes bgMove {
+            0%, 100% { background-position: 0% 50%; }
+            25% { background-position: 100% 0%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+        }
+
+        /* ========== PARTÍCULAS ========== */
+        .particulas {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particula {
+            position: absolute;
+            border-radius: 50%;
+            animation: floatUp linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* ========== CONTAINER LOGIN ========== */
+        .login-wrapper {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 20px 60px rgba(108, 60, 224, 0.12), 0 0 0 1px rgba(108, 60, 224, 0.08);
+            animation: cardIn 0.6s ease;
+        }
+
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* ========== LOGO ========== */
+        .login-logo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .login-logo .icon {
+            width: 70px;
+            height: 70px;
+            background: var(--gradiente-primario);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 1rem;
+            box-shadow: 0 10px 30px rgba(108, 60, 224, 0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .login-logo h1 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: var(--gradiente-primario);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.25rem;
+        }
+
+        .login-logo .slogan {
+            font-size: 0.85rem;
+            color: var(--texto-terciario);
+            font-style: italic;
+        }
+
+        /* ========== TABS ========== */
+        .auth-tabs {
+            display: flex;
+            background: var(--fundo-secundario);
+            border-radius: 14px;
+            padding: 5px;
+            gap: 5px;
+            margin-bottom: 1.5rem;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            background: transparent;
+            color: var(--texto-terciario);
+        }
+
+        .auth-tab.ativo {
+            background: white;
+            color: var(--cor-primaria);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        /* ========== FORMULÁRIOS ========== */
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .auth-form.hidden {
+            display: none;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.1rem;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 14px 14px 14px 44px;
+            border: 2px solid #e8e8ec;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            background: #fafafa;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: var(--cor-primaria);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(108, 60, 224, 0.08);
+        }
+
+        .input-group .toggle-senha {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 1.1rem;
+            z-index: 2;
+            background: none;
+            border: none;
+        }
+
+        /* ========== BOTÃO PRINCIPAL ========== */
+        .btn-auth {
+            width: 100%;
+            padding: 14px;
+            background: var(--gradiente-primario);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(108, 60, 224, 0.3);
+            margin-top: 0.5rem;
+        }
+
+        .btn-auth:hover {
+            box-shadow: 0 12px 35px rgba(108, 60, 224, 0.45);
+            transform: translateY(-1px);
+        }
+
+        .btn-auth:active {
+            transform: scale(0.97);
+        }
+
+        /* ========== MÉTODO REGISTO ========== */
+        .metodo-toggle {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .metodo-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid #e8e8ec;
+            background: #fafafa;
+            font-weight: 500;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--texto-secundario);
+        }
+
+        .metodo-btn.ativo {
+            border-color: var(--cor-primaria);
+            background: rgba(108, 60, 224, 0.05);
+            color: var(--cor-primaria);
+            font-weight: 700;
+        }
+
+        /* ========== SUPORTE ========== */
+        .suporte-section {
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .suporte-section p {
+            font-size: 0.8rem;
+            color: var(--texto-terciario);
+            margin-bottom: 0.5rem;
+        }
+
+        .suporte-links {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .suporte-link {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 14px;
+            border-radius: 25px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-decoration: none;
+            background: var(--fundo-secundario);
+            color: var(--texto-secundario);
+            border: 1px solid var(--borda);
+            transition: all 0.3s ease;
+        }
+
+        .suporte-link:hover {
+            background: var(--cor-primaria);
+            color: white;
+            border-color: var(--cor-primaria);
+        }
+
+        /* ========== ERRO ========== */
+        .msg-erro {
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-align: center;
+            animation: shake 0.5s ease;
+        }
+
+        .msg-erro.erro {
+            background: rgba(224, 36, 94, 0.08);
+            color: #e0245e;
+            border: 1px solid rgba(224, 36, 94, 0.2);
+        }
+
+        .msg-erro.sucesso {
+            background: rgba(0, 201, 167, 0.08);
+            color: #00a88c;
+            border: 1px solid rgba(0, 201, 167, 0.2);
+        }
+
+        /* ========== MARCA D'ÁGUA ========== */
+        .marca-dagua-login {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 5;
+            font-size: 0.75rem;
+            color: rgba(0, 0, 0, 0.25);
+            font-weight: 500;
+            animation: flutuarLit 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes flutuarLit {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+    </style>
 </head>
 <body class="tema-lit">
 
-    <!-- MARCA D'ÁGUA ROTATIVA -->
-    <div class="marca-dagua">Criado por Pensador Sem Fronteira</div>
+    <!-- FUNDO ANIMADO -->
+    <div class="login-bg"></div>
+    
+    <!-- PARTÍCULAS -->
+    <div class="particulas" id="particulas"></div>
+
+    <!-- MARCA D'ÁGUA -->
+    <div class="marca-dagua-login">Criado por Pensador Sem Fronteira</div>
 
     <!-- CONTAINER PRINCIPAL -->
-    <main class="container-login">
-
-        <!-- LOGO lit-->
-        <div class="logo-area">
-            <img src="logo-lit.jpeg" alt="Musica Alendaria" class="logo">
-            <h1 class="nome-plataforma">Musica Alendaria</h1>
-            <p class="slogan">Do Zero ao Infinito</p>
-        </div>
-
-        <!-- TABS LOGIN / REGISTO -->
-        <div class="tabs-auth">
-            <button class="tab-ativo" id="tab-login">Entrar</button>
-            <button class="tab-inativo" id="tab-registo">Criar Conta</button>
-        </div>
-
-        <!-- FORMULÁRIO DE LOGIN -->
-        <form id="form-login" class="form-auth">
-            <div class="campo">
-                <label for="login-email">Email ou Telefone</label>
-                <input type="text" id="login-email" placeholder="pensador@email.com ou +258 8XX XXX XXX" required>
-            </div>
-
-            <div class="campo">
-                <label for="login-senha">Senha</label>
-                <input type="password" id="login-senha" placeholder="••••••••" required>
-                <span class="mostrar-senha">👁️</span>
-            </div>
-
-            <button type="submit" class="btn-principal">Entrar</button>
-        </form>
-
-        <!-- FORMULÁRIO DE REGISTO (inicialmente escondido) -->
-        <form id="form-registo" class="form-auth hidden">
+    <div class="login-wrapper">
+        <div class="login-card">
             
-            <!-- MÉTODO DE REGISTO -->
-            <div class="metodo-registo">
-                <button type="button" class="btn-metodo ativo" data-metodo="email">Email</button>
-                <button type="button" class="btn-metodo" data-metodo="telefone">Telefone</button>
+            <!-- LOGO -->
+            <div class="login-logo">
+                <div class="icon">🎵</div>
+                <h1>Musica Alendaria</h1>
+                <p class="slogan">Do Zero ao Infinito</p>
             </div>
 
-            <!-- CAMPOS EMAIL -->
-            <div id="campos-email">
-                <div class="campo">
-                    <label for="reg-email">Email</label>
-                    <input type="email" id="reg-email" placeholder="email@exemplo.com">
+            <!-- TABS -->
+            <div class="auth-tabs">
+                <button class="auth-tab ativo" id="tab-login">🔑 Entrar</button>
+                <button class="auth-tab" id="tab-registo">✨ Criar Conta</button>
+            </div>
+
+            <!-- MENSAGEM -->
+            <div id="msg-auth"></div>
+
+            <!-- FORM LOGIN -->
+            <form id="form-login" class="auth-form">
+                <div class="input-group">
+                    <span class="input-icon">📧</span>
+                    <input type="text" id="login-email" placeholder="Email ou Telefone" required>
                 </div>
-            </div>
+                <div class="input-group">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" id="login-senha" placeholder="Senha" required>
+                    <button type="button" class="toggle-senha" onclick="toggleSenha('login-senha', this)">👁️</button>
+                </div>
+                <button type="submit" class="btn-auth">🚀 Entrar na Plataforma</button>
+                <p style="text-align: center; font-size: 0.75rem; color: var(--texto-terciario); margin-top: 0.5rem;">
+                    Use: <strong>teste@teste.com</strong> ou <strong>123456789</strong> com qualquer senha (6+ caracteres)
+                </p>
+            </form>
 
-            <!-- CAMPOS TELEFONE (inicialmente escondido) -->
-            <div id="campos-telefone" class="hidden">
-                <div class="campo">
-                    <label for="reg-codigo-pais">Código do País</label>
-                    <select id="reg-codigo-pais">
-                        <option value="+258">🇲🇿 Moçambique (+258)</option>
-                        <option value="+351">🇵🇹 Portugal (+351)</option>
-                        <option value="+55">🇧🇷 Brasil (+55)</option>
-                        <option value="+238">🇨🇻 Cabo Verde (+238)</option>
-                        <option value="+239">🇸🇹 São Tomé (+239)</option>
-                        <option value="+258">🇦🇴 Angola (+244)</option>
-                        <option value="+244">🇬🇼 Guiné-Bissau (+245)</option>
+            <!-- FORM REGISTO -->
+            <form id="form-registo" class="auth-form hidden">
+                <!-- Método -->
+                <div class="metodo-toggle">
+                    <button type="button" class="metodo-btn ativo" data-metodo="email">📧 Email</button>
+                    <button type="button" class="metodo-btn" data-metodo="telefone">📱 Telefone</button>
+                </div>
+
+                <div class="input-group" id="campo-email">
+                    <span class="input-icon">📧</span>
+                    <input type="email" id="reg-email" placeholder="Seu email">
+                </div>
+
+                <div class="input-group hidden" id="campo-telefone">
+                    <span class="input-icon">📱</span>
+                    <select id="reg-codigo-pais" style="padding-left: 44px;">
+                        <option value="+244">🇦🇴 +244 Angola</option>
+                        <option value="+351">🇵🇹 +351 Portugal</option>
+                        <option value="+55">🇧🇷 +55 Brasil</option>
+                        <option value="+238">🇨🇻 +238 Cabo Verde</option>
+                        <option value="+258">🇲🇿 +258 Moçambique</option>
+                    </select>
+                    <input type="tel" id="reg-telefone" placeholder="Número (9 dígitos)" style="margin-top: 0.5rem;">
+                </div>
+
+                <div class="input-group">
+                    <span class="input-icon">👤</span>
+                    <input type="text" id="reg-nome" placeholder="Nome Completo" required>
+                </div>
+
+                <div class="input-group">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" id="reg-senha" placeholder="Senha (mínimo 6 caracteres)" required>
+                    <button type="button" class="toggle-senha" onclick="toggleSenha('reg-senha', this)">👁️</button>
+                </div>
+
+                <div class="input-group">
+                    <span class="input-icon">🌍</span>
+                    <select id="reg-pais" required>
+                        <option value="">Selecionar País</option>
+                        <option value="Angola">Angola</option>
+                        <option value="Portugal">Portugal</option>
+                        <option value="Brasil">Brasil</option>
+                        <option value="Cabo Verde">Cabo Verde</option>
+                        <option value="Moçambique">Moçambique</option>
                     </select>
                 </div>
-                <div class="campo">
-                    <label for="reg-telefone">Número de Telefone</label>
-                    <input type="tel" id="reg-telefone" placeholder="+258 XXX XXX">
+
+                <div class="input-group">
+                    <span class="input-icon">📍</span>
+                    <input type="text" id="reg-provincia" placeholder="Província / Estado" required>
+                </div>
+
+                <button type="submit" class="btn-auth">✨ Criar Conta</button>
+            </form>
+
+            <!-- SUPORTE -->
+            <div class="suporte-section">
+                <p>💬 Precisa de ajuda?</p>
+                <div class="suporte-links">
+                    <a href="https://wa.me/244900000000" target="_blank" class="suporte-link">💬 WhatsApp</a>
+                    <a href="https://t.me/MusicaAlendaria" target="_blank" class="suporte-link">📨 Telegram</a>
+                    <a href="tel:+244900000000" class="suporte-link">📞 Ligar</a>
+                    <a href="sms:+244900000000" class="suporte-link">📱 SMS</a>
                 </div>
             </div>
 
-            <!-- CAMPOS OBRIGATÓRIOS -->
-            <div class="campo">
-                <label for="reg-nome">Nome Completo</label>
-                <input type="text" id="reg-nome" placeholder="Seu nome completo" required>
-            </div>
+        </div>
+    </div>
 
-            <div class="campo">
-                <label for="reg-senha">Senha</label>
-                <input type="password" id="reg-senha" placeholder="••••••••" required>
-                <span class="mostrar-senha">👁️</span>
-            </div>
+    <script src="js/dados.js"></script>
+    <script src="js/tema.js"></script>
+    <script src="js/auth.js"></script>
 
-            <div class="campo">
-                <label for="reg-pais">País</label>
-                <select id="reg-pais" required>
-                    <option value="">Selecionar país</option>
-                    <option value="aMoçambique">Moçambiquea</option>
-                    <option value="Portugal">Portugal</option>
-                    <option value="Brasil">Brasil</option>
-                    <option value="Cabo Verde">Cabo Verde</option>
-                    <option value="São Tomé e Príncipe">São Tomé e Príncipe</option>
-                    <option value="Angola">Angola</option>
-                    <option value="Guiné-Bissau">Guiné-Bissau</option>
-                </select>
-            </div>
-
-            <div class="campo">
-                <label for="reg-provincia">Província / Estado</label>
-                <input type="text" id="reg-provincia" placeholder="Sua província ou estado" required>
-            </div>
-
+    <script>
+        // ========== PARTÍCULAS ==========
+        function criarParticulas() {
+            const container = document.getElementById('particulas');
+            const cores = ['#6c3ce0', '#a855f7', '#e0245e', '#f7436e', '#00c9a7', '#f7b731'];
             
-            </div>
+            for (let i = 0; i < 30; i++) {
+                const particula = document.createElement('div');
+                particula.className = 'particula';
+                const size = Math.random() * 8 + 3;
+                particula.style.width = size + 'px';
+                particula.style.height = size + 'px';
+                particula.style.left = Math.random() * 100 + '%';
+                particula.style.background = cores[Math.floor(Math.random() * cores.length)];
+                particula.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particula.style.animationDelay = Math.random() * 10 + 's';
+                container.appendChild(particula);
+            }
+        }
 
-            <!-- CAMPOS OPCIONAIS (colapsáveis) -->
-            <button type="button" class="btn-opcionais" id="btn-opcionais">
-                + Informações Opcionais (Redes Sociais, Blog, Contacto para Show)
-            </button>
+        criarParticulas();
 
-            <div id="campos-opcionais" class="hidden">
-                <div class="campo">
-                    <label for="reg-foto">Foto de Perfil (URL)</label>
-                    <input type="url" id="reg-foto" placeholder="https://...">
-                </div>
-                <div class="campo">
-                    <label for="reg-contacto-show">Contacto para Show</label>
-                    <input type="text" id="reg-contacto-show" placeholder="Telefone ou email profissional">
-                </div>
-                <div class="campo">
-                    <label for="reg-blog">Blog Pessoal</label>
-                    <input type="url" id="reg-blog" placeholder="https://...">
-                </div>
-                <div class="campo">
-                    <label for="reg-youtube">Canal YouTube Oficial</label>
-                    <input type="url" id="reg-youtube" placeholder="https://youtube.com/@...">
-                </div>
-                <div class="campo">
-                    <label for="reg-tiktok">TikTok Oficial</label>
-                    <input type="url" id="reg-tiktok" placeholder="https://tiktok.com/@...">
-                </div>
-                <div class="campo">
-                    <label for="reg-instagram">Instagram Oficial</label>
-                    <input type="url" id="reg-instagram" placeholder="https://instagram.com/...">
-                </div>
-                <div class="campo">
-                    <label for="reg-outras-redes">Outras Redes Sociais</label>
-                    <input type="url" id="reg-outras-redes" placeholder="https://...">
-                </div>
-            </div>
+        // ========== TOGGLE SENHA ==========
+        function toggleSenha(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                btn.textContent = '👁️';
+            }
+        }
 
-            <button type="submit" class="btn-principal">Criar Conta</button>
-        </form>
+        // ========== TABS ==========
+        document.getElementById('tab-login').addEventListener('click', function() {
+            this.classList.add('ativo');
+            document.getElementById('tab-registo').classList.remove('ativo');
+            document.getElementById('form-login').classList.remove('hidden');
+            document.getElementById('form-registo').classList.add('hidden');
+            document.getElementById('msg-auth').innerHTML = '';
+        });
 
-       
+        document.getElementById('tab-registo').addEventListener('click', function() {
+            this.classList.add('ativo');
+            document.getElementById('tab-login').classList.remove('ativo');
+            document.getElementById('form-registo').classList.remove('hidden');
+            document.getElementById('form-login').classList.add('hidden');
+            document.getElementById('msg-auth').innerHTML = '';
+        });
 
-    </main>
+        // ========== MÉTODO REGISTO ==========
+        document.querySelectorAll('.metodo-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.metodo-btn').forEach(b => b.classList.remove('ativo'));
+                this.classList.add('ativo');
+                
+                const metodo = this.dataset.metodo;
+                const campoEmail = document.getElementById('campo-email');
+                const campoTelefone = document.getElementById('campo-telefone');
+                const inputEmail = document.getElementById('reg-email');
+                const inputTelefone = document.getElementById('reg-telefone');
+                
+                if (metodo === 'email') {
+                    campoEmail.classList.remove('hidden');
+                    campoTelefone.classList.add('hidden');
+                    inputEmail.required = true;
+                    inputTelefone.required = false;
+                } else {
+                    campoEmail.classList.add('hidden');
+                    campoTelefone.classList.remove('hidden');
+                    inputEmail.required = false;
+                    inputTelefone.required = true;
+                }
+            });
+        });
 
-
-    <!-- SCRIPTS - ORDEM CORRETA -->
-    <script src="js/dados.js"></script>      <!-- 1º: Dados -->
-    <script src="js/tema.js"></script>       <!-- 2º: Tema -->
-    <script src="js/auth.js"></script>       <!-- 3º: Auth (usa DB) -->
+        // ========== MENSAGEM ==========
+        function mostrarMsg(texto, tipo) {
+            const msg = document.getElementById('msg-auth');
+            msg.innerHTML = `<div class="msg-erro ${tipo}">${texto}</div>`;
+            setTimeout(() => { msg.innerHTML = ''; }, 5000);
+        }
+    </script>
 </body>
 </html>
