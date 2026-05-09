@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Musica Alendaria - Do Zero ao Infinito</title>
     
-    <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/lit.css">
     <link rel="stylesheet" href="css/dark.css">
@@ -16,33 +15,18 @@
     <link rel="stylesheet" href="css/modal.css">
     <link rel="stylesheet" href="css/componentes.css">
     
-    <!-- Favicon -->
-    <link rel="icon" href="" type="image/png">
-    
-    <!-- Meta tags -->
-    <meta name="description" content="Musica Alendaria - A sua plataforma de música com artistas reais. Do Zero ao Infinito.">
     <meta name="theme-color" content="#6c3ce0">
-   <meta name="mobile-web-app-capable" content="yes">
-   <meta name="apple-mobile-web-app-status-bar-style" content="default">
 </head>
 <body class="tema-lit">
 
-    <!-- MARCA D'ÁGUA -->
     <div class="marca-dagua">Criado por Pensador Sem Fronteira</div>
 
     <!-- HEADER DESKTOP -->
     <header class="header header-desktop desktop-only">
         <div class="header-logo">
             <a href="index.html" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
-                <img src="#" alt="Logo" style="width: 36px; height: 36px; border-radius: 8px;">
-                <span style="
-    font-weight: 700; 
-    font-size: 1.1rem; 
-    background: var(--gradiente-primario); 
-    background-clip: text; 
-    -webkit-background-clip: text; 
-    -webkit-text-fill-color: transparent;
-">Musica Alendaria</span>
+                <span style="font-size: 2rem;">🎵</span>
+                <span style="font-weight: 700; font-size: 1.1rem; background: var(--gradiente-primario); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Musica Alendaria</span>
             </a>
         </div>
         <nav class="nav-desktop">
@@ -53,138 +37,88 @@
             <a href="postar.html" class="nav-link">📤 Postar</a>
         </nav>
         <div class="header-acoes">
-            <div class="search-bar" style="width: 240px;">
-                <span class="search-icon">🔍</span>
-                <input type="text" id="busca-livre" placeholder="Buscar músicas, artistas...">
-                <span class="search-clear">✕</span>
-            </div>
-            <button class="btn-icone tooltip" data-tooltip="Notificações" onclick="window.modal?.abrir(window.app?.getNotificacoesHTML?.() || '<p>Nenhuma notificação</p>', {classeExtra: 'modal-suporte'})">
-                🔔
-                <span class="notificacoes-badge hidden" style="position: absolute; top: -2px; right: -2px; background: var(--cor-secundaria); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center;">0</span>
-            </button>
-            <a href="perfil.html" class="avatar-link" title="Meu Perfil">
-                <img src="assets/imagens/avatar-padrao.svg" alt="Perfil" class="avatar usuario-avatar" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22><circle cx=%2220%22 cy=%2220%22 r=%2220%22 fill=%22%236c3ce0%22/><text x=%2220%22 y=%2226%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2216%22>👤</text></svg>'"
-            </a>
-            <button class="btn-icone btn-alternar-tema tooltip" data-tooltip="Alternar tema" onclick="window.tema?.alternar()">
-                🌓
-            </button>
+            <button class="btn-icone btn-alternar-tema" onclick="window.tema?.alternar()">🌓</button>
+            <a href="perfil.html"><span style="width: 36px; height: 36px; border-radius: 50%; background: var(--gradiente-primario); display: flex; align-items: center; justify-content: center; font-size: 18px;">👤</span></a>
         </div>
     </header>
 
     <!-- CONTEÚDO PRINCIPAL -->
-    <main class="container" style="padding-top: 1rem; padding-bottom: calc(var(--player-altura) + 80px);">
+    <main class="container" style="padding-bottom: calc(var(--player-altura) + 100px);">
         
         <!-- BOAS-VINDAS -->
-        <section class="boas-vindas animar-entrada-cima" style="margin-bottom: 1.5rem;">
-            <h2 style="font-size: 1.5rem; margin-bottom: 0.25rem;">
-                👋 Bem-vindo, <span class="usuario-nome">Visitante</span>!
-            </h2>
-            <p style="color: var(--texto-terciario); font-size: 0.9rem;">
-                Continue de onde parou ou descubra novas músicas.
-            </p>
+        <section class="animar-entrada-cima" style="padding: 1rem;">
+            <h2 style="font-size: 1.5rem;">👋 Bem-vindo, <span class="usuario-nome">Visitante</span>!</h2>
+            <p style="color: var(--texto-terciario);">Do Zero ao Infinito 🚀</p>
         </section>
 
         <!-- FILTROS RÁPIDOS -->
         <section class="barra-filtros animar-entrada-cima" style="animation-delay: 0.1s;">
-            <span class="filtro-item ativo" data-filtro-tipo="" data-filtro-valor="">🔥 Todos</span>
-            <span class="filtro-item" data-filtro-tipo="estilo" data-filtro-valor="Kizomba">🎸 Kizomba</span>
-            <span class="filtro-item" data-filtro-tipo="estilo" data-filtro-valor="Semba">🥁 Semba</span>
-            <span class="filtro-item" data-filtro-tipo="estilo" data-filtro-valor="Afrobeat">🌍 Afrobeat</span>
-            <span class="filtro-item" data-filtro-tipo="estilo" data-filtro-valor="R&B">🎹 R&B</span>
-            <span class="filtro-item" data-filtro-tipo="estilo" data-filtro-valor="Música Romântica">💕 Romântica</span>
+            <span class="filtro-item ativo" onclick="filtrarPostes('todos')">🔥 Todos</span>
+            <span class="filtro-item" onclick="filtrarPostes('Diversa')">🎵 Diversa</span>
+            <span class="filtro-item" onclick="filtrarPostes('Kizomba')">🎸 Kizomba</span>
+            <span class="filtro-item" onclick="filtrarPostes('Semba')">🥁 Semba</span>
+            <span class="filtro-item" onclick="filtrarPostes('Afrobeat')">🌍 Afrobeat</span>
+            <span class="filtro-item" onclick="filtrarPostes('Rap')">🎤 Rap</span>
         </section>
 
-        <!-- INDICADOR DE FILTROS ATIVOS -->
-        <div id="filtros-ativos-tags" class="hidden" style="padding: 0 1rem; margin-bottom: 0.5rem;"></div>
-
-        <!-- CONTADOR DE RESULTADOS -->
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 1rem; margin-bottom: 0.5rem;">
-            <span id="resultados-contador" style="font-size: 0.85rem; color: var(--texto-terciario);"></span>
-            <button id="limpar-filtros" class="btn-pequeno btn-secundario hidden" style="font-size: 0.75rem;">Limpar Filtros</button>
-        </div>
-
-        <!-- GRID DE MÚSICAS -->
-        <section class="grid-musicas" style="padding: 0 1rem;">
-            <!-- Será preenchido pelo JS -->
-            <div class="loading-container" style="grid-column: 1 / -1;">
-                <div class="spinner"></div>
-            </div>
-        </section>
-
-        <!-- EVENTOS PRÓXIMOS -->
-        <section style="margin-top: 2rem; padding: 0 1rem;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <h3 style="font-size: 1.2rem;">📅 Próximos Eventos</h3>
-                <a href="eventos.html" style="font-size: 0.85rem; color: var(--cor-primaria);">Ver todos →</a>
-            </div>
-            <div class="grid-eventos">
-                <!-- Será preenchido pelo JS -->
-            </div>
-        </section>
-
-        <!-- ARTISTAS EM DESTAQUE -->
-        <section style="margin-top: 2rem; padding: 0 1rem;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <h3 style="font-size: 1.2rem;">🎤 Artistas</h3>
-                <a href="artista.html" style="font-size: 0.85rem; color: var(--cor-primaria);">Ver todos →</a>
-            </div>
-            <div class="grid-artistas">
-                <!-- Será preenchido pelo JS -->
+        <!-- POSTES (HOME) -->
+        <section style="padding: 0 1rem; margin-top: 1rem;">
+            <div id="lista-postes-home" style="display: flex; flex-direction: column; gap: 1rem;">
+                <div class="loading-container">
+                    <div class="spinner"></div>
+                </div>
             </div>
         </section>
 
     </main>
 
-    <!-- NAVEGAÇÃO MOBILE -->
-    <nav class="nav-mobile mobile-only">
-        <button class="nav-item ativo" data-nav="index">
-            <span class="icon-nav">🏠</span>
-            <span>Home</span>
-        </button>
-        <button class="nav-item" data-nav="favoritos">
-            <span class="icon-nav">❤️</span>
-            <span>Favoritos</span>
-        </button>
-        <button class="nav-item" data-nav="postar">
-            <span class="icon-nav">➕</span>
-            <span>Postar</span>
-        </button>
-        <button class="nav-item" data-nav="eventos">
-            <span class="icon-nav">📅</span>
-            <span>Eventos</span>
-        </button>
-        <button class="nav-item" data-nav="perfil">
-            <span class="icon-nav">👤</span>
-            <span>Perfil</span>
-        </button>
-    </nav>
-
-    <!-- PLAYER FIXO -->
-    <div class="player-fixo">
+    <!-- PLAYER FIXO (COM IFRAME) -->
+    <div class="player-fixo" style="min-height: 72px;">
         <div class="player-progresso-container">
             <div class="player-progresso-preenchido" style="width: 0%;"></div>
         </div>
-        <img src="assets/imagens/placeholder.svg" alt="Capa" class="player-capa" onerror="this.style.display='none'">
-        <div class="player-info">
-            <div class="player-titulo">Nenhuma música</div>
-            <div class="player-artista">Selecione uma música</div>
-        </div>
-        <div class="player-controles">
-            <div class="player-equalizador">
-                <div class="eq-barra" style="height: 4px;"></div>
-                <div class="eq-barra" style="height: 4px;"></div>
-                <div class="eq-barra" style="height: 4px;"></div>
-                <div class="eq-barra" style="height: 4px;"></div>
+        <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 1rem; width: 100%;">
+            <span style="font-size: 2rem;">🎵</span>
+            <div class="player-info" style="flex: 1; min-width: 0;">
+                <div class="player-titulo" style="font-size: 0.9rem; font-weight: 600;">Nenhuma música</div>
+                <div class="player-artista" style="font-size: 0.75rem; color: var(--texto-terciario);">Selecione uma música</div>
+                <div class="timer-30s hidden" style="font-size: 0.7rem;">⏳ 30s</div>
             </div>
-            <button class="btn-player btn-favorito" title="Favoritar">🤍</button>
+            <button class="btn-player btn-favorito" title="Like" style="font-size: 1.2rem;">🤍</button>
+            <button class="btn-player btn-play" title="Play/Pause" style="background: var(--gradiente-primario); color: white; width: 40px; height: 40px; border-radius: 50%; font-size: 1rem;">▶</button>
         </div>
-        <button class="btn-player btn-play" title="Play/Pause">▶</button>
+        <!-- Iframe escondido para o player -->
+        <div id="player-iframe-container" style="display: none;"></div>
     </div>
 
-    <!-- TOAST CONTAINER -->
+    <!-- MODAL DE VÍDEO (ANTI-NAVEGAÇÃO) -->
+    <div id="modal-video" class="modal-overlay hidden" style="z-index: 3000;">
+        <div class="modal-conteudo" style="max-width: 800px; padding: 0; background: #000; border-radius: 12px; overflow: hidden;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 1rem; background: #111; color: white;">
+                <span id="modal-video-titulo" style="font-weight: 600;">Vídeo</span>
+                <button onclick="fecharModalVideo()" style="background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer;">✕</button>
+            </div>
+            <div style="position: relative; padding-bottom: 56.25%; height: 0;">
+                <div id="modal-video-camada" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; cursor: default;"></div>
+                <iframe id="modal-video-iframe" width="100%" height="100%" src="" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+            </div>
+            <div style="padding: 0.5rem; background: #111; color: #ff9800; font-size: 0.7rem; text-align: center;">
+                ⚠️ Conteúdo oficial. Navegação externa bloqueada.
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVEGAÇÃO MOBILE -->
+    <nav class="nav-mobile mobile-only">
+        <button class="nav-item ativo" data-nav="index"><span class="icon-nav">🏠</span><span>Home</span></button>
+        <button class="nav-item" data-nav="favoritos"><span class="icon-nav">❤️</span><span>Favoritos</span></button>
+        <button class="nav-item" data-nav="postar"><span class="icon-nav">➕</span><span>Postar</span></button>
+        <button class="nav-item" data-nav="eventos"><span class="icon-nav">📅</span><span>Eventos</span></button>
+        <button class="nav-item" data-nav="perfil"><span class="icon-nav">👤</span><span>Perfil</span></button>
+    </nav>
+
     <div class="toast-container"></div>
 
-    <!-- SCRIPTS -->
     <script src="js/dados.js"></script>
     <script src="js/tema.js"></script>
     <script src="js/auth.js"></script>
@@ -198,61 +132,159 @@
     <script src="js/suporte.js"></script>
     <script src="js/app.js"></script>
 
-    <!-- INICIALIZAÇÃO DA PÁGINA -->
     <script>
+        let filtroAtual = 'todos';
+
         document.addEventListener('DOMContentLoaded', () => {
-            // Verificar autenticação
             if (!window.auth?.isAutenticado()) {
                 window.location.href = 'login.html';
                 return;
             }
 
-            // Atualizar nome do usuário
             const usuario = window.auth.getUsuarioAtual();
-            if (usuario) {
-                document.querySelectorAll('.usuario-nome').forEach(el => {
-                    el.textContent = usuario.nome.split(' ')[0];
-                });
-                if (usuario.fotoPerfil) {
-                    document.querySelectorAll('.usuario-avatar').forEach(el => {
-                        el.src = usuario.fotoPerfil;
-                    });
-                }
-            }
+            document.querySelector('.usuario-nome').textContent = usuario.nome.split(' ')[0];
 
-            // Renderizar artistas
-            renderizarArtistasHome();
-
-            // Aplicar filtros iniciais
-            setTimeout(() => {
-                window.filtros?.aplicar();
-            }, 300);
+            carregarPostesHome();
         });
 
-        function renderizarArtistasHome() {
-            const grid = document.querySelector('.grid-artistas');
-            if (!grid) return;
+        function carregarPostesHome() {
+            const container = document.getElementById('lista-postes-home');
+            const postes = JSON.parse(localStorage.getItem('musica-alendaria-postes') || '[]');
+            
+            // Apenas públicos
+            let postesPublicos = postes.filter(p => p.visibilidade === 'publico');
 
-            const artistas = DB.artistas;
-            grid.innerHTML = artistas.map((artista, i) => `
-                <div class="card-artista stagger-item" 
-                     style="animation-delay: ${i * 0.1}s; cursor: pointer;"
-                     onclick="window.location.href='artista.html?id=${artista.id}'">
-                    <img src="${artista.fotoPerfil}" alt="${artista.nome}" class="foto-artista" 
-                         onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 90 90%22><circle cx=%2245%22 cy=%2245%22 r=%2245%22 fill=%22%236c3ce0%22/><text x=%2245%22 y=%2255%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2230%22>🎤</text></svg>'">
-                    <h4 class="nome-artista">${artista.nome}</h4>
-                    <p class="genero-artista">${artista.genero.slice(0, 2).join(' • ')}</p>
-                    <p class="seguidores">${formatarNumero(artista.totalSeguidores)} seguidores</p>
-                </div>
-            `).join('');
+            // Filtrar por estilo
+            if (filtroAtual !== 'todos') {
+                postesPublicos = postesPublicos.filter(p => (p.estilo || 'Diversa') === filtroAtual);
+            }
+
+            if (postesPublicos.length === 0) {
+                container.innerHTML = `
+                    <div class="estado-vazio">
+                        <div class="vazio-icone">🎵</div>
+                        <h4 class="vazio-titulo">Nenhum vídeo encontrado</h4>
+                        <p class="vazio-descricao">Seja o primeiro a postar!</p>
+                        <a href="postar.html" class="btn btn-primario">📤 Postar Vídeo</a>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = postesPublicos.map(poste => {
+                const videoId = extrairYoutubeId(poste.link);
+                const jaDeuLike = window.player?.jaDeuLike(poste.id) || false;
+
+                return `
+                    <div class="card" style="overflow: hidden; border-radius: 12px;">
+                        ${videoId ? `
+                            <div style="position: relative; padding-bottom: 56.25%; height: 0; background: #000;">
+                                <iframe src="https://www.youtube.com/embed/${videoId}?controls=1&rel=0" 
+                                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                        ` : ''}
+                        <div style="padding: 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div>
+                                    <h3 style="font-weight: 700; font-size: 1.1rem;">${poste.artista}</h3>
+                                    <p style="font-size: 0.85rem; color: var(--texto-secundario);">
+                                        ${poste.estilo || 'Diversa'} ${poste.lingua ? '• ' + poste.lingua : ''} ${poste.ano ? '• ' + poste.ano : ''}
+                                    </p>
+                                    ${poste.descricao ? `<p style="font-size: 0.8rem; color: var(--texto-terciario); margin-top: 0.25rem;">${poste.descricao}</p>` : ''}
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem; align-items: center;">
+                                ${poste.bloqueio === 'bloquear' ? `
+                                    <button class="btn btn-pequeno btn-primario" onclick="tocarNoPlayer('${poste.id}')">
+                                        ▶ Ouvir 30s
+                                    </button>
+                                ` : ''}
+                                <button class="btn btn-pequeno btn-secundario" onclick="abrirVideoModal('${poste.id}')">
+                                    🎬 Assistir
+                                </button>
+                                <button class="btn-icone-pequeno" onclick="darLikeHome('${poste.id}', this)" style="font-size: 1.2rem; margin-left: auto;">
+                                    ${jaDeuLike ? '❤️' : '🤍'}
+                                </button>
+                                <span style="font-size: 0.8rem; color: var(--texto-terciario);">${poste.likes || 0}</span>
+                            </div>
+                            <div style="font-size: 0.7rem; color: var(--texto-terciario); margin-top: 0.5rem;">
+                                Postado por ${poste.usuarioNome || 'Usuário'} • ${new Date(poste.dataCriacao).toLocaleDateString('pt')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
-        function formatarNumero(num) {
-            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-            if (num >= 1000) return (num / 1000).toFixed(0) + 'K';
-            return num.toString();
+        function filtrarPostes(filtro) {
+            filtroAtual = filtro;
+            document.querySelectorAll('.filtro-item').forEach(item => {
+                item.classList.toggle('ativo', item.textContent.includes(filtro === 'todos' ? 'Todos' : filtro));
+            });
+            carregarPostesHome();
         }
+
+        function tocarNoPlayer(posteId) {
+            const postes = JSON.parse(localStorage.getItem('musica-alendaria-postes') || '[]');
+            const poste = postes.find(p => p.id === posteId);
+            if (poste) {
+                window.player?.tocar(poste);
+            }
+        }
+
+        function abrirVideoModal(posteId) {
+            const postes = JSON.parse(localStorage.getItem('musica-alendaria-postes') || '[]');
+            const poste = postes.find(p => p.id === posteId);
+            if (!poste) return;
+
+            const videoId = extrairYoutubeId(poste.link);
+            if (!videoId) return;
+
+            document.getElementById('modal-video-titulo').textContent = poste.artista;
+            document.getElementById('modal-video-iframe').src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+            document.getElementById('modal-video').classList.remove('hidden');
+            document.body.classList.add('modal-aberto');
+
+            // Registrar like se assistir (após 30s simulados)
+            setTimeout(() => {
+                window.player?.registrarLike(posteId);
+            }, 30000);
+        }
+
+        function fecharModalVideo() {
+            document.getElementById('modal-video').classList.add('hidden');
+            document.getElementById('modal-video-iframe').src = '';
+            document.body.classList.remove('modal-aberto');
+        }
+
+        function darLikeHome(posteId, btn) {
+            const sucesso = window.player?.darLike(posteId);
+            if (sucesso) {
+                btn.textContent = '❤️';
+                btn.style.animation = 'heartbeat 0.6s ease';
+                setTimeout(() => { btn.style.animation = ''; }, 600);
+                carregarPostesHome();
+            }
+        }
+
+        function extrairYoutubeId(url) {
+            if (!url) return null;
+            const regex = /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+            const match = url.match(regex);
+            return match ? match[1] : null;
+        }
+
+        // Fechar modal ao clicar fora
+        document.getElementById('modal-video').addEventListener('click', function(e) {
+            if (e.target === this) fecharModalVideo();
+        });
+
+        // Fechar modal com ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') fecharModalVideo();
+        });
     </script>
-
 </body>
 </html>

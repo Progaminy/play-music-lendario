@@ -4,39 +4,24 @@
    ARQUIVO: postagem.js - Sistema de Postagem
    ============================================= */
 
-// ========== CONFIGURAÇÃO ==========
 const CONFIG_POSTAGEM = {
-    chaveStorage: 'musica-alendaria-postagens',
-    maxPostagensPorUsuario: 50,
-    camposObrigatorios: ['titulo', 'link', 'visibilidade'],
-    emailAdmin: 'admin@musicaalendaria.com'
+    chaveStorage: 'musica-alendaria-postes',
+    maxPostagensPorUsuario: 50
 };
 
-// ========== ESTADO ==========
 const estadoPostagem = {
     postagens: [],
-    plataformasRegistadas: [],
-    postagemAtual: null,
     enviando: false
 };
 
 // ========== INICIALIZAÇÃO ==========
 function inicializarPostagem() {
-    // Carregar plataformas registadas
-    estadoPostagem.plataformasRegistadas = buscarPlataformasRegistadas();
-
-    // Carregar postagens
     carregarPostagens();
-
-    // Configurar UI
     configurarFormPostagem();
-    configurarPrevisualizacaoLink();
-    configurarMetodosPostagem();
-
-    console.log('📤 Sistema de postagem pronto!');
+    console.log('📤 Postagem pronto!');
 }
 
-// ========== CARREGAR POSTAGENS ==========
+// ========== CARREGAR ==========
 function carregarPostagens() {
     try {
         const saved = localStorage.getItem(CONFIG_POSTAGEM.chaveStorage);
@@ -46,7 +31,7 @@ function carregarPostagens() {
     }
 }
 
-// ========== SALVAR POSTAGENS ==========
+// ========== SALVAR ==========
 function salvarPostagens() {
     localStorage.setItem(CONFIG_POSTAGEM.chaveStorage, JSON.stringify(estadoPostagem.postagens));
 }
@@ -55,462 +40,176 @@ function salvarPostagens() {
 function criarPostagem(dados) {
     const usuario = window.auth?.getUsuarioAtual();
     if (!usuario) {
-        mostrarNotificacao('Faça login para postar', 'erro');
+        mostrarToast('Faça login para postar', 'erro');
         return null;
     }
 
     // Validar campos obrigatórios
-    if (!dados.titulo || !dados.link || !dados.visibilidade) {
-        mostrarNotificacao('Título, link e visibilidade são obrigatórios', 'erro');
+    if (!dados.artista || !dados.link) {
+        mostrarToast('Nome do artista e link são obrigatórios', 'erro');
         return null;
     }
-
-    // Validar link (deve ser de plataforma registada ou nova)
-    const linkValido = validarLink(dados.link);
-    if (!linkValido) {
-        mostrarNotificacao('Link não pertence a uma plataforma registada. Adicione a plataforma primeiro.', 'erro');
-        return null;
-    }
-
-    // Extrair dados automáticos do link
-    const dadosExtraidos = extrairDadosLink(dados.link);
 
     const novaPostagem = {
         id: 'post-' + Date.now(),
         usuarioId: usuario.id,
         usuarioNome: usuario.nome,
-        usuarioFoto: usuario.fotoPerfil || '',
-        titulo: dados.titulo,
+        artista: dados.artista,
         link: dados.link,
-        visibilidade: dados.visibilidade,
-        capa: dadosExtraidos.capa || '',
-        descricao: dadosExtraidos.descricao || '',
-        ano: dadosExtraidos.ano || new Date().getFullYear(),
-        estilo: dadosExtraidos.estilo || '',
-        plataforma: dadosExtraidos.plataforma || '',
-        status: 'pendente',
+        visibilidade: dados.visibilidade || 'publico',
+        bloqueio: dados.bloqueio || 'bloquear',
+        descricao: dados.descricao || '',
+        estilo: dados.estilo || 'Diversa',
+        lingua: dados.lingua || '',
+        ano: dados.ano || '',
         dataCriacao: new Date().toISOString(),
-        dataAprovacao: null,
-        motivoRejeicao: ''
+        status: 'aprovado',
+        likes: [],
+        quemDeuLike: []
     };
 
-    // Adicionar à lista
     estadoPostagem.postagens.unshift(novaPostagem);
     salvarPostagens();
 
-    // Enviar para aprovação
-    enviarParaAprovacao(novaPostagem);
-
-    console.log('📤 Postagem criada:', novaPostagem.titulo);
+    console.log('📤 Postagem criada:', novaPostagem.artista);
     return novaPostagem;
-}
-
-// ========== VALIDAR LINK ==========
-function validarLink(link) {
-    if (!link) return false;
-
-    // Verificar se pertence a uma plataforma registada
-    const plataformaEncontrada = estadoPostagem.plataformasRegistadas.find(p =>
-        link.toLowerCase().includes(p.url.toLowerCase().replace('https://', '').replace('http://', ''))
-    );
-
-    if (plataformaEncontrada) return true;
-
-    // Verificar se é uma plataforma nova já adicionada
-    const plataformaNova = estadoPostagem.plataformasRegistadas.find(p =>
-        p.status === 'pendente' && link.toLowerCase().includes(p.url.toLowerCase())
-    );
-
-    return !!plataformaNova;
-}
-
-// ========== EXTRAIR DADOS DO LINK ==========
-function extrairDadosLink(link) {
-    const dados = {
-        capa: '',
-        descricao: '',
-        ano: '',
-        estilo: '',
-        plataforma: ''
-    };
-
-    // Identificar plataforma
-    if (link.includes('youtube.com') || link.includes('youtu.be')) {
-        dados.plataforma = 'YouTube';
-        dados.capa = `https://img.youtube.com/vi/${extrairYoutubeId(link)}/maxresdefault.jpg`;
-    } else if (link.includes('spotify.com')) {
-        dados.plataforma = 'Spotify';
-    } else if (link.includes('music.apple.com')) {
-        dados.plataforma = 'Apple Music';
-    } else if (link.includes('deezer.com')) {
-        dados.plataforma = 'Deezer';
-    } else if (link.includes('soundcloud.com')) {
-        dados.plataforma = 'SoundCloud';
-    } else if (link.includes('audiomack.com')) {
-        dados.plataforma = 'Audiomack';
-    } else if (link.includes('boomplay.com')) {
-        dados.plataforma = 'Boomplay';
-    } else if (link.includes('tidal.com')) {
-        dados.plataforma = 'Tidal';
-    } else {
-        dados.plataforma = 'Outra Plataforma';
-    }
-
-    return dados;
-}
-
-function extrairYoutubeId(url) {
-    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
-    const match = url.match(regex);
-    return match ? match[1] : '';
-}
-
-// ========== ENVIAR PARA APROVAÇÃO ==========
-function enviarParaAprovacao(postagem) {
-    if (estadoPostagem.enviando) return;
-    estadoPostagem.enviando = true;
-
-    mostrarNotificacao('📧 Enviando para aprovação...', 'info');
-
-    // Simular envio de email para o admin
-    setTimeout(() => {
-        console.log(`📧 Email enviado para ${CONFIG_POSTAGEM.emailAdmin}:`);
-        console.log(`   Assunto: Nova postagem para aprovação`);
-        console.log(`   Usuário: ${postagem.usuarioNome}`);
-        console.log(`   Título: ${postagem.titulo}`);
-        console.log(`   Link: ${postagem.link}`);
-        console.log(`   Visibilidade: ${postagem.visibilidade}`);
-
-        // Simular resposta do admin (para teste, aprova após 3 segundos)
-        simularRespostaAdmin(postagem);
-    }, 1000);
-}
-
-// ========== SIMULAR RESPOSTA DO ADMIN ==========
-function simularRespostaAdmin(postagem) {
-    const tempoResposta = 2000 + Math.random() * 3000; // 2-5 segundos
-
-    setTimeout(() => {
-        // 80% de chance de aprovação para teste
-        const aprovado = Math.random() < 0.8;
-
-        if (aprovado) {
-            aprovarPostagem(postagem.id);
-        } else {
-            const motivos = [
-                'Link não pertence a uma plataforma registada.',
-                'Conteúdo duplicado.',
-                'Qualidade do link insuficiente.',
-                'Informações incompletas.',
-                'Violação dos termos de uso.'
-            ];
-            const motivo = motivos[Math.floor(Math.random() * motivos.length)];
-            rejeitarPostagem(postagem.id, motivo);
-        }
-
-        estadoPostagem.enviando = false;
-    }, tempoResposta);
-}
-
-// ========== APROVAR POSTAGEM ==========
-function aprovarPostagem(postagemId) {
-    const postagem = estadoPostagem.postagens.find(p => p.id === postagemId);
-    if (!postagem) return;
-
-    postagem.status = 'aprovado';
-    postagem.dataAprovacao = new Date().toISOString();
-    postagem.motivoRejeicao = '';
-    salvarPostagens();
-
-    // Criar notificação para o usuário
-    criarNotificacaoUsuario(
-        postagem.usuarioId,
-        'aprovado',
-        `A sua postagem "${postagem.titulo}" foi aprovada e já está visível na plataforma.`
-    );
-
-    mostrarNotificacao('✅ Postagem aprovada!', 'sucesso');
-    atualizarUIAfterPostagem(postagem);
-}
-
-// ========== REJEITAR POSTAGEM ==========
-function rejeitarPostagem(postagemId, motivo) {
-    const postagem = estadoPostagem.postagens.find(p => p.id === postagemId);
-    if (!postagem) return;
-
-    postagem.status = 'rejeitado';
-    postagem.motivoRejeicao = motivo;
-    salvarPostagens();
-
-    // Criar notificação para o usuário
-    criarNotificacaoUsuario(
-        postagem.usuarioId,
-        'rejeitado',
-        `A sua postagem "${postagem.titulo}" foi rejeitada. Motivo: ${motivo}`
-    );
-
-    mostrarNotificacao(`❌ Postagem rejeitada: ${motivo}`, 'erro');
-    atualizarUIAfterPostagem(postagem);
-}
-
-// ========== CRIAR NOTIFICAÇÃO ==========
-function criarNotificacaoUsuario(usuarioId, tipo, mensagem) {
-    const novaMensagem = {
-        id: 'msg-' + Date.now(),
-        usuarioId: usuarioId,
-        tipo: tipo,
-        conteudo: mensagem,
-        data: new Date().toISOString(),
-        lida: false
-    };
-
-    // Adicionar à base de dados mock
-    if (!DB.mensagens) DB.mensagens = [];
-    DB.mensagens.unshift(novaMensagem);
-
-    // Atualizar badge de notificações
-    atualizarBadgeNotificacoes();
-
-    console.log(`🔔 Notificação criada para ${usuarioId}: ${mensagem}`);
-}
-
-// ========== ATUALIZAR BADGE ==========
-function atualizarBadgeNotificacoes() {
-    const usuario = window.auth?.getUsuarioAtual();
-    if (!usuario) return;
-
-    const naoLidas = DB.mensagens.filter(m =>
-        m.usuarioId === usuario.id && !m.lida
-    );
-
-    document.querySelectorAll('.notificacoes-badge').forEach(badge => {
-        badge.textContent = naoLidas.length;
-        badge.classList.toggle('hidden', naoLidas.length === 0);
-        if (naoLidas.length > 0) {
-            badge.classList.add('sino-notificacao');
-        }
-    });
 }
 
 // ========== CONFIGURAR FORMULÁRIO ==========
 function configurarFormPostagem() {
-    const formPostagem = document.getElementById('form-postagem');
-    if (!formPostagem) return;
+    const form = document.getElementById('form-postagem');
+    if (!form) return;
 
-    formPostagem.addEventListener('submit', function (e) {
+    form.addEventListener('submit', function (e) {
         e.preventDefault();
 
         const dados = {
-            titulo: document.getElementById('post-titulo')?.value.trim() || '',
+            artista: document.getElementById('post-artista')?.value.trim() || '',
             link: document.getElementById('post-link')?.value.trim() || '',
-            visibilidade: document.querySelector('input[name="visibilidade"]:checked')?.value || 'publico'
+            visibilidade: document.querySelector('input[name="visibilidade"]:checked')?.value || 'publico',
+            bloqueio: document.querySelector('input[name="bloqueio"]:checked')?.value || 'bloquear',
+            descricao: document.getElementById('post-descricao')?.value.trim() || '',
+            estilo: document.getElementById('post-estilo')?.value.trim() || 'Diversa',
+            lingua: document.getElementById('post-lingua')?.value.trim() || '',
+            ano: document.getElementById('post-ano')?.value.trim() || ''
         };
 
         const postagem = criarPostagem(dados);
 
         if (postagem) {
-            formPostagem.reset();
-            // Limpar preview
-            const preview = document.getElementById('preview-capa');
-            if (preview) preview.innerHTML = '<p>📎 Pré-visualização aparecerá aqui</p>';
+            form.reset();
+            document.getElementById('preview-video').style.display = 'none';
+            document.querySelector('input[name="visibilidade"][value="publico"]').checked = true;
+            document.querySelector('input[name="bloqueio"][value="bloquear"]').checked = true;
+            mostrarToast('✅ Postagem publicada com sucesso!', 'sucesso');
         }
     });
 }
 
-// ========== PREVISUALIZAÇÃO DO LINK ==========
-function configurarPrevisualizacaoLink() {
-    const inputLink = document.getElementById('post-link');
-    if (!inputLink) return;
+// ========== DAR LIKE (1 por usuário por poste) ==========
+function darLike(posteId) {
+    const usuario = window.auth?.getUsuarioAtual();
+    if (!usuario) return false;
 
-    inputLink.addEventListener('input', function () {
-        const link = this.value.trim();
-        const preview = document.getElementById('preview-capa');
+    const poste = estadoPostagem.postagens.find(p => p.id === posteId);
+    if (!poste) return false;
 
-        if (!preview) return;
+    if (!poste.quemDeuLike) poste.quemDeuLike = [];
 
-        if (link && link.includes('youtube.com')) {
-            const youtubeId = extrairYoutubeId(link);
-            if (youtubeId) {
-                preview.innerHTML = `<img src="https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg" alt="Preview" style="width: 100%; border-radius: 8px;">`;
-            }
-        } else if (link) {
-            preview.innerHTML = `
-                <div style="padding: 1rem; text-align: center;">
-                    <p style="color: var(--texto-secundario);">🔗 Link detectado: ${extrairDadosLink(link).plataforma}</p>
-                </div>
-            `;
-        } else {
-            preview.innerHTML = '<p style="color: var(--texto-terciario);">📎 Pré-visualização aparecerá aqui</p>';
-        }
-    });
-}
-
-// ========== MÉTODOS DE POSTAGEM ==========
-function configurarMetodosPostagem() {
-    // Método 1: Copiar e colar (já configurado no input)
-
-    // Método 2: Selecionar plataforma registada
-    document.querySelectorAll('.plataforma-item').forEach(item => {
-        item.addEventListener('click', function () {
-            const plataformaUrl = this.dataset.plataformaUrl;
-            if (plataformaUrl) {
-                // Levar ao perfil da plataforma
-                const inputLink = document.getElementById('post-link');
-                if (inputLink) {
-                    inputLink.value = plataformaUrl + '/';
-                    inputLink.focus();
-                    // Disparar evento para preview
-                    inputLink.dispatchEvent(new Event('input'));
-                }
-                mostrarNotificacao(`🔗 Cole o link completo do conteúdo de ${this.dataset.plataformaNome || 'plataforma'}`, 'info');
-            }
-        });
-    });
-
-    // Botão adicionar nova plataforma
-    const btnAdicionarPlataforma = document.getElementById('btn-adicionar-plataforma');
-    if (btnAdicionarPlataforma) {
-        btnAdicionarPlataforma.addEventListener('click', adicionarNovaPlataforma);
-    }
-}
-
-// ========== ADICIONAR NOVA PLATAFORMA ==========
-function adicionarNovaPlataforma() {
-    const nome = prompt('Nome da nova plataforma:');
-    if (!nome) return;
-
-    const url = prompt('URL da plataforma (ex: https://exemplo.com):');
-    if (!url) return;
-
-    const novaPlataforma = {
-        id: 'plat-' + Date.now(),
-        nome: nome,
-        url: url,
-        icone: 'assets/icones/link.svg',
-        status: 'pendente'
-    };
-
-    estadoPostagem.plataformasRegistadas.push(novaPlataforma);
-    DB.plataformasRegistadas.push(novaPlataforma);
-
-    // Enviar para aprovação do admin
-    console.log(`🔗 Nova plataforma sugerida: ${nome} (${url})`);
-    mostrarNotificacao(`📤 Plataforma "${nome}" enviada para aprovação!`, 'info');
-
-    // Atualizar UI de plataformas
-    atualizarListaPlataformas();
-}
-
-// ========== ATUALIZAR LISTA DE PLATAFORMAS ==========
-function atualizarListaPlataformas() {
-    const container = document.querySelector('.lista-plataformas');
-    if (!container) return;
-
-    const plataformas = estadoPostagem.plataformasRegistadas.filter(p => p.status === 'ativo');
-
-    container.innerHTML = plataformas.map(p => `
-        <div class="plataforma-item"
-             data-plataforma-url="${p.url}"
-             data-plataforma-nome="${p.nome}"
-             title="${p.nome}">
-            <img src="${p.icone}" alt="${p.nome}" class="icon-plataforma" onerror="this.style.display='none'">
-            <span>${p.nome}</span>
-        </div>
-    `).join('') + `
-        <div class="plataforma-item" id="btn-adicionar-plataforma"
-             style="border-style: dashed; justify-content: center;">
-            <span>+ Adicionar</span>
-        </div>
-    `;
-
-    // Reconfigurar eventos
-    configurarMetodosPostagem();
-}
-
-// ========== ATUALIZAR UI APÓS POSTAGEM ==========
-function atualizarUIAfterPostagem(postagem) {
-    const statusContainer = document.querySelector('.status-postagem');
-    if (!statusContainer) return;
-
-    if (postagem.status === 'aprovado') {
-        statusContainer.innerHTML = `
-            <div class="mensagem-sistema aprovado">
-                ✅ Postagem aprovada! Já está visível na plataforma.
-            </div>
-        `;
-    } else if (postagem.status === 'rejeitado') {
-        statusContainer.innerHTML = `
-            <div class="mensagem-sistema rejeitado">
-                ❌ Postagem rejeitada. Motivo: ${postagem.motivoRejeicao}
-            </div>
-        `;
-    } else {
-        statusContainer.innerHTML = `
-            <div class="mensagem-sistema" style="background: rgba(247, 183, 49, 0.1); color: var(--cor-destaque); border: 1px solid rgba(247, 183, 49, 0.3);">
-                ⏳ Aguardando aprovação...
-            </div>
-        `;
+    // Verificar se já deu like
+    if (poste.quemDeuLike.includes(usuario.id)) {
+        return false; // Já deu like
     }
 
-    // Atualizar lista de postagens do usuário
-    renderizarMinhasPostagens();
+    poste.quemDeuLike.push(usuario.id);
+    poste.likes = (poste.likes || 0) + 1;
+    salvarPostagens();
+    return true;
 }
 
-// ========== RENDERIZAR POSTAGENS DO USUÁRIO ==========
-function renderizarMinhasPostagens() {
-    const container = document.querySelector('.minhas-postagens');
-    if (!container) return;
+// ========== REMOVER LIKE ==========
+function removerLike(posteId) {
+    const usuario = window.auth?.getUsuarioAtual();
+    if (!usuario) return false;
 
+    const poste = estadoPostagem.postagens.find(p => p.id === posteId);
+    if (!poste || !poste.quemDeuLike) return false;
+
+    const index = poste.quemDeuLike.indexOf(usuario.id);
+    if (index === -1) return false;
+
+    poste.quemDeuLike.splice(index, 1);
+    poste.likes = Math.max(0, (poste.likes || 1) - 1);
+    salvarPostagens();
+    return true;
+}
+
+// ========== VERIFICAR SE USUÁRIO DEU LIKE ==========
+function jaDeuLike(posteId) {
+    const usuario = window.auth?.getUsuarioAtual();
+    if (!usuario) return false;
+    const poste = estadoPostagem.postagens.find(p => p.id === posteId);
+    return poste?.quemDeuLike?.includes(usuario.id) || false;
+}
+
+// ========== REGISTRAR LIKE (desbloquear/assistir completo) ==========
+function registrarLikeAutomatico(posteId) {
     const usuario = window.auth?.getUsuarioAtual();
     if (!usuario) return;
 
-    const minhasPostagens = estadoPostagem.postagens.filter(p => p.usuarioId === usuario.id);
+    const poste = estadoPostagem.postagens.find(p => p.id === posteId);
+    if (!poste) return;
 
-    if (minhasPostagens.length === 0) {
-        container.innerHTML = `
-            <div class="estado-vazio">
-                <p class="vazio-descricao">Nenhuma postagem ainda.</p>
-            </div>
-        `;
-        return;
+    if (!poste.quemDeuLike) poste.quemDeuLike = [];
+
+    if (!poste.quemDeuLike.includes(usuario.id)) {
+        poste.quemDeuLike.push(usuario.id);
+        poste.likes = (poste.likes || 0) + 1;
+        salvarPostagens();
     }
-
-    container.innerHTML = minhasPostagens.map(p => `
-        <div class="card-musica-h" style="margin-bottom: 0.5rem;">
-            ${p.capa ? `<img src="${p.capa}" alt="${p.titulo}" class="capa-musica" onerror="this.src='assets/imagens/placeholder.svg'">` : ''}
-            <div class="info-musica">
-                <div class="titulo-musica">${p.titulo}</div>
-                <div class="artista-musica">${p.plataforma} • ${p.ano}</div>
-            </div>
-            <span class="badge ${p.status === 'aprovado' ? 'badge-sucesso' : p.status === 'rejeitado' ? 'badge-perigo' : 'badge-aviso'}">
-                ${p.status === 'aprovado' ? '✅' : p.status === 'rejeitado' ? '❌' : '⏳'} ${p.status}
-            </span>
-            <span class="badge badge-contorno">${p.visibilidade === 'publico' ? '🌍' : '🔒'}</span>
-        </div>
-    `).join('');
 }
 
-// ========== ALTERNAR VISIBILIDADE ==========
-function alternarVisibilidade(postagemId) {
-    const postagem = estadoPostagem.postagens.find(p => p.id === postagemId);
-    if (!postagem) return;
+// ========== EDITAR POSTE ==========
+function editarPoste(posteId, novosDados) {
+    const index = estadoPostagem.postagens.findIndex(p => p.id === posteId);
+    if (index === -1) return false;
 
-    postagem.visibilidade = postagem.visibilidade === 'publico' ? 'privado' : 'publico';
+    estadoPostagem.postagens[index] = {
+        ...estadoPostagem.postagens[index],
+        artista: novosDados.artista || estadoPostagem.postagens[index].artista,
+        descricao: novosDados.descricao || '',
+        estilo: novosDados.estilo || 'Diversa',
+        lingua: novosDados.lingua || '',
+        ano: novosDados.ano || '',
+        visibilidade: novosDados.visibilidade || estadoPostagem.postagens[index].visibilidade,
+        bloqueio: novosDados.bloqueio || estadoPostagem.postagens[index].bloqueio
+    };
+
     salvarPostagens();
-    renderizarMinhasPostagens();
-    mostrarNotificacao(`Visibilidade alterada para ${postagem.visibilidade}`, 'info');
+    return true;
 }
 
-// ========== NOTIFICAÇÃO TOAST ==========
-function mostrarNotificacao(mensagem, tipo = 'info') {
+// ========== APAGAR POSTE ==========
+function apagarPoste(posteId) {
+    estadoPostagem.postagens = estadoPostagem.postagens.filter(p => p.id !== posteId);
+    salvarPostagens();
+}
+
+// ========== OBTER POSTES PÚBLICOS (HOME) ==========
+function getPostesPublicos() {
+    return estadoPostagem.postagens.filter(p => p.visibilidade === 'publico');
+}
+
+// ========== OBTER POSTES DO USUÁRIO ==========
+function getPostesDoUsuario(usuarioId) {
+    return estadoPostagem.postagens.filter(p => p.usuarioId === usuarioId);
+}
+
+// ========== TOAST ==========
+function mostrarToast(msg, tipo) {
     const toast = document.createElement('div');
     toast.className = `toast toast-${tipo}`;
-    toast.innerHTML = `
-        <span class="toast-icone">${tipo === 'sucesso' ? '✅' : tipo === 'erro' ? '❌' : 'ℹ️'}</span>
-        <span class="toast-mensagem">${mensagem}</span>
-        <span class="toast-fechar">✕</span>
-    `;
-
+    toast.innerHTML = `<span class="toast-mensagem">${msg}</span>`;
     let container = document.querySelector('.toast-container');
     if (!container) {
         container = document.createElement('div');
@@ -518,33 +217,24 @@ function mostrarNotificacao(mensagem, tipo = 'info') {
         document.body.appendChild(container);
     }
     container.appendChild(toast);
-
-    toast.addEventListener('click', () => {
-        toast.classList.add('saindo');
-        setTimeout(() => toast.remove(), 300);
-    });
-
-    setTimeout(() => {
-        if (toast.parentNode) {
-            toast.classList.add('saindo');
-            setTimeout(() => toast.remove(), 300);
-        }
-    }, 4000);
+    setTimeout(() => { toast.classList.add('saindo'); setTimeout(() => toast.remove(), 300); }, 3000);
 }
 
 // ========== EXPORTAR ==========
 window.postagem = {
     inicializar: inicializarPostagem,
     criar: criarPostagem,
-    aprovar: aprovarPostagem,
-    rejeitar: rejeitarPostagem,
-    alternarVisibilidade: alternarVisibilidade,
-    adicionarPlataforma: adicionarNovaPlataforma,
-    getPostagens: () => estadoPostagem.postagens,
-    getPlataformas: () => estadoPostagem.plataformasRegistadas
+    editar: editarPoste,
+    apagar: apagarPoste,
+    darLike: darLike,
+    removerLike: removerLike,
+    jaDeuLike: jaDeuLike,
+    registrarLike: registrarLikeAutomatico,
+    getPublicos: getPostesPublicos,
+    getDoUsuario: getPostesDoUsuario,
+    getTodas: () => estadoPostagem.postagens
 };
 
-// ========== INICIALIZAR ==========
 document.addEventListener('DOMContentLoaded', inicializarPostagem);
 
-console.log('📤 Postagem pronta! (Com aprovação por email)');
+console.log('📤 Postagem pronto! (Bloquear/Não Bloquear + Like único)');

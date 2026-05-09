@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Perfil - Musica Alendaria</title>
+    <title>Musica Alendaria - Meu Perfil</title>
     
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/lit.css">
@@ -15,26 +15,17 @@
     <link rel="stylesheet" href="css/modal.css">
     <link rel="stylesheet" href="css/componentes.css">
     
-    <link rel="icon" href="" type="image/png">
     <meta name="theme-color" content="#6c3ce0">
 </head>
 <body class="tema-lit">
 
     <div class="marca-dagua">Criado por Pensador Sem Fronteira</div>
 
-    <!-- HEADER DESKTOP -->
     <header class="header header-desktop desktop-only">
         <div class="header-logo">
             <a href="index.html" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
-                <img src="" alt="Logo" style="width: 36px; height: 36px; border-radius: 8px;">
-                <span style="
-    font-weight: 700; 
-    font-size: 1.1rem; 
-    background: var(--gradiente-primario); 
-    background-clip: text; 
-    -webkit-background-clip: text; 
-    -webkit-text-fill-color: transparent;
-">Musica Alendaria</span>
+                <span style="font-size: 2rem;">🎵</span>
+                <span style="font-weight: 700; font-size: 1.1rem; background: var(--gradiente-primario); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Musica Alendaria</span>
             </a>
         </div>
         <nav class="nav-desktop">
@@ -46,101 +37,99 @@
         </nav>
         <div class="header-acoes">
             <button class="btn-icone btn-alternar-tema" onclick="window.tema?.alternar()">🌓</button>
-            <a href="definicoes.html" class="btn-icone" title="Definições">⚙️</a>
+            <a href="definicoes.html" style="font-size: 1.2rem; text-decoration: none;">⚙️</a>
         </div>
     </header>
 
-    <!-- CONTEÚDO PRINCIPAL -->
-    <main class="container" style="padding-bottom: calc(var(--player-altura) + 80px);">
+    <main class="container" style="padding-bottom: calc(var(--player-altura) + 100px);">
         
         <!-- CABEÇALHO DO PERFIL -->
-        <div class="perfil-header animar-entrada-cima">
-            <img src="assets/imagens/avatar-padrao.svg" alt="Foto de Perfil" class="foto-perfil" id="perfil-foto"
-                 onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%236c3ce0%22/><text x=%2250%22 y=%2260%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2235%22>👤</text></svg>'">
-            <div>
-                <h1 class="nome-usuario" id="perfil-nome">Visitante Musical</h1>
-                <p class="localizacao" id="perfil-localizacao">📍 Mozambique, Maputo</p>
-                <p class="localizacao" id="perfil-lingua" style="margin-top: 0.25rem;">🌐 Português</p>
-                <div style="margin-top: 0.5rem;">
-                    <span id="perfil-favoritos-count" style="font-size: 0.85rem; color: var(--texto-secundario);">❤️ 0 favoritos</span>
-                    <span id="perfil-offline-count" style="font-size: 0.85rem; color: var(--texto-secundario); margin-left: 1rem;">📲 0 offline</span>
-                </div>
+        <div class="perfil-header animar-entrada-cima" style="padding: 1.5rem 1rem; text-align: center;">
+            <div style="position: relative; display: inline-block; cursor: pointer;" onclick="document.getElementById('input-foto-perfil').click()">
+                <span id="foto-perfil-display" style="width: 100px; height: 100px; border-radius: 50%; background: var(--gradiente-primario); display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto;">👤</span>
+                <span style="position: absolute; bottom: 0; right: 0; background: var(--cor-acento); color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 14px;">📷</span>
+                <input type="file" id="input-foto-perfil" accept="image/*" style="display: none;" onchange="atualizarFotoPerfil(event)">
+            </div>
+            <h1 class="nome-usuario" id="perfil-nome" style="margin-top: 0.75rem;">Visitante Musical</h1>
+            <p class="localizacao" id="perfil-localizacao">📍 Angola, Luanda</p>
+            <p class="localizacao" id="perfil-lingua">🌐 Português</p>
+            
+            <!-- REDES SOCIAIS -->
+            <div id="perfil-redes" style="margin-top: 0.5rem; display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;"></div>
+            
+            <div style="margin-top: 0.75rem; display: flex; gap: 1rem; justify-content: center; font-size: 0.85rem; color: var(--texto-secundario);">
+                <span>❤️ <strong id="contador-favoritos">0</strong> favoritos</span>
+                <span>📤 <strong id="contador-postes">0</strong> postes</span>
+                <span>📅 <strong id="contador-eventos">0</strong> eventos</span>
             </div>
         </div>
 
-        <!-- REDES SOCIAIS DO USUÁRIO -->
-        <div class="perfil-redes" id="perfil-redes" style="margin-bottom: 1rem;">
-            <!-- Preenchido pelo JS -->
-        </div>
-
-        <!-- CONTACTO PARA SHOW E BLOG -->
-        <div id="perfil-contacto-blog" style="text-align: center; margin-bottom: 1.5rem; padding: 0 1rem;">
-            <!-- Preenchido pelo JS -->
-        </div>
-
-        <!-- BOTÕES DE AÇÃO -->
-        <div style="display: flex; gap: 0.5rem; padding: 0 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+        <!-- BOTÕES -->
+        <div style="display: flex; gap: 0.5rem; padding: 0 1rem; margin-bottom: 1.5rem; justify-content: center; flex-wrap: wrap;">
             <a href="definicoes.html" class="btn btn-secundario btn-pequeno">⚙️ Definições</a>
             <button class="btn btn-secundario btn-pequeno" onclick="window.auth?.logout()">🚪 Sair</button>
-            <button class="btn btn-perigo btn-pequeno" onclick="apagarPerfil()" style="margin-left: auto;">🗑️ Apagar Perfil</button>
         </div>
 
-        <!-- TABS DE CONTEÚDO -->
-        <div class="tabs" style="padding: 0 1rem; margin-bottom: 1.5rem; overflow-x: auto;">
-            <button class="tab ativo" data-tab="musicas" onclick="alternarTab('musicas')">🎵 Minhas Músicas</button>
+        <!-- TABS -->
+        <div class="tabs" style="padding: 0 1rem; margin-bottom: 1rem; overflow-x: auto;">
+            <button class="tab ativo" data-tab="favoritos" onclick="alternarTab('favoritos')">❤️ Favoritos</button>
+            <button class="tab" data-tab="postes" onclick="alternarTab('postes')">📤 Meus Postes</button>
             <button class="tab" data-tab="eventos" onclick="alternarTab('eventos')">📅 Meus Eventos</button>
-            <button class="tab" data-tab="postagens" onclick="alternarTab('postagens')">📤 Postagens</button>
-            <button class="tab" data-tab="galeria" onclick="alternarTab('galeria')">🖼️ Galeria</button>
         </div>
 
         <!-- CONTEÚDO DAS TABS -->
         <div style="padding: 0 1rem;">
             
-            <!-- TAB: MÚSICAS -->
-            <div id="tab-musicas" class="tab-conteudo">
-                <h3 style="margin-bottom: 1rem;">🎵 Músicas Favoritas</h3>
-                <div class="lista-musicas" id="lista-musicas-perfil" style="padding: 0;">
-                    <!-- Preenchido pelo JS -->
-                </div>
+            <!-- TAB FAVORITOS -->
+            <div id="tab-favoritos" class="tab-conteudo">
+                <div id="lista-favoritos-perfil" class="lista-musicas" style="padding: 0;"></div>
             </div>
 
-            <!-- TAB: EVENTOS -->
+            <!-- TAB POSTES (EDITÁVEIS) -->
+            <div id="tab-postes" class="tab-conteudo hidden">
+                <div id="lista-postes-perfil" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
+            </div>
+
+            <!-- TAB EVENTOS -->
             <div id="tab-eventos" class="tab-conteudo hidden">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <h3>📅 Meus Eventos</h3>
-                    <button class="btn btn-primario btn-pequeno" onclick="window.location.href='eventos.html'">
-                        + Novo Evento
-                    </button>
-                </div>
-                <div class="grid-eventos" id="grid-eventos-perfil" style="padding: 0;">
-                    <!-- Preenchido pelo JS -->
-                </div>
-            </div>
-
-            <!-- TAB: POSTAGENS -->
-            <div id="tab-postagens" class="tab-conteudo hidden">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <h3>📤 Minhas Postagens</h3>
-                    <button class="btn btn-primario btn-pequeno" onclick="window.location.href='postar.html'">
-                        + Nova Postagem
-                    </button>
-                </div>
-                <div class="minhas-postagens" id="minhas-postagens-perfil">
-                    <!-- Preenchido pelo JS -->
-                </div>
-            </div>
-
-            <!-- TAB: GALERIA -->
-            <div id="tab-galeria" class="tab-conteudo hidden">
-                <h3 style="margin-bottom: 1rem;">🖼️ Galeria</h3>
-                <div id="galeria-perfil" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;">
-                    <!-- Preenchido pelo JS -->
-                </div>
+                <div id="lista-eventos-perfil" class="grid-eventos" style="padding: 0;"></div>
             </div>
 
         </div>
 
     </main>
+
+    <!-- MODAL DE EDIÇÃO DE POSTE -->
+    <div id="modal-editar-poste" class="modal-overlay hidden" style="z-index: 3000;">
+        <div class="modal-conteudo" style="max-width: 500px; padding: 1.5rem;">
+            <h3 style="margin-bottom: 1rem;">✏️ Editar Poste</h3>
+            <input type="hidden" id="editar-poste-id">
+            <div class="campo">
+                <label for="editar-poste-artista">Nome do Artista</label>
+                <input type="text" id="editar-poste-artista">
+            </div>
+            <div class="campo">
+                <label for="editar-poste-descricao">Descrição</label>
+                <textarea id="editar-poste-descricao" rows="2"></textarea>
+            </div>
+            <div class="campo">
+                <label for="editar-poste-estilo">Estilo Musical</label>
+                <input type="text" id="editar-poste-estilo" placeholder="Ex: Kizomba, Semba...">
+            </div>
+            <div class="campo">
+                <label for="editar-poste-lingua">Língua da Música</label>
+                <input type="text" id="editar-poste-lingua" placeholder="Ex: Português, Kimbundu...">
+            </div>
+            <div class="campo">
+                <label for="editar-poste-ano">Ano de Lançamento</label>
+                <input type="number" id="editar-poste-ano" placeholder="Ex: 2025">
+            </div>
+            <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                <button class="btn btn-primario" onclick="salvarEdicaoPoste()" style="flex: 1;">💾 Salvar</button>
+                <button class="btn btn-secundario" onclick="fecharModalEdicao()">Cancelar</button>
+            </div>
+        </div>
+    </div>
 
     <!-- NAVEGAÇÃO MOBILE -->
     <nav class="nav-mobile mobile-only">
@@ -156,7 +145,7 @@
         <div class="player-progresso-container">
             <div class="player-progresso-preenchido" style="width: 0%;"></div>
         </div>
-        <img src="assets/imagens/placeholder.svg" alt="Capa" class="player-capa">
+        <span style="font-size: 2rem; width: 48px; text-align: center;">🎵</span>
         <div class="player-info">
             <div class="player-titulo">Nenhuma música</div>
             <div class="player-artista">Selecione uma música</div>
@@ -169,7 +158,6 @@
 
     <div class="toast-container"></div>
 
-    <!-- SCRIPTS -->
     <script src="js/dados.js"></script>
     <script src="js/tema.js"></script>
     <script src="js/auth.js"></script>
@@ -184,207 +172,180 @@
     <script src="js/app.js"></script>
 
     <script>
-        let tabAtual = 'musicas';
+        let postes = [];
+        let eventosUsuario = [];
 
         document.addEventListener('DOMContentLoaded', () => {
             if (!window.auth?.isAutenticado()) {
                 window.location.href = 'login.html';
                 return;
             }
-
             carregarPerfil();
+            carregarPostes();
+            carregarEventosUsuario();
+            atualizarContadores();
         });
 
         function carregarPerfil() {
             const usuario = window.auth?.getUsuarioAtual();
             if (!usuario) return;
 
-            // Nome
             document.getElementById('perfil-nome').textContent = usuario.nome;
-
-            // Localização
             document.getElementById('perfil-localizacao').textContent = `📍 ${usuario.pais}, ${usuario.provincia}`;
+            document.getElementById('perfil-lingua').textContent = `🌐 ${usuario.lingua || 'Português'}`;
 
-            // Língua
-            document.getElementById('perfil-lingua').textContent = `🌐 ${usuario.lingua}`;
-
-            // Foto
+            // Foto de perfil
             if (usuario.fotoPerfil) {
-                document.getElementById('perfil-foto').src = usuario.fotoPerfil;
+                const fotoDisplay = document.getElementById('foto-perfil-display');
+                fotoDisplay.innerHTML = `<img src="${usuario.fotoPerfil}" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">`;
             }
 
-            // Contadores
-            const favoritos = window.favoritos?.contar() || 0;
-            const offline = window.offline?.getMusicas()?.length || 0;
-            document.getElementById('perfil-favoritos-count').textContent = `❤️ ${favoritos} favoritos`;
-            document.getElementById('perfil-offline-count').textContent = `📲 ${offline} offline`;
-
             // Redes sociais
-            const redesContainer = document.getElementById('perfil-redes');
             const redes = [];
             if (usuario.redesSociais?.youtube) redes.push({ nome: 'YouTube', link: usuario.redesSociais.youtube });
             if (usuario.redesSociais?.instagram) redes.push({ nome: 'Instagram', link: usuario.redesSociais.instagram });
             if (usuario.redesSociais?.tiktok) redes.push({ nome: 'TikTok', link: usuario.redesSociais.tiktok });
-            if (usuario.redesSociais?.outras) redes.push({ nome: 'Outra Rede', link: usuario.redesSociais.outras });
+            document.getElementById('perfil-redes').innerHTML = redes.map(r => 
+                `<a href="${r.link}" target="_blank" class="link-rede">🔗 ${r.nome}</a>`
+            ).join('') || '<span style="font-size: 0.8rem; color: var(--texto-terciario);">Nenhuma rede social</span>';
 
-            redesContainer.innerHTML = redes.length > 0
-                ? redes.map(r => `<a href="${r.link}" target="_blank" class="link-rede" rel="noopener">🔗 ${r.nome}</a>`).join('')
-                : '<p style="color: var(--texto-terciario); font-size: 0.85rem;">Nenhuma rede social adicionada.</p>';
-
-            // Contacto e blog
-            const contactoBlog = document.getElementById('perfil-contacto-blog');
-            let html = '';
-            if (usuario.contactoShow) html += `<span class="link-rede">📞 ${usuario.contactoShow}</span> `;
-            if (usuario.blog) html += `<a href="${usuario.blog}" target="_blank" class="link-rede">🌐 Blog</a>`;
-            contactoBlog.innerHTML = html || '';
-
-            // Carregar tab inicial
-            carregarTabMusicas();
-            carregarTabEventos();
-            carregarTabPostagens();
-            carregarTabGaleria();
-        }
-
-        function alternarTab(tab) {
-            tabAtual = tab;
-
-            // Atualizar tabs
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('ativo'));
-            document.querySelector(`.tab[data-tab="${tab}"]`)?.classList.add('ativo');
-
-            // Mostrar/esconder conteúdo
-            document.querySelectorAll('.tab-conteudo').forEach(c => c.classList.add('hidden'));
-            document.getElementById(`tab-${tab}`)?.classList.remove('hidden');
-        }
-
-        function carregarTabMusicas() {
-            const container = document.getElementById('lista-musicas-perfil');
-            if (!container) return;
-
+            // Favoritos
             const favoritos = window.favoritos?.getMusicas() || [];
-
-            if (favoritos.length === 0) {
-                container.innerHTML = `
-                    <div class="estado-vazio">
-                        <p class="vazio-descricao">Nenhuma música favorita ainda.</p>
-                        <a href="index.html" class="btn btn-primario btn-pequeno">Descobrir Músicas</a>
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = favoritos.map((m, i) => {
-                const artista = buscarArtista(m.artistaId);
-                return `
-                    <div class="card-musica-h" data-musica-id="${m.id}" 
-                         onclick="window.location.href='musica.html?id=${m.id}'">
-                        <img src="${m.capa}" alt="${m.titulo}" class="capa-musica">
+            document.getElementById('lista-favoritos-perfil').innerHTML = favoritos.length === 0
+                ? '<div class="estado-vazio"><p class="vazio-descricao">Nenhuma música favorita</p></div>'
+                : favoritos.map(m => `
+                    <div class="card-musica-h" style="margin-bottom: 0.5rem; cursor: pointer;" onclick="window.player?.tocar(buscarMusica('${m.id}'))">
+                        <span style="font-size: 2rem;">🎵</span>
                         <div class="info-musica">
                             <div class="titulo-musica">${m.titulo}</div>
-                            <div class="artista-musica">${artista?.nome || ''} • ${m.ano}</div>
+                            <div class="artista-musica">${m.genero} • ${m.ano}</div>
                         </div>
-                        <button class="btn-icone-pequeno" onclick="event.stopPropagation(); window.player?.tocar(buscarMusica('${m.id}'))">▶</button>
+                        <button class="btn-icone-pequeno" onclick="event.stopPropagation(); window.favoritos?.remover('${m.id}'); carregarPerfil();">💔</button>
                     </div>
-                `;
-            }).join('');
+                `).join('');
         }
 
-        function carregarTabEventos() {
-            const container = document.getElementById('grid-eventos-perfil');
-            if (!container) return;
-
+        function carregarPostes() {
             const usuario = window.auth?.getUsuarioAtual();
-            const eventos = DB.eventos.filter(e => e.usuarioId === usuario?.id);
-
-            if (eventos.length === 0) {
-                container.innerHTML = `
-                    <div class="estado-vazio" style="grid-column: 1 / -1;">
-                        <p class="vazio-descricao">Nenhum evento criado.</p>
-                    </div>
-                `;
+            postes = JSON.parse(localStorage.getItem('postes') || '[]').filter(p => p.usuarioId === usuario?.id);
+            
+            const container = document.getElementById('lista-postes-perfil');
+            if (postes.length === 0) {
+                container.innerHTML = '<div class="estado-vazio"><p class="vazio-descricao">Nenhum poste ainda</p><a href="postar.html" class="btn btn-primario btn-pequeno">+ Criar Poste</a></div>';
                 return;
             }
 
-            container.innerHTML = eventos.map((evento, i) => {
-                const data = evento.data ? new Date(evento.data + 'T00:00:00') : null;
-                return `
-                    <div class="card-evento" style="animation-delay: ${i * 0.05}s">
-                        <div class="data-evento">
-                            <span class="dia-evento">${data ? data.getDate().toString().padStart(2, '0') : '??'}</span>
-                            <span class="mes-evento">${data ? data.toLocaleString('pt', {month: 'short'}) : '???'}</span>
-                        </div>
-                        <div class="info-evento">
-                            <span class="tipo-evento">${evento.tipo}</span>
-                            <h4 class="nome-evento">${evento.titulo}</h4>
-                            <span class="badge ${evento.status === 'aprovado' ? 'badge-sucesso' : 'badge-pendente'}">${evento.status}</span>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function carregarTabPostagens() {
-            const container = document.getElementById('minhas-postagens-perfil');
-            if (!container) return;
-
-            const usuario = window.auth?.getUsuarioAtual();
-            const postagens = window.postagem?.getPostagens?.()?.filter(p => p.usuarioId === usuario?.id) || [];
-
-            if (postagens.length === 0) {
-                container.innerHTML = `
-                    <div class="estado-vazio">
-                        <p class="vazio-descricao">Nenhuma postagem ainda.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = postagens.map(p => `
-                <div class="card-musica-h" style="margin-bottom: 0.5rem;">
-                    ${p.capa ? `<img src="${p.capa}" class="capa-musica" onerror="this.style.display='none'">` : ''}
+            container.innerHTML = postes.map((p, i) => `
+                <div class="card-musica-h" style="position: relative;">
+                    <span style="font-size: 2rem;">🎬</span>
                     <div class="info-musica">
-                        <div class="titulo-musica">${p.titulo}</div>
-                        <div class="artista-musica">${p.plataforma} • ${p.ano}</div>
+                        <div class="titulo-musica">${p.artista}</div>
+                        <div class="artista-musica">${p.estilo || 'Diversa'} • ${p.lingua || 'Idioma não definido'} • ${p.ano || 'Ano não definido'}</div>
+                        ${p.descricao ? `<p style="font-size: 0.75rem; color: var(--texto-terciario);">${p.descricao.substring(0, 60)}...</p>` : ''}
+                        <span class="badge ${p.bloqueio === 'bloquear' ? 'badge-privado' : 'badge-publico'}">${p.bloqueio === 'bloquear' ? '🔒 Bloqueado' : '🔓 Livre'}</span>
+                        <span class="badge badge-contorno">${p.visibilidade === 'publico' ? '🌍' : '🔒'}</span>
                     </div>
-                    <span class="badge ${p.status === 'aprovado' ? 'badge-publico' : p.status === 'rejeitado' ? 'badge-privado' : 'badge-pendente'}">${p.status}</span>
+                    <button class="btn-icone-pequeno" onclick="abrirEdicaoPoste('${p.id}')" title="Editar" style="position: absolute; top: 0.5rem; right: 0.5rem;">✏️</button>
                 </div>
             `).join('');
         }
 
-        function carregarTabGaleria() {
-            const container = document.getElementById('galeria-perfil');
-            if (!container) return;
-
+        function carregarEventosUsuario() {
             const usuario = window.auth?.getUsuarioAtual();
-            const fotos = [];
-            if (usuario?.fotoPerfil) fotos.push({ src: usuario.fotoPerfil, titulo: 'Foto de Perfil' });
+            eventosUsuario = JSON.parse(localStorage.getItem('eventos') || '[]').filter(e => e.usuarioId === usuario?.id);
+            eventosUsuario.sort((a, b) => new Date(b.dataCriacao) - new Date(a.dataCriacao));
 
-            if (fotos.length === 0) {
-                container.innerHTML = `
-                    <div class="estado-vazio" style="grid-column: 1 / -1;">
-                        <p class="vazio-descricao">Nenhuma foto na galeria.</p>
-                    </div>
-                `;
+            const container = document.getElementById('lista-eventos-perfil');
+            if (eventosUsuario.length === 0) {
+                container.innerHTML = '<div class="estado-vazio" style="grid-column: 1 / -1;"><p class="vazio-descricao">Nenhum evento criado</p><a href="eventos.html" class="btn btn-primario btn-pequeno">+ Criar Evento</a></div>';
                 return;
             }
 
-            container.innerHTML = fotos.map(f => `
-                <img src="${f.src}" alt="${f.titulo}" 
-                     style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; cursor: pointer;"
-                     onclick="window.modal?.imagem('${f.src}', '${f.titulo}')">
+            container.innerHTML = eventosUsuario.map(evt => `
+                <div class="card-evento">
+                    <div class="data-evento">
+                        <span class="dia-evento">${new Date(evt.dataInicio + 'T00:00:00').getDate().toString().padStart(2, '0')}</span>
+                        <span class="mes-evento">${new Date(evt.dataInicio + 'T00:00:00').toLocaleString('pt', {month: 'short'}).toUpperCase()}</span>
+                    </div>
+                    <div class="info-evento">
+                        <span class="tipo-evento">${evt.visibilidade === 'publico' ? '🌍 Público' : '🔒 Privado'}</span>
+                        <h4 class="nome-evento">${evt.artista}</h4>
+                        <p style="font-size: 0.75rem; color: var(--texto-terciario);">📆 ${evt.dataInicio} → ${evt.dataFim}</p>
+                    </div>
+                </div>
             `).join('');
         }
 
-        function apagarPerfil() {
-            window.modal?.confirmacao(
-                'Tem certeza que deseja apagar o seu perfil? Esta ação é irreversível.',
-                () => {
-                    window.auth?.logout();
-                    window.location.href = 'login.html';
-                }
-            );
+        function alternarTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('ativo'));
+            document.querySelector(`.tab[data-tab="${tab}"]`).classList.add('ativo');
+            document.querySelectorAll('.tab-conteudo').forEach(c => c.classList.add('hidden'));
+            document.getElementById(`tab-${tab}`).classList.remove('hidden');
+        }
+
+        function atualizarContadores() {
+            const usuario = window.auth?.getUsuarioAtual();
+            document.getElementById('contador-favoritos').textContent = window.favoritos?.contar() || 0;
+            document.getElementById('contador-postes').textContent = JSON.parse(localStorage.getItem('postes') || '[]').filter(p => p.usuarioId === usuario?.id).length;
+            document.getElementById('contador-eventos').textContent = JSON.parse(localStorage.getItem('eventos') || '[]').filter(e => e.usuarioId === usuario?.id).length;
+        }
+
+        function atualizarFotoPerfil(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const usuario = window.auth?.getUsuarioAtual();
+                usuario.fotoPerfil = e.target.result;
+                window.auth.atualizarPerfil({ fotoPerfil: e.target.result });
+                carregarPerfil();
+                mostrarToast('📷 Foto de perfil atualizada!', 'sucesso');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // ====== EDIÇÃO DE POSTE ======
+        function abrirEdicaoPoste(posteId) {
+            const poste = postes.find(p => p.id === posteId);
+            if (!poste) return;
+            document.getElementById('editar-poste-id').value = posteId;
+            document.getElementById('editar-poste-artista').value = poste.artista || '';
+            document.getElementById('editar-poste-descricao').value = poste.descricao || '';
+            document.getElementById('editar-poste-estilo').value = poste.estilo || '';
+            document.getElementById('editar-poste-lingua').value = poste.lingua || '';
+            document.getElementById('editar-poste-ano').value = poste.ano || '';
+            document.getElementById('modal-editar-poste').classList.remove('hidden');
+        }
+
+        function fecharModalEdicao() {
+            document.getElementById('modal-editar-poste').classList.add('hidden');
+        }
+
+        function salvarEdicaoPoste() {
+            const id = document.getElementById('editar-poste-id').value;
+            const todosPostes = JSON.parse(localStorage.getItem('postes') || '[]');
+            const index = todosPostes.findIndex(p => p.id === id);
+            if (index === -1) return;
+
+            todosPostes[index].artista = document.getElementById('editar-poste-artista').value;
+            todosPostes[index].descricao = document.getElementById('editar-poste-descricao').value;
+            todosPostes[index].estilo = document.getElementById('editar-poste-estilo').value || 'Diversa';
+            todosPostes[index].lingua = document.getElementById('editar-poste-lingua').value;
+            todosPostes[index].ano = document.getElementById('editar-poste-ano').value;
+
+            localStorage.setItem('postes', JSON.stringify(todosPostes));
+            fecharModalEdicao();
+            carregarPostes();
+            mostrarToast('✅ Poste atualizado!', 'sucesso');
+        }
+
+        function mostrarToast(msg, tipo) {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${tipo}`;
+            toast.innerHTML = `<span class="toast-mensagem">${msg}</span>`;
+            document.querySelector('.toast-container')?.appendChild(toast);
+            setTimeout(() => { toast.classList.add('saindo'); setTimeout(() => toast.remove(), 300); }, 3000);
         }
     </script>
-
 </body>
 </html>

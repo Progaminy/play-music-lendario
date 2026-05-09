@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eventos - Musica Alendaria</title>
+    <title>Musica Alendaria - Postar</title>
     
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/lit.css">
@@ -15,134 +15,142 @@
     <link rel="stylesheet" href="css/modal.css">
     <link rel="stylesheet" href="css/componentes.css">
     
-    <link rel="icon" href="" type="image/png">
     <meta name="theme-color" content="#6c3ce0">
 </head>
 <body class="tema-lit">
 
     <div class="marca-dagua">Criado por Pensador Sem Fronteira</div>
 
-    <!-- HEADER DESKTOP -->
     <header class="header header-desktop desktop-only">
         <div class="header-logo">
             <a href="index.html" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
-                <img src="" alt="Logo" style="width: 36px; height: 36px; border-radius: 8px;">
-                <span style="
-    font-weight: 700; 
-    font-size: 1.1rem; 
-    background: var(--gradiente-primario); 
-    background-clip: text; 
-    -webkit-background-clip: text; 
-    -webkit-text-fill-color: transparent;
-">Musica Alendaria</span>
+                <span style="font-size: 2rem;">🎵</span>
+                <span style="font-weight: 700; font-size: 1.1rem; background: var(--gradiente-primario); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Musica Alendaria</span>
             </a>
         </div>
         <nav class="nav-desktop">
             <a href="index.html" class="nav-link">🏠 Home</a>
             <a href="artista.html" class="nav-link">🎤 Artistas</a>
-            <a href="eventos.html" class="nav-link ativo">📅 Eventos</a>
+            <a href="eventos.html" class="nav-link">📅 Eventos</a>
             <a href="favoritos.html" class="nav-link">❤️ Favoritos</a>
-            <a href="postar.html" class="nav-link">📤 Postar</a>
+            <a href="postar.html" class="nav-link ativo">📤 Postar</a>
         </nav>
         <div class="header-acoes">
             <button class="btn-icone btn-alternar-tema" onclick="window.tema?.alternar()">🌓</button>
-            <a href="perfil.html"><img src="assets/imagens/avatar-padrao.svg" alt="Perfil" class="avatar usuario-avatar"></a>
+            <a href="perfil.html"><span style="width: 36px; height: 36px; border-radius: 50%; background: var(--gradiente-primario); display: flex; align-items: center; justify-content: center; font-size: 18px;">👤</span></a>
         </div>
     </header>
 
-    <main class="container" style="padding-bottom: calc(var(--player-altura) + 80px);">
+    <main class="container" style="padding-bottom: calc(var(--player-altura) + 100px);">
         
-        <!-- TÍTULO -->
-        <div class="animar-entrada-cima" style="padding: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
-            <h1 style="font-size: 1.5rem;">📅 Eventos</h1>
-            <button class="btn btn-primario" onclick="mostrarFormEvento()">
-                + Criar Evento
+        <div class="animar-entrada-cima" style="padding: 1rem;">
+            <h1 style="font-size: 1.5rem;">📤 Nova Postagem</h1>
+            <p style="color: var(--texto-terciario); font-size: 0.85rem;">Preencha os campos abaixo. O conteúdo será enviado para aprovação.</p>
+        </div>
+
+        <!-- FORMULÁRIO DE POSTAGEM -->
+        <form id="form-postagem" class="form-postagem" style="padding: 0 1rem;">
+            
+            <!-- NOME DO ARTISTA (OBRIGATÓRIO) -->
+            <div class="campo">
+                <label for="post-artista">Nome do Artista *</label>
+                <input type="text" id="post-artista" placeholder="Nome do cantor ou banda" required>
+            </div>
+
+            <!-- LINK DO VÍDEO (OBRIGATÓRIO) -->
+            <div class="campo">
+                <label for="post-link">Link do Vídeo (YouTube) *</label>
+                <input type="url" id="post-link" placeholder="https://youtube.com/watch?v=... ou https://youtu.be/..." required>
+            </div>
+
+            <!-- PREVIEW DO VÍDEO -->
+            <div id="preview-video" style="width: 100%; margin-bottom: 1rem; display: none;">
+                <div style="position: relative; padding-bottom: 56.25%; height: 0; border-radius: 12px; overflow: hidden;">
+                    <iframe id="preview-iframe" width="100%" height="100%" src="" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+                </div>
+            </div>
+
+            <!-- VISIBILIDADE (OBRIGATÓRIO) -->
+            <div class="campo">
+                <label>Visibilidade *</label>
+                <div class="radio-group">
+                    <label class="radio-opcao">
+                        <input type="radio" name="visibilidade" value="publico" checked> 🌍 Público
+                    </label>
+                    <label class="radio-opcao">
+                        <input type="radio" name="visibilidade" value="privado"> 🔒 Privado
+                    </label>
+                </div>
+            </div>
+
+            <!-- BLOQUEAR OU NÃO (SÓ PARA POSTAGEM) -->
+            <div class="campo">
+                <label>Bloqueio de Conteúdo *</label>
+                <div class="radio-group">
+                    <label class="radio-opcao">
+                        <input type="radio" name="bloqueio" value="bloquear" checked> 🔒 Bloquear (30s grátis + destrancar)
+                    </label>
+                    <label class="radio-opcao">
+                        <input type="radio" name="bloqueio" value="nao-bloquear"> 🔓 Não Bloquear (vídeo livre)
+                    </label>
+                </div>
+                <p style="font-size: 0.7rem; color: var(--texto-terciario); margin-top: 0.25rem;">
+                    Se bloquear, o vídeo terá 30 segundos grátis e depois precisa destrancar.
+                </p>
+            </div>
+
+            <!-- CAMPOS OPCIONAIS (EXPANSÍVEL) -->
+            <button type="button" class="btn btn-secundario btn-pequeno" id="btn-opcionais-post" style="margin-bottom: 1rem;">
+                + Adicionar mais informações (opcional)
             </button>
-        </div>
 
-        <!-- FILTROS DE EVENTOS -->
-        <div style="padding: 0 1rem; margin-bottom: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
-            <!-- Filtro por tipo -->
-            <select id="filtro-evento-tipo" style="width: auto; padding: 8px 12px; font-size: 0.85rem;">
-                <option value="">Todos os tipos</option>
-            </select>
-
-            <!-- Filtro por data -->
-            <div style="display: flex; gap: 0.25rem;">
-                <button class="filtro-evento-data btn-pequeno ativo" data-data-filtro="todos" style="background: var(--cor-primaria); color: white; border-radius: 20px;">Todos</button>
-                <button class="filtro-evento-data btn-pequeno btn-secundario" data-data-filtro="hoje">Hoje</button>
-                <button class="filtro-evento-data btn-pequeno btn-secundario" data-data-filtro="futuros">Futuros</button>
-                <button class="filtro-evento-data btn-pequeno btn-secundario" data-data-filtro="passados">Passados</button>
+            <div id="campos-opcionais-post" class="hidden" style="margin-bottom: 1rem;">
+                <div class="campo">
+                    <label for="post-descricao">Descrição</label>
+                    <textarea id="post-descricao" rows="2" placeholder="Descreva o vídeo..."></textarea>
+                </div>
+                <div class="campo">
+                    <label for="post-estilo">Estilo Musical</label>
+                    <input type="text" id="post-estilo" placeholder="Ex: Kizomba, Semba, Rap..." list="estilos-lista">
+                    <datalist id="estilos-lista">
+                        <option value="Kizomba">
+                        <option value="Semba">
+                        <option value="R&B">
+                        <option value="Afrobeat">
+                        <option value="Pop">
+                        <option value="Rap">
+                        <option value="Música Romântica">
+                    </datalist>
+                </div>
+                <div class="campo">
+                    <label for="post-lingua">Língua da Música</label>
+                    <input type="text" id="post-lingua" placeholder="Ex: Português, Kimbundu..." list="linguas-lista">
+                    <datalist id="linguas-lista">
+                        <option value="Português">
+                        <option value="Inglês">
+                        <option value="Francês">
+                        <option value="Kimbundu">
+                        <option value="Umbundu">
+                        <option value="Crioulo">
+                    </datalist>
+                </div>
+                <div class="campo">
+                    <label for="post-ano">Ano de Lançamento</label>
+                    <input type="number" id="post-ano" placeholder="Ex: 2025" min="1900" max="2030">
+                </div>
             </div>
-        </div>
 
-        <!-- FORMULÁRIO DE CRIAÇÃO (INICIALMENTE ESCONDIDO) -->
-        <div id="form-evento-container" class="hidden" style="padding: 0 1rem; margin-bottom: 1.5rem;">
-            <form id="form-evento" class="form-auth" style="padding: 1.5rem;">
-                <h3 style="margin-bottom: 1rem;">📝 Criar Novo Evento</h3>
-                
-                <div class="campo">
-                    <label for="evento-tipo">Tipo de Evento *</label>
-                    <select id="evento-tipo" required>
-                        <option value="">Selecionar tipo...</option>
-                    </select>
-                </div>
+            <button type="submit" class="btn btn-principal btn-grande" style="width: 100%;">
+                📤 Publicar Vídeo
+            </button>
 
-                <div class="campo">
-                    <label for="evento-titulo">Título</label>
-                    <input type="text" id="evento-titulo" placeholder="Nome do evento">
-                </div>
+            <p style="font-size: 0.75rem; color: var(--texto-terciario); text-align: center; margin-top: 0.5rem;">
+                Sua postagem será analisada e aparecerá na Home após aprovação.
+            </p>
+        </form>
 
-                <div class="campo">
-                    <label for="evento-descricao">Descrição</label>
-                    <textarea id="evento-descricao" rows="3" placeholder="Descreva o evento..."></textarea>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                    <div class="campo">
-                        <label for="evento-data">Data</label>
-                        <input type="date" id="evento-data">
-                    </div>
-                    <div class="campo">
-                        <label for="evento-hora">Hora</label>
-                        <input type="time" id="evento-hora">
-                    </div>
-                </div>
-
-                <div class="campo">
-                    <label for="evento-local">Local</label>
-                    <input type="text" id="evento-local" placeholder="Local do evento">
-                </div>
-
-                <div class="campo">
-                    <label for="evento-foto">Foto (Link)</label>
-                    <input type="url" id="evento-foto" placeholder="https://...">
-                </div>
-
-                <div class="campo">
-                    <label for="evento-video">Vídeo (Link)</label>
-                    <input type="url" id="evento-video" placeholder="https://...">
-                </div>
-
-                <div class="campo">
-                    <label for="evento-audio">Áudio (Link)</label>
-                    <input type="url" id="evento-audio" placeholder="https://...">
-                </div>
-
-                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
-                    <button type="submit" class="btn btn-primario" style="flex: 1;">📅 Criar Evento</button>
-                    <button type="button" class="btn btn-secundario" onclick="esconderFormEvento()">Cancelar</button>
-                </div>
-            </form>
-        </div>
-
-        <!-- LISTA DE EVENTOS -->
-        <div class="grid-eventos" style="padding: 0 1rem;">
-            <!-- Preenchido pelo JS -->
-            <div class="loading-container" style="grid-column: 1 / -1;">
-                <div class="spinner"></div>
-            </div>
-        </div>
+        <!-- STATUS -->
+        <div class="status-postagem" style="padding: 0 1rem; margin-top: 1rem;"></div>
 
     </main>
 
@@ -150,8 +158,8 @@
     <nav class="nav-mobile mobile-only">
         <button class="nav-item" data-nav="index"><span class="icon-nav">🏠</span><span>Home</span></button>
         <button class="nav-item" data-nav="favoritos"><span class="icon-nav">❤️</span><span>Favoritos</span></button>
-        <button class="nav-item" data-nav="postar"><span class="icon-nav">➕</span><span>Postar</span></button>
-        <button class="nav-item ativo" data-nav="eventos"><span class="icon-nav">📅</span><span>Eventos</span></button>
+        <button class="nav-item ativo" data-nav="postar"><span class="icon-nav">➕</span><span>Postar</span></button>
+        <button class="nav-item" data-nav="eventos"><span class="icon-nav">📅</span><span>Eventos</span></button>
         <button class="nav-item" data-nav="perfil"><span class="icon-nav">👤</span><span>Perfil</span></button>
     </nav>
 
@@ -160,7 +168,7 @@
         <div class="player-progresso-container">
             <div class="player-progresso-preenchido" style="width: 0%;"></div>
         </div>
-        <img src="assets/imagens/placeholder.svg" alt="Capa" class="player-capa">
+        <span style="font-size: 2rem; width: 48px; text-align: center;">🎵</span>
         <div class="player-info">
             <div class="player-titulo">Nenhuma música</div>
             <div class="player-artista">Selecione uma música</div>
@@ -173,7 +181,6 @@
 
     <div class="toast-container"></div>
 
-    <!-- SCRIPTS -->
     <script src="js/dados.js"></script>
     <script src="js/tema.js"></script>
     <script src="js/auth.js"></script>
@@ -193,56 +200,42 @@
                 window.location.href = 'login.html';
                 return;
             }
-
-            // Popular select de tipos
-            const selectTipo = document.getElementById('filtro-evento-tipo');
-            if (selectTipo) {
-                const tipos = DB.filtros?.tiposEvento || [];
-                tipos.forEach(t => {
-                    const option = document.createElement('option');
-                    option.value = t;
-                    option.textContent = t;
-                    selectTipo.appendChild(option);
-                });
-            }
-
-            // Popular select do formulário
-            const selectFormTipo = document.getElementById('evento-tipo');
-            if (selectFormTipo) {
-                const tipos = DB.filtros?.tiposEvento || [];
-                tipos.forEach(t => {
-                    const option = document.createElement('option');
-                    option.value = t;
-                    option.textContent = t;
-                    selectFormTipo.appendChild(option);
-                });
-            }
-
-            // Configurar filtros de data
-            document.querySelectorAll('.filtro-evento-data').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.filtro-evento-data').forEach(b => {
-                        b.classList.remove('ativo');
-                        b.style.background = '';
-                        b.style.color = '';
-                    });
-                    this.classList.add('ativo');
-                    this.style.background = 'var(--cor-primaria)';
-                    this.style.color = 'white';
-                });
-            });
         });
 
-        function mostrarFormEvento() {
-            document.getElementById('form-evento-container').classList.remove('hidden');
-            document.getElementById('form-evento-container').scrollIntoView({ behavior: 'smooth' });
-        }
+        // Preview do vídeo ao colar link
+        document.getElementById('post-link').addEventListener('input', function() {
+            const link = this.value.trim();
+            const preview = document.getElementById('preview-video');
+            const iframe = document.getElementById('preview-iframe');
+            
+            const videoId = extrairIdYoutube(link);
+            if (videoId) {
+                iframe.src = `https://www.youtube.com/embed/${videoId}`;
+                preview.style.display = 'block';
+            } else {
+                preview.style.display = 'none';
+            }
+        });
 
-        function esconderFormEvento() {
-            document.getElementById('form-evento-container').classList.add('hidden');
-            document.getElementById('form-evento').reset();
+        // Campos opcionais
+        document.getElementById('btn-opcionais-post').addEventListener('click', function(e) {
+            e.preventDefault();
+            const campos = document.getElementById('campos-opcionais-post');
+            const isHidden = campos.classList.contains('hidden');
+            if (isHidden) {
+                campos.classList.remove('hidden');
+                this.textContent = '- Ocultar informações opcionais';
+            } else {
+                campos.classList.add('hidden');
+                this.textContent = '+ Adicionar mais informações (opcional)';
+            }
+        });
+
+        function extrairIdYoutube(url) {
+            const regex = /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+            const match = url.match(regex);
+            return match ? match[1] : null;
         }
     </script>
-
 </body>
 </html>

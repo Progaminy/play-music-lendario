@@ -1,226 +1,160 @@
 /* =============================================
    MUSICA ALENDARIA - Do Zero ao Infinito
    Criado por Pensador Sem Fronteira
-   ARQUIVO: player.js - Player com Limite 30s
+   ARQUIVO: player.js - Player com 30s e Like
    ============================================= */
 
-// ========== CONFIGURAÇÃO ==========
 const CONFIG_PLAYER = {
-    tempoGratuito: 30, // segundos
+    tempoGratuito: 30,
     volumePadrao: 0.7,
     chaveStorage: 'musica-alendaria-player'
 };
 
-// ========== ESTADO DO PLAYER ==========
 const estadoPlayer = {
-    musicaAtual: null,
+    posteAtual: null,
     estaTocando: false,
     tempoAtual: 0,
     duracaoTotal: 0,
     estaDestrancado: false,
-    modoOffline: false,
     volume: CONFIG_PLAYER.volumePadrao,
-    fila: [],
-    indiceFila: -1,
     timer30s: null,
     segundosRestantes: CONFIG_PLAYER.tempoGratuito,
-    audio: null
+    iframeElement: null,
+    videoIdAtual: null,
+    likesRegistados: {}
 };
 
 // ========== INICIALIZAÇÃO ==========
 function inicializarPlayer() {
-    // Criar elemento de áudio
-    if (!estadoPlayer.audio) {
-        estadoPlayer.audio = new Audio();
-        estadoPlayer.audio.volume = estadoPlayer.volume;
+    configurarPlayerFixo();
+    carregarLikes();
+    console.log('🎧 Player pronto!');
+}
+
+// ========== CARREGAR LIKES ==========
+function carregarLikes() {
+    try {
+        const saved = localStorage.getItem('musica-alendaria-likes');
+        estadoPlayer.likesRegistados = saved ? JSON.parse(saved) : {};
+    } catch (e) {
+        estadoPlayer.likesRegistados = {};
+    }
+}
+
+function salvarLikes() {
+    localStorage.setItem('musica-alendaria-likes', JSON.stringify(estadoPlayer.likesRegistados));
+}
+
+// ========== TOCAR VÍDEO (IFRAME) ==========
+function tocarVideo(poste) {
+    if (!poste || !poste.link) return;
+
+    const videoId = extrairYoutubeId(poste.link);
+    if (!videoId) {
+        mostrarToast('Link do YouTube inválido', 'erro');
+        return;
     }
 
-    // Configurar eventos do áudio
-    configurarEventosAudio();
-
-    // Restaurar estado do player
-    restaurarEstadoPlayer();
-
-    // Configurar player fixo
-    configurarPlayerFixo();
-
-    // Configurar mini players na página
-    configurarMiniPlayers();
-
-    console.log('🎧 Player inicializado!');
-}
-
-// ========== CONFIGURAR EVENTOS DO ÁUDIO ==========
-function configurarEventosAudio() {
-    const audio = estadoPlayer.audio;
-
-    audio.addEventListener('timeupdate', () => {
-        estadoPlayer.tempoAtual = audio.currentTime;
-        atualizarProgresso();
-        atualizarTempoDisplay();
-    });
-
-    audio.addEventListener('loadedmetadata', () => {
-        estadoPlayer.duracaoTotal = audio.duration;
-        if (estadoPlayer.duracaoTotal < CONFIG_PLAYER.tempoGratuito) {
-            // Música muito curta, permite tocar inteira
-            estadoPlayer.segundosRestantes = estadoPlayer.duracaoTotal;
-        }
-    });
-
-    audio.addEventListener('ended', () => {
-        if (!estadoPlayer.estaDestrancado) {
-            // Parar após preview
-            pausarMusica();
-            mostrarModalDestrancar(estadoPlayer.musicaAtual);
-        } else {
-            // Música completa terminou
-            estadoPlayer.estaTocando = false;
-            atualizarBotaoPlay();
-            proximaMusica();
-        }
-    });
-
-    audio.addEventListener('play', () => {
-        estadoPlayer.estaTocando = true;
-        atualizarBotaoPlay();
-        iniciarTimer30s();
-    });
-
-    audio.addEventListener('pause', () => {
-        estadoPlayer.estaTocando = false;
-        atualizarBotaoPlay();
-        pararTimer30s();
-    });
-
-    audio.addEventListener('error', () => {
-        console.error('Erro ao carregar áudio');
-        estadoPlayer.estaTocando = false;
-        atualizarBotaoPlay();
-        mostrarToast('Erro ao carregar música', 'erro');
-    });
-}
-
-// ========== CARREGAR MÚSICA ==========
-function carregarMusica(musica, destrancado = false) {
-    estadoPlayer.musicaAtual = musica;
-    estadoPlayer.estaDestrancado = destrancado;
+    estadoPlayer.posteAtual = poste;
+    estadoPlayer.videoIdAtual = videoId;
+    estadoPlayer.estaDestrancado = poste.bloqueio === 'nao-bloquear';
     estadoPlayer.tempoAtual = 0;
     estadoPlayer.segundosRestantes = CONFIG_PLAYER.tempoGratuito;
 
-    // Para músicas offline, usar caminho local
-    const usuario = window.auth?.getUsuarioAtual();
-    const isOffline = usuario && usuario.offline.includes(musica.id);
-    estadoPlayer.modoOffline = isOffline;
-
-    if (isOffline && !destrancado) {
-        // Preview offline também limitado a 30s
-        estadoPlayer.audio.src = `assets/musicas/previews/${musica.id}.mp3`;
-    } else if (isOffline && destrancado) {
-        estadoPlayer.audio.src = `assets/musicas/offline/${musica.id}.mp3`;
-    } else {
-        // Online - usaria o link real (aqui simulamos)
-        estadoPlayer.audio.src = `assets/musicas/previews/${musica.id}.mp3`;
-    }
+    // Criar ou atualizar iframe no player fixo
+    criarIframePlayer(videoId);
 
     // Atualizar UI
-    atualizarInfoPlayer();
+    atualizarInfoPlayer(poste);
+    atualizarTimer30sDisplay();
     atualizarBotaoDestrancar();
 
-    // Salvar estado
-    salvarEstadoPlayer();
-
-    console.log(`🎵 Carregada: "${musica.titulo}" | Destrancado: ${destrancado}`);
-}
-
-// ========== TOCAR MÚSICA ==========
-function tocarMusica(musica, destrancado = false) {
-    if (estadoPlayer.musicaAtual?.id !== musica.id) {
-        carregarMusica(musica, destrancado);
+    // Iniciar timer 30s se bloqueado
+    if (!estadoPlayer.estaDestrancado) {
+        iniciarTimer30s();
+    } else {
+        pararTimer30s();
+        // Registrar like automático (assistir completo livre)
+        registrarLikeAutomatico(poste.id);
     }
 
-    estadoPlayer.audio.play().catch(err => {
-        console.error('Erro ao reproduzir:', err);
-        mostrarToast('Clique novamente para reproduzir', 'aviso');
-    });
-
-    // Adicionar ao histórico
-    if (window.auth?.isAutenticado()) {
-        const usuario = window.auth.getUsuarioAtual();
-        if (!usuario.historico.includes(musica.id)) {
-            usuario.historico.push(musica.id);
-            window.auth.atualizarPerfil({ historico: usuario.historico });
-        }
-    }
-
-    // Scroll para o player
-    document.querySelector('.player-fixo')?.scrollIntoView({ behavior: 'smooth' });
-}
-
-// ========== PAUSAR MÚSICA ==========
-function pausarMusica() {
-    estadoPlayer.audio.pause();
-    estadoPlayer.estaTocando = false;
+    estadoPlayer.estaTocando = true;
     atualizarBotaoPlay();
+}
+
+// ========== CRIAR IFRAME NO PLAYER ==========
+function criarIframePlayer(videoId) {
+    // Remover iframe antigo
+    const playerContainer = document.getElementById('player-iframe-container');
+    if (playerContainer) {
+        playerContainer.innerHTML = `
+            <iframe id="player-iframe" 
+                width="100%" 
+                height="100%" 
+                src="https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&modestbranding=1&rel=0"
+                frameborder="0" 
+                allow="autoplay; encrypted-media" 
+                allowfullscreen
+                style="border: none;">
+            </iframe>
+        `;
+    }
+
+    estadoPlayer.iframeElement = document.getElementById('player-iframe');
+}
+
+// ========== PAUSAR ==========
+function pausarVideo() {
+    estadoPlayer.estaTocando = false;
     pararTimer30s();
+    atualizarBotaoPlay();
+
+    // Pausar iframe (postMessage para YouTube)
+    if (estadoPlayer.iframeElement) {
+        estadoPlayer.iframeElement.contentWindow?.postMessage(
+            JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), '*'
+        );
+    }
 }
 
 // ========== ALTERNAR PLAY/PAUSE ==========
 function alternarPlayPause() {
-    if (!estadoPlayer.musicaAtual) return;
+    if (!estadoPlayer.posteAtual) return;
 
     if (estadoPlayer.estaTocando) {
-        pausarMusica();
+        pausarVideo();
     } else {
-        estadoPlayer.audio.play().catch(err => {
-            console.error('Erro ao reproduzir:', err);
-        });
+        if (!estadoPlayer.estaDestrancado && estadoPlayer.segundosRestantes <= 0) {
+            mostrarModalDestrancar(estadoPlayer.posteAtual);
+            return;
+        }
+
+        estadoPlayer.estaTocando = true;
+        atualizarBotaoPlay();
+
+        if (estadoPlayer.iframeElement) {
+            estadoPlayer.iframeElement.contentWindow?.postMessage(
+                JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*'
+            );
+        }
+
+        if (!estadoPlayer.estaDestrancado) {
+            iniciarTimer30s();
+        }
     }
-}
-
-// ========== PRÓXIMA MÚSICA ==========
-function proximaMusica() {
-    if (estadoPlayer.fila.length === 0) return;
-
-    estadoPlayer.indiceFila++;
-    if (estadoPlayer.indiceFila >= estadoPlayer.fila.length) {
-        estadoPlayer.indiceFila = 0;
-    }
-
-    const proxima = estadoPlayer.fila[estadoPlayer.indiceFila];
-    carregarMusica(proxima, estadoPlayer.estaDestrancado);
-    tocarMusica(proxima, estadoPlayer.estaDestrancado);
-}
-
-// ========== MÚSICA ANTERIOR ==========
-function musicaAnterior() {
-    if (estadoPlayer.fila.length === 0) return;
-
-    estadoPlayer.indiceFila--;
-    if (estadoPlayer.indiceFila < 0) {
-        estadoPlayer.indiceFila = estadoPlayer.fila.length - 1;
-    }
-
-    const anterior = estadoPlayer.fila[estadoPlayer.indiceFila];
-    carregarMusica(anterior, estadoPlayer.estaDestrancado);
-    tocarMusica(anterior, estadoPlayer.estaDestrancado);
 }
 
 // ========== TIMER 30 SEGUNDOS ==========
 function iniciarTimer30s() {
     if (estadoPlayer.estaDestrancado) return;
-
     pararTimer30s();
     estadoPlayer.segundosRestantes = CONFIG_PLAYER.tempoGratuito;
 
     estadoPlayer.timer30s = setInterval(() => {
         estadoPlayer.segundosRestantes--;
-
-        // Atualizar display do timer
         atualizarTimer30sDisplay();
 
         if (estadoPlayer.segundosRestantes <= 10) {
-            // Piscar timer quando estiver acabando
             const timerEl = document.querySelector('.timer-30s');
             if (timerEl && !timerEl.classList.contains('esgotado')) {
                 timerEl.style.animation = 'blink 0.5s ease-in-out 3';
@@ -228,10 +162,9 @@ function iniciarTimer30s() {
         }
 
         if (estadoPlayer.segundosRestantes <= 0) {
-            // Tempo esgotado
-            pausarMusica();
+            pausarVideo();
             pararTimer30s();
-            mostrarModalDestrancar(estadoPlayer.musicaAtual);
+            mostrarModalDestrancar(estadoPlayer.posteAtual);
         }
     }, 1000);
 }
@@ -243,313 +176,95 @@ function pararTimer30s() {
     }
 }
 
-// ========== DESTRANCAR MÚSICA ==========
-function destrancarMusica(musicaId = null) {
-    const musica = musicaId ? buscarMusica(musicaId) : estadoPlayer.musicaAtual;
-    if (!musica) return;
+// ========== DESTRANCAR ==========
+function destrancarVideo(posteId) {
+    const poste = posteId ? estadoPlayer.posteAtual : estadoPlayer.posteAtual;
+    if (!poste) return;
 
     estadoPlayer.estaDestrancado = true;
-    estadoPlayer.segundosRestantes = estadoPlayer.duracaoTotal;
     pararTimer30s();
-
-    // Atualizar áudio para versão completa
-    const usuario = window.auth?.getUsuarioAtual();
-    if (usuario && usuario.offline.includes(musica.id)) {
-        const tempoAtual = estadoPlayer.audio.currentTime;
-        estadoPlayer.audio.src = `assets/musicas/offline/${musica.id}.mp3`;
-        estadoPlayer.audio.currentTime = tempoAtual;
-    }
-
-    // Registrar como like
-    registrarDestranque(musica.id);
-
-    // Atualizar UI
     atualizarBotaoDestrancar();
     atualizarTimer30sDisplay();
 
-    // Animação de celebração
-    animarDestrancar();
+    // Registrar like automático (desbloqueio conta como like)
+    registrarLikeAutomatico(poste.id);
 
-    // Continuar reprodução
-    estadoPlayer.audio.play().catch(err => console.error(err));
-
-    mostrarToast('🔓 Conteúdo destrancado! Aproveite!', 'sucesso');
-    console.log(`🔓 Música destrancada: "${musica.titulo}"`);
-}
-
-// ========== BAIXAR MÚSICA ==========
-function baixarMusica(musicaId, tipo = 'audio') {
-    const musica = buscarMusica(musicaId);
-    if (!musica) return;
-
-    if (!estadoPlayer.estaDestrancado) {
-        mostrarToast('Destranque a música primeiro para baixar', 'aviso');
-        return;
-    }
-
-    // Simular download
-    mostrarToast(`⬇ Baixando ${tipo === 'audio' ? 'áudio' : 'vídeo'} de "${musica.titulo}"...`, 'sucesso');
-
-    // Registrar como like
-    const usuario = window.auth?.getUsuarioAtual();
-    if (usuario && !usuario.offline.includes(musicaId)) {
-        adicionarOffline(usuario, musicaId);
-    }
-
-    console.log(`⬇ Download iniciado: ${musica.titulo} (${tipo})`);
-}
-
-// ========== TRANSFERIR PARA OFFLINE ==========
-function transferirParaOffline(musicaId) {
-    const musica = buscarMusica(musicaId);
-    if (!musica) return;
-
-    if (!estadoPlayer.estaDestrancado) {
-        mostrarToast('Destranque a música primeiro para transferir', 'aviso');
-        return;
-    }
-
-    const usuario = window.auth?.getUsuarioAtual();
-    if (usuario) {
-        adicionarOffline(usuario, musicaId);
-        estadoPlayer.modoOffline = true;
-        mostrarToast('📲 Música disponível offline!', 'sucesso');
-    }
-
-    console.log(`📲 Offline: "${musica.titulo}"`);
-}
-
-// ========== FILA DE REPRODUÇÃO ==========
-function adicionarNaFila(musica) {
-    estadoPlayer.fila.push(musica);
-    if (estadoPlayer.fila.length === 1) {
-        estadoPlayer.indiceFila = 0;
-    }
-    atualizarFilaUI();
-}
-
-function removerDaFila(index) {
-    estadoPlayer.fila.splice(index, 1);
-    if (estadoPlayer.indiceFila >= estadoPlayer.fila.length) {
-        estadoPlayer.indiceFila = estadoPlayer.fila.length - 1;
-    }
-    atualizarFilaUI();
-}
-
-function limparFila() {
-    estadoPlayer.fila = [];
-    estadoPlayer.indiceFila = -1;
-    atualizarFilaUI();
-}
-
-// ========== CONTROLE DE VOLUME ==========
-function ajustarVolume(novoVolume) {
-    estadoPlayer.volume = Math.max(0, Math.min(1, novoVolume));
-    estadoPlayer.audio.volume = estadoPlayer.volume;
-    atualizarVolumeUI();
-}
-
-// ========== ATUALIZAR UI ==========
-function atualizarInfoPlayer() {
-    if (!estadoPlayer.musicaAtual) return;
-
-    const musica = estadoPlayer.musicaAtual;
-
-    // Player fixo
-    document.querySelectorAll('.player-capa').forEach(el => {
-        el.src = musica.capa;
-        el.alt = musica.titulo;
-    });
-
-    document.querySelectorAll('.player-titulo').forEach(el => {
-        el.textContent = musica.titulo;
-    });
-
-    document.querySelectorAll('.player-artista').forEach(el => {
-        const artista = buscarArtista(musica.artistaId);
-        el.textContent = artista ? artista.nome : '';
-    });
-
+    // Retomar reprodução
+    estadoPlayer.estaTocando = true;
     atualizarBotaoPlay();
-    atualizarTimer30sDisplay();
-}
 
-function atualizarBotaoPlay() {
-    document.querySelectorAll('.btn-play, .btn-expandido-play').forEach(btn => {
-        btn.textContent = estadoPlayer.estaTocando ? '⏸' : '▶';
-    });
+    if (estadoPlayer.iframeElement) {
+        estadoPlayer.iframeElement.contentWindow?.postMessage(
+            JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*'
+        );
+    }
 
-    // Animação do player
-    const playerFixo = document.querySelector('.player-fixo');
-    if (playerFixo) {
-        playerFixo.classList.toggle('tocando', estadoPlayer.estaTocando);
+    animarDestrancar();
+    mostrarToast('🔓 Vídeo destrancado!', 'sucesso');
+
+    // Também atualizar o poste original no localStorage
+    const postes = JSON.parse(localStorage.getItem('musica-alendaria-postes') || '[]');
+    const index = postes.findIndex(p => p.id === poste.id);
+    if (index !== -1) {
+        postes[index].bloqueio = 'nao-bloquear';
+        localStorage.setItem('musica-alendaria-postes', JSON.stringify(postes));
     }
 }
 
-function atualizarTimer30sDisplay() {
-    document.querySelectorAll('.timer-30s').forEach(el => {
-        if (estadoPlayer.estaDestrancado) {
-            el.classList.add('hidden');
-        } else {
-            el.classList.remove('hidden');
-            el.textContent = `⏳ ${estadoPlayer.segundosRestantes}s`;
-            el.classList.toggle('esgotado', estadoPlayer.segundosRestantes <= 10);
-        }
-    });
+// ========== LIKE (1 por usuário por música) ==========
+function darLikeManual(posteId) {
+    const usuario = window.auth?.getUsuarioAtual();
+    if (!usuario) return false;
 
-    // Barra de progresso 30s
-    document.querySelectorAll('.barra-30s-preenchida').forEach(barra => {
-        if (estadoPlayer.estaDestrancado) {
-            barra.style.width = '100%';
-            barra.classList.remove('esgotada');
-        } else {
-            const percentual = ((CONFIG_PLAYER.tempoGratuito - estadoPlayer.segundosRestantes) / CONFIG_PLAYER.tempoGratuito) * 100;
-            barra.style.width = `${percentual}%`;
-            barra.classList.toggle('esgotada', estadoPlayer.segundosRestantes <= 10);
-        }
-    });
+    const chave = `${usuario.id}_${posteId}`;
+
+    if (estadoPlayer.likesRegistados[chave]) {
+        mostrarToast('Já deu like nesta música', 'info');
+        return false;
+    }
+
+    estadoPlayer.likesRegistados[chave] = true;
+    salvarLikes();
+
+    // Também atualizar no poste
+    window.postagem?.darLike(posteId);
+
+    // Animar coração
+    const btnFav = document.querySelector('.player-fixo .btn-favorito');
+    if (btnFav) {
+        btnFav.textContent = '❤️';
+        btnFav.style.animation = 'heartbeat 0.6s ease';
+        setTimeout(() => { btnFav.style.animation = ''; }, 600);
+    }
+
+    mostrarToast('❤️ Like registado!', 'sucesso');
+    return true;
 }
 
-function atualizarBotaoDestrancar() {
-    document.querySelectorAll('.btn-destrancar-player').forEach(btn => {
-        if (estadoPlayer.estaDestrancado) {
-            btn.classList.add('destrancado');
-            btn.innerHTML = '<span class="cadeado-icone">🔓</span> Destrancado';
-            btn.onclick = null;
-        } else {
-            btn.classList.remove('destrancado');
-            btn.innerHTML = '<span class="cadeado-icone">🔒</span> Destrancar';
-            btn.onclick = () => destrancarMusica();
-        }
-    });
+function registrarLikeAutomatico(posteId) {
+    const usuario = window.auth?.getUsuarioAtual();
+    if (!usuario) return;
+
+    const chave = `${usuario.id}_${posteId}`;
+
+    if (!estadoPlayer.likesRegistados[chave]) {
+        estadoPlayer.likesRegistados[chave] = true;
+        salvarLikes();
+        window.postagem?.registrarLike(posteId);
+        console.log('❤️ Like automático registado');
+    }
 }
 
-function atualizarProgresso() {
-    const percentual = estadoPlayer.duracaoTotal > 0
-        ? (estadoPlayer.tempoAtual / estadoPlayer.duracaoTotal) * 100
-        : 0;
-
-    document.querySelectorAll('.player-progresso-preenchido').forEach(barra => {
-        barra.style.width = `${percentual}%`;
-    });
+function jaDeuLikePlayer(posteId) {
+    const usuario = window.auth?.getUsuarioAtual();
+    if (!usuario) return false;
+    const chave = `${usuario.id}_${posteId}`;
+    return !!estadoPlayer.likesRegistados[chave];
 }
 
-function atualizarTempoDisplay() {
-    const tempoAtual = formatarTempo(estadoPlayer.tempoAtual);
-    const duracao = formatarTempo(estadoPlayer.duracaoTotal);
-
-    document.querySelectorAll('.tempo-atual').forEach(el => el.textContent = tempoAtual);
-    document.querySelectorAll('.tempo-duracao').forEach(el => el.textContent = duracao);
-}
-
-function atualizarVolumeUI() {
-    document.querySelectorAll('.volume-slider').forEach(slider => {
-        slider.value = estadoPlayer.volume * 100;
-    });
-}
-
-function atualizarFilaUI() {
-    const filaContainer = document.querySelector('.queue-lista');
-    if (!filaContainer) return;
-
-    filaContainer.innerHTML = estadoPlayer.fila.length === 0
-        ? '<div class="estado-vazio"><p class="vazio-descricao">Fila vazia</p></div>'
-        : estadoPlayer.fila.map((musica, index) => {
-            const artista = buscarArtista(musica.artistaId);
-            return `
-                <div class="queue-item ${index === estadoPlayer.indiceFila ? 'tocando' : ''}">
-                    <span class="queue-numero">${index + 1}</span>
-                    <img src="${musica.capa}" class="queue-capa" alt="${musica.titulo}">
-                    <div class="queue-info">
-                        <div class="queue-titulo">${musica.titulo}</div>
-                        <div class="queue-artista">${artista ? artista.nome : ''}</div>
-                    </div>
-                    <span class="queue-duracao">${musica.duracao}</span>
-                    <button class="btn-icone-pequeno" onclick="removerDaFila(${index})">✕</button>
-                </div>
-            `;
-        }).join('');
-}
-
-// ========== CONFIGURAR PLAYER FIXO ==========
-function configurarPlayerFixo() {
-    const playerFixo = document.querySelector('.player-fixo');
-    if (!playerFixo) return;
-
-    // Play/Pause
-    playerFixo.querySelector('.btn-play')?.addEventListener('click', alternarPlayPause);
-
-    // Próxima
-    playerFixo.querySelector('.btn-proxima')?.addEventListener('click', proximaMusica);
-
-    // Anterior
-    playerFixo.querySelector('.btn-anterior')?.addEventListener('click', musicaAnterior);
-
-    // Expandir player
-    playerFixo.addEventListener('click', function (e) {
-        if (e.target === this || e.target.closest('.player-info')) {
-            this.classList.toggle('expandido');
-        }
-    });
-
-    // Fechar expandido
-    playerFixo.querySelector('.fechar-expandido')?.addEventListener('click', function (e) {
-        e.stopPropagation();
-        playerFixo.classList.remove('expandido');
-    });
-
-    // Progresso clicável
-    const progressoContainer = playerFixo.querySelector('.player-progresso-container');
-    progressoContainer?.addEventListener('click', function (e) {
-        const rect = this.getBoundingClientRect();
-        const percentual = (e.clientX - rect.left) / rect.width;
-        if (estadoPlayer.audio.duration) {
-            estadoPlayer.audio.currentTime = percentual * estadoPlayer.audio.duration;
-        }
-    });
-
-    // Volume
-    const volumeSlider = playerFixo.querySelector('.volume-slider');
-    volumeSlider?.addEventListener('input', function () {
-        ajustarVolume(this.value / 100);
-    });
-
-    // Botão favorito
-    playerFixo.querySelector('.btn-favorito')?.addEventListener('click', function () {
-        if (!estadoPlayer.musicaAtual) return;
-        const usuario = window.auth?.getUsuarioAtual();
-        if (!usuario) return;
-
-        if (isFavorito(usuario, estadoPlayer.musicaAtual.id)) {
-            removerFavorito(usuario, estadoPlayer.musicaAtual.id);
-            this.classList.remove('favoritado');
-        } else {
-            adicionarFavorito(usuario, estadoPlayer.musicaAtual.id);
-            this.classList.add('favoritado');
-        }
-    });
-}
-
-// ========== CONFIGURAR MINI PLAYERS ==========
-function configurarMiniPlayers() {
-    document.querySelectorAll('.card-musica-h, .card-musica-v').forEach(card => {
-        card.addEventListener('click', function () {
-            const musicaId = this.dataset.musicaId;
-            if (!musicaId) return;
-
-            const musica = buscarMusica(musicaId);
-            if (musica) {
-                tocarMusica(musica, estadoPlayer.estaDestrancado);
-            }
-        });
-    });
-}
-
-// ========== MODAL DE DESTRANCAR ==========
-function mostrarModalDestrancar(musica) {
-    if (!musica) return;
-
-    // Verificar se já existe modal
+// ========== MODAL DESTRANCAR ==========
+function mostrarModalDestrancar(poste) {
+    if (!poste) return;
     if (document.querySelector('.modal-destrancar')) return;
 
     const overlay = document.createElement('div');
@@ -559,31 +274,14 @@ function mostrarModalDestrancar(musica) {
             <div class="destrancar-icone">🔒</div>
             <h3 class="destrancar-titulo">30 segundos esgotados!</h3>
             <p class="destrancar-descricao">
-                Destranque "${musica.titulo}" para aceder ao conteúdo completo.
+                Destranque para assistir ao vídeo completo de <strong>${poste.artista}</strong>.
             </p>
             <div class="destrancar-beneficios">
-                <div class="beneficio-item">
-                    <span class="check">✓</span> Ouvir música completa
-                </div>
-                <div class="beneficio-item">
-                    <span class="check">✓</span> Assistir videoclipe completo
-                </div>
-                <div class="beneficio-item">
-                    <span class="check">✓</span> Baixar áudio e vídeo
-                </div>
-                <div class="beneficio-item">
-                    <span class="check">✓</span> Ler letra completa
-                </div>
-                <div class="beneficio-item">
-                    <span class="check">✓</span> Transferir para offline
-                </div>
+                <div class="beneficio-item"><span class="check">✓</span> Vídeo completo sem restrições</div>
+                <div class="beneficio-item"><span class="check">✓</span> Acesso ilimitado</div>
             </div>
-            <button class="btn-confirmar-destrancar" id="btn-confirmar-destrancar">
-                🔓 Destrancar Agora
-            </button>
-            <button class="btn-cancelar-destrancar" id="btn-cancelar-destrancar">
-                Agora não
-            </button>
+            <button class="btn-confirmar-destrancar" id="btn-confirmar-destrancar">🔓 Destrancar Agora</button>
+            <button class="btn-cancelar-destrancar" id="btn-cancelar-destrancar">Agora não</button>
         </div>
     `;
 
@@ -592,7 +290,7 @@ function mostrarModalDestrancar(musica) {
 
     overlay.querySelector('#btn-confirmar-destrancar').addEventListener('click', () => {
         fecharModalDestrancar();
-        destrancarMusica(musica.id);
+        destrancarVideo(poste.id);
     });
 
     overlay.querySelector('#btn-cancelar-destrancar').addEventListener('click', fecharModalDestrancar);
@@ -612,68 +310,86 @@ function fecharModalDestrancar() {
     }
 }
 
-// ========== ANIMAÇÃO DE DESTRANCAR ==========
+// ========== UI ==========
+function atualizarInfoPlayer(poste) {
+    if (!poste) return;
+    document.querySelectorAll('.player-titulo').forEach(el => el.textContent = poste.artista);
+    document.querySelectorAll('.player-artista').forEach(el => el.textContent = poste.estilo || 'Diversa');
+
+    const btnFav = document.querySelector('.player-fixo .btn-favorito');
+    if (btnFav) {
+        btnFav.textContent = jaDeuLikePlayer(poste.id) ? '❤️' : '🤍';
+    }
+}
+
+function atualizarBotaoPlay() {
+    document.querySelectorAll('.btn-play').forEach(btn => {
+        btn.textContent = estadoPlayer.estaTocando ? '⏸' : '▶';
+    });
+    const playerFixo = document.querySelector('.player-fixo');
+    if (playerFixo) {
+        playerFixo.classList.toggle('tocando', estadoPlayer.estaTocando);
+    }
+}
+
+function atualizarTimer30sDisplay() {
+    document.querySelectorAll('.timer-30s').forEach(el => {
+        if (estadoPlayer.estaDestrancado) {
+            el.classList.add('hidden');
+        } else {
+            el.classList.remove('hidden');
+            el.textContent = `⏳ ${estadoPlayer.segundosRestantes}s`;
+            el.classList.toggle('esgotado', estadoPlayer.segundosRestantes <= 10);
+        }
+    });
+}
+
+function atualizarBotaoDestrancar() {
+    document.querySelectorAll('.btn-destrancar-player').forEach(btn => {
+        if (estadoPlayer.estaDestrancado) {
+            btn.classList.add('destrancado');
+            btn.innerHTML = '🔓 Livre';
+        } else {
+            btn.classList.remove('destrancado');
+            btn.innerHTML = '🔒 Destrancar';
+        }
+    });
+}
+
 function animarDestrancar() {
-    // Efeito de confete ou brilho
     const playerFixo = document.querySelector('.player-fixo');
     if (playerFixo) {
         playerFixo.style.animation = 'pulseStrong 0.6s ease';
-        setTimeout(() => {
-            playerFixo.style.animation = '';
-        }, 600);
-    }
-
-    // Brilho no botão
-    const btnDestrancar = document.querySelector('.btn-destrancar-player');
-    if (btnDestrancar) {
-        btnDestrancar.style.animation = 'glowPulse 0.8s ease 3';
-        setTimeout(() => {
-            btnDestrancar.style.animation = '';
-        }, 2400);
+        setTimeout(() => { playerFixo.style.animation = ''; }, 600);
     }
 }
 
-// ========== UTILITÁRIAS ==========
-function formatarTempo(segundos) {
-    if (isNaN(segundos) || segundos < 0) return '0:00';
-    const min = Math.floor(segundos / 60);
-    const seg = Math.floor(segundos % 60);
-    return `${min}:${seg.toString().padStart(2, '0')}`;
-}
+// ========== PLAYER FIXO ==========
+function configurarPlayerFixo() {
+    const playerFixo = document.querySelector('.player-fixo');
+    if (!playerFixo) return;
 
-function salvarEstadoPlayer() {
-    const estado = {
-        musicaId: estadoPlayer.musicaAtual?.id || null,
-        estaDestrancado: estadoPlayer.estaDestrancado,
-        volume: estadoPlayer.volume,
-        tempoAtual: estadoPlayer.tempoAtual
-    };
-    localStorage.setItem(CONFIG_PLAYER.chaveStorage, JSON.stringify(estado));
-}
-
-function restaurarEstadoPlayer() {
-    try {
-        const estadoSalvo = JSON.parse(localStorage.getItem(CONFIG_PLAYER.chaveStorage));
-        if (estadoSalvo && estadoSalvo.musicaId) {
-            const musica = buscarMusica(estadoSalvo.musicaId);
-            if (musica) {
-                carregarMusica(musica, estadoSalvo.estaDestrancado);
-                estadoPlayer.volume = estadoSalvo.volume || CONFIG_PLAYER.volumePadrao;
-                estadoPlayer.audio.volume = estadoPlayer.volume;
-                estadoPlayer.audio.currentTime = estadoSalvo.tempoAtual || 0;
-            }
+    playerFixo.querySelector('.btn-play')?.addEventListener('click', alternarPlayPause);
+    playerFixo.querySelector('.btn-favorito')?.addEventListener('click', function () {
+        if (estadoPlayer.posteAtual) {
+            darLikeManual(estadoPlayer.posteAtual.id);
         }
-    } catch (e) {
-        console.error('Erro ao restaurar estado do player');
-    }
+    });
+}
+
+// ========== EXTRAIR YOUTUBE ID ==========
+function extrairYoutubeId(url) {
+    if (!url) return null;
+    const regex = /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
 }
 
 // ========== TOAST ==========
-function mostrarToast(mensagem, tipo = 'info') {
+function mostrarToast(msg, tipo) {
     const toast = document.createElement('div');
     toast.className = `toast toast-${tipo}`;
-    toast.innerHTML = `<span class="toast-mensagem">${mensagem}</span>`;
-
+    toast.innerHTML = `<span class="toast-mensagem">${msg}</span>`;
     let container = document.querySelector('.toast-container');
     if (!container) {
         container = document.createElement('div');
@@ -681,32 +397,22 @@ function mostrarToast(mensagem, tipo = 'info') {
         document.body.appendChild(container);
     }
     container.appendChild(toast);
-
-    setTimeout(() => {
-        toast.classList.add('saindo');
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
+    setTimeout(() => { toast.classList.add('saindo'); setTimeout(() => toast.remove(), 300); }, 3000);
 }
 
 // ========== EXPORTAR ==========
 window.player = {
     inicializar: inicializarPlayer,
-    tocar: tocarMusica,
-    pausar: pausarMusica,
+    tocar: tocarVideo,
+    pausar: pausarVideo,
     alternar: alternarPlayPause,
-    proxima: proximaMusica,
-    anterior: musicaAnterior,
-    carregar: carregarMusica,
-    destrancar: destrancarMusica,
-    baixar: baixarMusica,
-    transferirOffline: transferirParaOffline,
-    ajustarVolume: ajustarVolume,
-    adicionarNaFila: adicionarNaFila,
+    destrancar: destrancarVideo,
+    darLike: darLikeManual,
+    jaDeuLike: jaDeuLikePlayer,
     getEstado: () => estadoPlayer,
-    getMusicaAtual: () => estadoPlayer.musicaAtual
+    getPosteAtual: () => estadoPlayer.posteAtual
 };
 
-// ========== INICIALIZAR ==========
 document.addEventListener('DOMContentLoaded', inicializarPlayer);
 
-console.log('🎧 Player pronto! (30s grátis + destrancar)');
+console.log('🎧 Player pronto! (30s + Like único + Desbloqueio)');

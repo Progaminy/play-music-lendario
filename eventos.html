@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Musica Alendaria - Eventos</title>
-
-    <!-- CSS -->
+    
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/lit.css">
     <link rel="stylesheet" href="css/dark.css">
@@ -15,20 +14,17 @@
     <link rel="stylesheet" href="css/player.css">
     <link rel="stylesheet" href="css/modal.css">
     <link rel="stylesheet" href="css/componentes.css">
-
-    <link rel="icon" href="assets/imagens/logo-lit.png" type="image/png">
-    <meta name="description" content="Musica Alendaria - Eventos de artistas e shows.">
+    
     <meta name="theme-color" content="#6c3ce0">
 </head>
 <body class="tema-lit">
 
     <div class="marca-dagua">Criado por Pensador Sem Fronteira</div>
 
-    <!-- HEADER DESKTOP -->
     <header class="header header-desktop desktop-only">
         <div class="header-logo">
             <a href="index.html" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
-                <img src="assets/imagens/logo-lit.png" alt="Logo" style="width: 36px; height: 36px; border-radius: 8px;">
+                <span style="font-size: 2rem;">🎵</span>
                 <span style="font-weight: 700; font-size: 1.1rem; background: var(--gradiente-primario); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Musica Alendaria</span>
             </a>
         </div>
@@ -41,127 +37,98 @@
         </nav>
         <div class="header-acoes">
             <button class="btn-icone btn-alternar-tema" onclick="window.tema?.alternar()">🌓</button>
-            <a href="perfil.html" class="avatar-link" title="Meu Perfil">
-                <span style="width: 36px; height: 36px; border-radius: 50%; background: var(--gradiente-primario); display: flex; align-items: center; justify-content: center; font-size: 18px;">👤</span>
-            </a>
+            <a href="perfil.html"><span style="width: 36px; height: 36px; border-radius: 50%; background: var(--gradiente-primario); display: flex; align-items: center; justify-content: center; font-size: 18px;">👤</span></a>
         </div>
     </header>
 
-    <!-- CONTEÚDO PRINCIPAL -->
     <main class="container" style="padding-bottom: calc(var(--player-altura) + 100px);">
         
         <!-- TÍTULO -->
-        <div class="animar-entrada-cima" style="padding: 1rem;">
-            <h1 style="font-size: 1.8rem;">📅 Eventos</h1>
-            <p style="color: var(--texto-secundario);">Confira os próximos eventos, shows e lançamentos.</p>
+        <div class="animar-entrada-cima" style="padding: 1rem; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h1 style="font-size: 1.5rem;">📅 Eventos</h1>
+                <p style="color: var(--texto-terciario); font-size: 0.85rem;">Shows, lançamentos e encontros musicais</p>
+            </div>
+            <button class="btn btn-primario" onclick="mostrarFormEvento()">+ Criar Evento</button>
         </div>
 
-        <!-- VÍDEOS EM DESTAQUE -->
-        <section style="padding: 0 1rem; margin-bottom: 2rem;">
-            <h2 style="font-size: 1.2rem; margin-bottom: 1rem;">🎬 Vídeos em Destaque</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+        <!-- FORMULÁRIO DE EVENTO (INICIALMENTE ESCONDIDO) -->
+        <div id="form-evento-container" class="hidden" style="padding: 0 1rem; margin-bottom: 1.5rem;">
+            <form id="form-evento" class="form-auth" style="padding: 1.5rem;">
+                <h3 style="margin-bottom: 1rem;">📝 Criar Novo Evento</h3>
                 
-                <!-- Vídeo 1 -->
-                <div style="background: var(--fundo-card); border-radius: 12px; overflow: hidden; box-shadow: var(--sombra);">
-                    <div style="position: relative; padding-bottom: 56.25%; height: 0;">
-                        <iframe 
-                            width="100%" 
-                            height="100%" 
-                            src="https://www.youtube.com/embed/9TT1fUdtfks?si=EmXJGM9tXcY23hob" 
-                            title="ALLAN2 CANTA MUSICA PROMOCIONAL DO SEU ALBUM NO FRED JOSSIAS SHOW" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                            referrerpolicy="strict-origin-when-cross-origin" 
-                            allowfullscreen
-                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-                        </iframe>
+                <!-- NOME DO ARTISTA (OBRIGATÓRIO) -->
+                <div class="campo">
+                    <label for="evento-artista">Nome do Artista *</label>
+                    <input type="text" id="evento-artista" placeholder="Nome do cantor ou banda" required>
+                </div>
+
+                <!-- LINK DO VÍDEO (OBRIGATÓRIO) -->
+                <div class="campo">
+                    <label for="evento-link">Link do Vídeo *</label>
+                    <input type="url" id="evento-link" placeholder="https://youtube.com/watch?v=..." required>
+                </div>
+
+                <!-- DATAS (SÓ PARA EVENTO) -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="campo">
+                        <label for="evento-data-inicio">Data de Início *</label>
+                        <input type="date" id="evento-data-inicio" required>
                     </div>
-                    <div style="padding: 0.75rem;">
-                        <p style="font-weight: 600; font-size: 0.9rem;">ALLAN2 - Música Promocional no Fred Jossias Show</p>
+                    <div class="campo">
+                        <label for="evento-data-fim">Data de Fim *</label>
+                        <input type="date" id="evento-data-fim" required>
                     </div>
                 </div>
 
-                <!-- Vídeo 2 -->
-                <div style="background: var(--fundo-card); border-radius: 12px; overflow: hidden; box-shadow: var(--sombra);">
-                    <div style="position: relative; padding-bottom: 56.25%; height: 0;">
-                        <iframe 
-                            width="100%" 
-                            height="100%" 
-                            src="https://www.youtube.com/embed/DSTsJrLItG8?si=7GvXzZDf28DDj0Td" 
-                            title="ALLAN2 - WETHA MWETHEKE FEAT BIG DINO" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                            referrerpolicy="strict-origin-when-cross-origin" 
-                            allowfullscreen
-                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-                        </iframe>
-                    </div>
-                    <div style="padding: 0.75rem;">
-                        <p style="font-weight: 600; font-size: 0.9rem;">ALLAN2 - Wetha Mwetheke feat Big Dino (Podes Ir Longe) 2025</p>
+                <!-- VISIBILIDADE -->
+                <div class="campo">
+                    <label>Visibilidade *</label>
+                    <div class="radio-group">
+                        <label class="radio-opcao">
+                            <input type="radio" name="evento-visibilidade" value="publico" checked> 🌍 Público
+                        </label>
+                        <label class="radio-opcao">
+                            <input type="radio" name="evento-visibilidade" value="privado"> 🔒 Privado
+                        </label>
                     </div>
                 </div>
 
-                <!-- Vídeo 3 -->
-                <div style="background: var(--fundo-card); border-radius: 12px; overflow: hidden; box-shadow: var(--sombra);">
-                    <div style="position: relative; padding-bottom: 56.25%; height: 0;">
-                        <iframe 
-                            width="100%" 
-                            height="100%" 
-                            src="https://www.youtube.com/embed/DO3WY37AwbQ?si=TQy9IVxb2kmc7g8C" 
-                            title="ALLAN2 - SO TEU RANGO VÍDEO OFICIAL" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                            referrerpolicy="strict-origin-when-cross-origin" 
-                            allowfullscreen
-                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-                        </iframe>
+                <!-- CAMPOS OPCIONAIS -->
+                <button type="button" class="btn btn-secundario btn-pequeno" id="btn-opcionais-evento" style="margin-bottom: 1rem; width: 100%;">
+                    + Adicionar mais informações (opcional)
+                </button>
+
+                <div id="campos-opcionais-evento" class="hidden">
+                    <div class="campo">
+                        <label for="evento-local">Local</label>
+                        <input type="text" id="evento-local" placeholder="Local do evento">
                     </div>
-                    <div style="padding: 0.75rem;">
-                        <p style="font-weight: 600; font-size: 0.9rem;">ALLAN2 - Só Teu Rango (Vídeo Oficial)</p>
+                    <div class="campo">
+                        <label for="evento-hora">Hora</label>
+                        <input type="time" id="evento-hora">
+                    </div>
+                    <div class="campo">
+                        <label for="evento-descricao">Descrição</label>
+                        <textarea id="evento-descricao" rows="2" placeholder="Descreva o evento..."></textarea>
                     </div>
                 </div>
 
-            </div>
-        </section>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button type="submit" class="btn btn-primario" style="flex: 1;">📅 Criar Evento</button>
+                    <button type="button" class="btn btn-secundario" onclick="esconderFormEvento()">Cancelar</button>
+                </div>
+            </form>
+        </div>
 
         <!-- LISTA DE EVENTOS -->
-        <section style="padding: 0 1rem; margin-bottom: 2rem;">
-            <h2 style="font-size: 1.2rem; margin-bottom: 1rem;">📅 Próximos Eventos</h2>
-            
-            <div class="grid-eventos" style="padding: 0;">
-                <div class="card-evento">
-                    <div class="data-evento">
-                        <span class="dia-evento">15</span>
-                        <span class="mes-evento">JUL</span>
-                    </div>
-                    <div class="info-evento">
-                        <span class="tipo-evento">Show ao Vivo</span>
-                        <h4 class="nome-evento">ALLAN2 - Lançamento de Álbum</h4>
-                        <p style="font-size: 0.8rem; color: var(--texto-secundario);">Grande show de lançamento da nova temporada.</p>
-                        <div style="display: flex; gap: 1rem; margin-top: 0.5rem; font-size: 0.75rem; color: var(--texto-terciario);">
-                            <span>🕐 20:00</span>
-                            <span>📍 Arena de Luanda</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-evento">
-                    <div class="data-evento">
-                        <span class="dia-evento">01</span>
-                        <span class="mes-evento">AGO</span>
-                    </div>
-                    <div class="info-evento">
-                        <span class="tipo-evento">Lançamento</span>
-                        <h4 class="nome-evento">ALLAN2 - Novo Single</h4>
-                        <p style="font-size: 0.8rem; color: var(--texto-secundario);">Lançamento oficial nas plataformas digitais.</p>
-                        <div style="display: flex; gap: 1rem; margin-top: 0.5rem; font-size: 0.75rem; color: var(--texto-terciario);">
-                            <span>🕐 00:00</span>
-                            <span>📍 Online</span>
-                        </div>
-                    </div>
-                </div>
+        <div class="grid-eventos" id="lista-eventos" style="padding: 0 1rem;">
+            <div class="estado-vazio" style="grid-column: 1 / -1;">
+                <div class="vazio-icone">📅</div>
+                <h4 class="vazio-titulo">Nenhum evento ainda</h4>
+                <p class="vazio-descricao">Crie o primeiro evento clicando no botão acima!</p>
             </div>
-        </section>
+        </div>
 
     </main>
 
@@ -179,7 +146,7 @@
         <div class="player-progresso-container">
             <div class="player-progresso-preenchido" style="width: 0%;"></div>
         </div>
-        <img src="" alt="Capa" class="player-capa" onerror="this.style.display='none'">
+        <span style="font-size: 2rem; width: 48px; text-align: center;">🎵</span>
         <div class="player-info">
             <div class="player-titulo">Nenhuma música</div>
             <div class="player-artista">Selecione uma música</div>
@@ -192,7 +159,6 @@
 
     <div class="toast-container"></div>
 
-    <!-- SCRIPTS -->
     <script src="js/dados.js"></script>
     <script src="js/tema.js"></script>
     <script src="js/auth.js"></script>
@@ -212,7 +178,145 @@
                 window.location.href = 'login.html';
                 return;
             }
+            carregarEventos();
         });
+
+        function mostrarFormEvento() {
+            document.getElementById('form-evento-container').classList.remove('hidden');
+            document.getElementById('form-evento-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function esconderFormEvento() {
+            document.getElementById('form-evento-container').classList.add('hidden');
+            document.getElementById('form-evento').reset();
+        }
+
+        // Campos opcionais
+        document.getElementById('btn-opcionais-evento').addEventListener('click', function(e) {
+            e.preventDefault();
+            const campos = document.getElementById('campos-opcionais-evento');
+            const isHidden = campos.classList.contains('hidden');
+            if (isHidden) {
+                campos.classList.remove('hidden');
+                this.textContent = '- Ocultar informações opcionais';
+            } else {
+                campos.classList.add('hidden');
+                this.textContent = '+ Adicionar mais informações (opcional)';
+            }
+        });
+
+        // Submeter evento
+        document.getElementById('form-evento').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const evento = {
+                artista: document.getElementById('evento-artista').value.trim(),
+                link: document.getElementById('evento-link').value.trim(),
+                dataInicio: document.getElementById('evento-data-inicio').value,
+                dataFim: document.getElementById('evento-data-fim').value,
+                visibilidade: document.querySelector('input[name="evento-visibilidade"]:checked').value,
+                local: document.getElementById('evento-local').value.trim(),
+                hora: document.getElementById('evento-hora').value,
+                descricao: document.getElementById('evento-descricao').value.trim()
+            };
+
+            if (!evento.artista || !evento.link || !evento.dataInicio || !evento.dataFim) {
+                mostrarToast('Preencha todos os campos obrigatórios', 'erro');
+                return;
+            }
+
+            // Guardar evento
+            const eventos = JSON.parse(localStorage.getItem('eventos') || '[]');
+            evento.id = 'evt-' + Date.now();
+            evento.dataCriacao = new Date().toISOString();
+            evento.usuarioId = window.auth?.getUsuarioAtual()?.id;
+            eventos.unshift(evento);
+            localStorage.setItem('eventos', JSON.stringify(eventos));
+
+            esconderFormEvento();
+            carregarEventos();
+            mostrarToast('✅ Evento criado com sucesso!', 'sucesso');
+        });
+
+        function carregarEventos() {
+            const container = document.getElementById('lista-eventos');
+            const usuario = window.auth?.getUsuarioAtual();
+            const eventos = JSON.parse(localStorage.getItem('eventos') || '[]');
+            
+            // Ordenar do mais recente ao mais antigo
+            eventos.sort((a, b) => new Date(b.dataCriacao) - new Date(a.dataCriacao));
+
+            const eventosFiltrados = eventos.filter(evt => 
+                evt.visibilidade === 'publico' || evt.usuarioId === usuario?.id
+            );
+
+            if (eventosFiltrados.length === 0) {
+                container.innerHTML = `
+                    <div class="estado-vazio" style="grid-column: 1 / -1;">
+                        <div class="vazio-icone">📅</div>
+                        <h4 class="vazio-titulo">Nenhum evento ainda</h4>
+                        <p class="vazio-descricao">Crie o primeiro evento!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = eventosFiltrados.map(evt => {
+                const videoId = extrairIdYoutube(evt.link);
+                const dataInicio = new Date(evt.dataInicio + 'T' + (evt.hora || '00:00'));
+                const dia = dataInicio.getDate().toString().padStart(2, '0');
+                const mes = dataInicio.toLocaleString('pt', { month: 'short' }).toUpperCase();
+
+                return `
+                    <div class="card-evento" style="overflow: hidden;">
+                        ${videoId ? `
+                            <div style="position: relative; padding-bottom: 56.25%; height: 0; margin: -1rem -1rem 1rem -1rem;">
+                                <iframe src="https://www.youtube.com/embed/${videoId}" 
+                                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                        ` : ''}
+                        <div class="data-evento">
+                            <span class="dia-evento">${dia}</span>
+                            <span class="mes-evento">${mes}</span>
+                        </div>
+                        <div class="info-evento">
+                            <span class="tipo-evento">${evt.visibilidade === 'publico' ? '🌍 Público' : '🔒 Privado'}</span>
+                            <h4 class="nome-evento">${evt.artista}</h4>
+                            ${evt.descricao ? `<p style="font-size: 0.8rem; color: var(--texto-secundario);">${evt.descricao}</p>` : ''}
+                            <div style="display: flex; gap: 1rem; margin-top: 0.5rem; font-size: 0.75rem; color: var(--texto-terciario);">
+                                ${evt.hora ? `<span>🕐 ${evt.hora}</span>` : ''}
+                                ${evt.local ? `<span>📍 ${evt.local}</span>` : ''}
+                            </div>
+                            <div style="font-size: 0.7rem; color: var(--texto-terciario); margin-top: 0.25rem;">
+                                📆 ${formatarData(evt.dataInicio)} → ${formatarData(evt.dataFim)}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function extrairIdYoutube(url) {
+            const regex = /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+            const match = url.match(regex);
+            return match ? match[1] : null;
+        }
+
+        function formatarData(data) {
+            if (!data) return '';
+            const d = new Date(data + 'T00:00:00');
+            return d.toLocaleDateString('pt');
+        }
+
+        function mostrarToast(msg, tipo) {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${tipo}`;
+            toast.innerHTML = `<span class="toast-mensagem">${msg}</span>`;
+            document.querySelector('.toast-container')?.appendChild(toast);
+            setTimeout(() => { toast.classList.add('saindo'); setTimeout(() => toast.remove(), 300); }, 3000);
+        }
     </script>
 </body>
 </html>
