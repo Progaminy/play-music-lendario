@@ -237,7 +237,8 @@ function configurarFormRegisto() {
         const senha = document.getElementById('reg-senha').value;
         const pais = document.getElementById('reg-pais').value;
         const provincia = document.getElementById('reg-provincia').value.trim();
-        const lingua = document.getElementById('reg-lingua').value.trim();
+       // const lingua = document.getElementById('reg-lingua').value.trim(); apaguei no html sem limgua
+   
 
         // Validações
         if (!nome) {
@@ -280,11 +281,7 @@ function configurarFormRegisto() {
             return;
         }
 
-        if (!lingua) {
-            mostrarErroRegisto('Língua preferida é obrigatória.');
-            return;
-        }
-
+       
         // Criar usuário
         const novoUsuario = {
             id: 'user-' + Date.now(),
@@ -293,7 +290,6 @@ function configurarFormRegisto() {
             telefone: metodo === 'telefone' ? codigoPais + telefone : '',
             pais: pais,
             provincia: provincia,
-            lingua: lingua,
             fotoPerfil: document.getElementById('reg-foto')?.value || '',
             contactoShow: document.getElementById('reg-contacto-show')?.value || '',
             blog: document.getElementById('reg-blog')?.value || '',
