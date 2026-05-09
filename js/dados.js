@@ -14,18 +14,18 @@ const DB = {
     artistas: [
         {
             id: 'artista-1',
-            nome: 'Anselmo Ralph',
-            nomeCompleto: 'Anselmo Ralph Andrade Cordeiro',
-            pais: 'Angola',
-            provincia: 'Luanda',
+            nome: 'Allan 2',
+            nomeCompleto: 'mwihipiti buanamade nkussete',
+            pais: 'Nampula',
+            provincia: 'Namicopo Confins',
             dataNascimento: '1981-03-12',
             genero: ['Kizomba', 'R&B', 'Semba'],
-            lingua: ['Português', 'Inglês'],
-            biografia: `Anselmo Ralph é um dos maiores nomes da música angolana e africana. Com uma carreira que começou ainda adolescente, conquistou fãs em todo o mundo lusófono com a sua voz inconfundível e presença de palco magnética.
+            lingua: ['Português', 'Inglês', 'Macua'],
+            biografia: `Allan 2 é um dos maiores nomes da música Mozambique e africana. Com uma carreira que começou ainda adolescente, conquistou fãs em todo o mundo lusófono com a sua voz inconfundível e presença de palco magnética.
 
-Nascido em Luanda, Anselmo descobriu a sua paixão pela música ainda muito jovem. O seu primeiro álbum, lançado em 2006, marcou o início de uma carreira repleta de sucessos que atravessam fronteiras.
+Nascido na Ilha de moc. Allan 2 descobriu a sua paixão pela música ainda muito jovem. O seu primeiro álbum, lançado em 2005, marcou o início de uma carreira repleta de sucessos que atravessam fronteiras.
 
-Com vários discos de platina e ouro, Anselmo Ralph é reconhecido como um dos artistas mais influentes da música africana contemporânea, tendo colaborado com artistas internacionais e realizado concertos em arenas lotadas por todo o mundo.
+Allan 2 é reconhecido como um dos artistas mais influentes da música africana contemporânea, tendo colaborado com artistas internacionais e realizado concertos em arenas lotadas por todo o mundo.
 
 A sua música combina ritmos tradicionais angolanos com R&B contemporâneo, criando uma sonoridade única que conquista todas as gerações.`,
 
@@ -33,21 +33,21 @@ A sua música combina ritmos tradicionais angolanos com R&B contemporâneo, cria
             fotoCapa: 'assets/imagens/artista1/capa.jpg',
             fotoGaleria: [
                 'assets/imagens/artista1/foto1.jpg',
-                'assets/imagens/artista1/foto2.jpg',
-                'assets/imagens/artista1/foto3.jpg'
+                'assets/imagens/artista1/foto1.jpg',
+                'assets/imagens/artista1/foto1.jpg'
             ],
 
             redesSociais: {
-                youtube: 'https://youtube.com/@AnselmoRalphOficial',
-                instagram: 'https://instagram.com/anselmoralph',
-                tiktok: 'https://tiktok.com/@anselmoralph',
-                facebook: 'https://facebook.com/AnselmoRalphOficial',
-                twitter: 'https://twitter.com/anselmoralph'
+                youtube: '<iframe width="560" height="315" src="https://www.youtube.com/embed/tiYtpx9_zRo?si=n-cOJxmml0IstMvO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>',
+                instagram: '<iframe width="560" height="315" src="https://www.youtube.com/embed/vc41hn0hrmM?si=ZSPywLxVPQM2jAnQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>',
+                tiktok: '<iframe width="560" height="315" src="https://www.youtube.com/embed/QHeucalcPwA?si=9wSpjYkj3RvZE0i0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>',
+                facebook: '<iframe width="537" height="576" src="https://www.youtube.com/embed/Xen7J09fxGc" title="Vota no Allan 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>',
+                twitter: '<iframe width="537" height="576" src="https://www.youtube.com/embed/Xen7J09fxGc" title="Vota no Allan 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>'
             },
 
-            blog: 'https://anselmoralph.com/blog',
-            contactoShow: '+244 9XX XXX XXX',
-            emailContacto: 'booking@anselmoralph.com',
+            blog: '<iframe width="315" height="576" src="https://www.youtube.com/embed/UGkbfyQ23J8" title="Allan2-Nthete [La_Formiga Music 2024] #viralvideo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>',
+            contactoShow: '+258 xxx xxx x',
+            emailContacto: 'booking@allan.com',
 
             status: 'contratado',
             dataContrato: '2025-01-15',
@@ -56,16 +56,16 @@ A sua música combina ritmos tradicionais angolanos com R&B contemporâneo, cria
         },
         {
             id: 'artista-2',
-            nome: 'C4 Pedro',
-            nomeCompleto: 'C4 Pedro Henriques',
-            pais: 'Angola',
-            provincia: 'Luanda',
+            nome: 'Contemporaneo',
+            nomeCompleto: 'Alito Filoso Contemporaneo',
+            pais: 'Moc',
+            provincia: 'Nampula',
             dataNascimento: '1983-07-07',
             genero: ['Kizomba', 'Afrobeat', 'Pop'],
             lingua: ['Português', 'Inglês', 'Francês'],
-            biografia: `C4 Pedro é um fenómeno da música angolana que conquistou o mundo com o seu estilo único e carismático. Conhecido como "King Ckwa", revolucionou a kizomba moderna com uma abordagem inovadora que mistura tradição e modernidade.
+            biografia: `Contemporaneo é um fenómeno da música Namicopense que conquistou o mundo com o seu estilo único e carismático. Conhecido como "Filoso contemporaneo", revolucionou a kizomba moderna com uma abordagem inovadora que mistura tradição e modernidade.
 
-A sua jornada musical começou nas ruas de Luanda, onde desenvolveu um estilo próprio que mais tarde se tornaria a sua assinatura artística. Com álbuns de grande sucesso e colaborações internacionais, C4 Pedro tornou-se um embaixador da cultura angolana.
+A sua jornada musical começou nas ruas de Namicopo, onde desenvolveu um estilo próprio que mais tarde se tornaria a sua assinatura artística. Com álbuns de grande sucesso e colaborações internacionais, Contemporaneo tornou-se um embaixador da cultura Namocopense.
 
 A sua presença digital é massiva, com milhões de seguidores em todas as plataformas, e os seus videoclipes acumulam centenas de milhões de visualizações. C4 Pedro é mais do que um músico: é um ícone cultural que inspira toda uma geração.`,
 
@@ -78,16 +78,16 @@ A sua presença digital é massiva, com milhões de seguidores em todas as plata
             ],
 
             redesSociais: {
-                youtube: 'https://youtube.com/@C4PedroOficial',
-                instagram: 'https://instagram.com/c4pedro',
-                tiktok: 'https://tiktok.com/@c4pedrooficial',
-                facebook: 'https://facebook.com/C4PedroOficial',
-                twitter: 'https://twitter.com/c4pedro'
+                youtube: '<iframe width="560" height="315" src="https://www.youtube.com/embed/FKourGUJXVQ?si=BEJ2PTssAyeCOqSz" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>',
+                instagram: '<iframe width="560" height="315" src="https://www.youtube.com/embed/Z7v5WmwI0TM?si=YEh71fRcRy3Kxqvo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>',
+                tiktok: '<iframe width="537" height="576" src="https://www.youtube.com/embed/k7VNgCpTO60" title="ALLAN2- ILHÉU (#La_formigaMusic2025)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>',
+                facebook: '#',
+                twitter: '#'
             },
 
             blog: 'https://c4pedro.com/blog',
-            contactoShow: '+244 9XX XXX XXX',
-            emailContacto: 'booking@c4pedro.com',
+            contactoShow: '+258 8XX XXX XXX',
+            emailContacto: 'booking@contemporaneo.com',
 
             status: 'contratado',
             dataContrato: '2025-02-20',
@@ -222,7 +222,7 @@ Num amor tão puro`,
             lingua: 'Português',
             duracao: '3:58',
             capa: 'assets/imagens/artista2/musica1.jpg',
-            linkYoutube: 'https://www.youtube.com/watch?v=EXEMPLO3',
+            linkYoutube: '<iframe allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" frameborder="0" height="175" style="width:100%;max-width:660px;overflow:hidden;border-radius:10px;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/pt/song/o-recado-feat-allan-2/1823460360"></iframe>',
             letra: `[Estrofe 1]
 Se eu soubesse que era assim
 Não tinha brincado com o amor
@@ -274,7 +274,7 @@ Tu és a mulher, razão do meu viver`,
             lingua: 'Português',
             duracao: '4:05',
             capa: 'assets/imagens/artista3/musica1.jpg',
-            linkYoutube: 'https://www.youtube.com/watch?v=EXEMPLO5',
+            linkYoutube: '<iframe width="560" height="315" src="https://www.youtube.com/embed/70eGas1iYgA?si=k0XuwGLo-dbqktyV" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>',
             letra: `[Estrofe 1]
 O mundo pode cair
 As estrelas apagar
@@ -300,7 +300,7 @@ Porque maior é o nosso amor`,
             lingua: 'Português',
             duracao: '4:18',
             capa: 'assets/imagens/artista3/musica2.svg',
-            linkYoutube: 'https://www.youtube.com/watch?v=EXEMPLO6',
+            linkYoutube: '<iframe width="560" height="315" src="https://www.youtube.com/embed/FF0wvIV5K4k?si=e9-B6KmyA22GC1G2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>',
             letra: `[Estrofe 1]
 Nós dois, perdidos no momento
 O mundo lá fora, indiferente

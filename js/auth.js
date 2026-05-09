@@ -237,9 +237,7 @@ function configurarFormRegisto() {
         const senha = document.getElementById('reg-senha').value;
         const pais = document.getElementById('reg-pais').value;
         const provincia = document.getElementById('reg-provincia').value.trim();
-       // const lingua = document.getElementById('reg-lingua').value.trim(); apaguei no html sem limgua
-   
-
+       
         // Validações
         if (!nome) {
             mostrarErroRegisto('Nome completo é obrigatório.');
