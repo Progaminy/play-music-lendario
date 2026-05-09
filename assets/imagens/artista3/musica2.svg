@@ -1,0 +1,27 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad-a3m2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f06292;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d81b60;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="400" height="400" fill="url(#grad-a3m2)"/>
+  
+  <!-- Diagonal stripes -->
+  <g stroke="#fff" stroke-width="2" opacity="0.15">
+    <line x1="0" y1="0" x2="400" y2="400"/>
+    <line x1="50" y1="0" x2="400" y2="350"/>
+    <line x1="100" y1="0" x2="400" y2="300"/>
+    <line x1="150" y1="0" x2="400" y2="250"/>
+    <line x1="200" y1="0" x2="400" y2="200"/>
+  </g>
+  
+  <!-- Play button -->
+  <circle cx="200" cy="180" r="50" fill="#fff" opacity="0.2"/>
+  <polygon points="170,160 170,200 220,180" fill="#fff" opacity="0.85"/>
+  
+  <text x="200" y="320" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#fff">
+    Música 2 - Artista 3
+  </text>
+</svg>

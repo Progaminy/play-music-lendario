@@ -1,0 +1,739 @@
+/* =============================================
+   MUSICA ALENDARIA - Do Zero ao Infinito
+   Criado por Pensador Sem Fronteira
+   ARQUIVO: mobile.css - Estilos Mobile First
+   ============================================= */
+
+/* ========== LAYOUT BASE MOBILE ========== */
+body {
+    padding-bottom: calc(var(--player-altura) + var(--espaco-md));
+    padding-top: 0;
+}
+
+/* ========== CONTAINER LOGIN/REGISTO ========== */
+.container-login {
+    width: 100%;
+    min-height: 100vh;
+    padding: var(--espaco-lg) var(--espaco-md);
+    padding-bottom: calc(var(--espaco-2xl) + 80px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 440px;
+    margin: 0 auto;
+}
+
+/* ========== LOGO AREA ========== */
+.logo-area {
+    text-align: center;
+    margin-bottom: var(--espaco-xl);
+}
+
+.logo {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto var(--espaco-md);
+    border-radius: var(--borda-raio-lg);
+    box-shadow: var(--sombra);
+}
+
+.nome-plataforma {
+    font-size: var(--tamanho-2xl);
+    font-weight: 800;
+    background: var(--gradiente-primario);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--espaco-xs);
+}
+
+.slogan {
+    font-size: var(--tamanho-sm);
+    color: var(--texto-terciario);
+    font-style: italic;
+}
+
+/* ========== MOSTRAR SENHA ========== */
+.mostrar-senha {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: var(--tamanho-lg);
+    user-select: none;
+    opacity: 0.6;
+    transition: opacity var(--transicao-rapida);
+}
+
+.mostrar-senha:hover {
+    opacity: 1;
+}
+
+.campo {
+    position: relative;
+}
+
+.campo input[type="password"],
+.campo input[type="text"] {
+    padding-right: 44px;
+}
+
+/* ========== NAVEGAÇÃO INFERIOR (MOBILE) ========== */
+.nav-mobile {
+    display: flex;
+    position: fixed;
+    bottom: var(--player-altura);
+    left: 0;
+    right: 0;
+    background: var(--fundo-card);
+    border-top: 1px solid var(--borda);
+    z-index: calc(var(--z-player) - 1);
+    padding: var(--espaco-xs) 0;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: var(--espaco-xs) var(--espaco-sm);
+    color: var(--texto-terciario);
+    font-size: var(--tamanho-xs);
+    font-weight: 500;
+    transition: all var(--transicao-rapida);
+    background: transparent;
+}
+
+.nav-item .icon-nav {
+    font-size: 22px;
+    transition: transform var(--transicao-rapida);
+}
+
+.nav-item.ativo {
+    color: var(--cor-primaria);
+}
+
+.nav-item.ativo .icon-nav {
+    transform: scale(1.2);
+}
+
+.nav-item:active .icon-nav {
+    transform: scale(0.9);
+}
+
+/* ========== GRID DE ARTISTAS (MOBILE) ========== */
+.grid-artistas {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--espaco-md);
+    padding: var(--espaco-md);
+}
+
+/* ========== LISTA DE MÚSICAS ========== */
+.lista-musicas {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaco-xs);
+    padding: var(--espaco-md);
+}
+
+/* ========== GRID DE EVENTOS (MOBILE) ========== */
+.grid-eventos {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--espaco-md);
+    padding: var(--espaco-md);
+}
+
+/* ========== PÁGINA DO ARTISTA ========== */
+.pagina-artista .capa-artista {
+    position: relative;
+    width: 100%;
+    height: 240px;
+    overflow: hidden;
+}
+
+.pagina-artista .capa-artista img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.pagina-artista .capa-artista .overlay-artista {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: var(--espaco-xl) var(--espaco-md);
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    color: #ffffff;
+}
+
+.pagina-artista .info-artista {
+    padding: var(--espaco-lg) var(--espaco-md);
+}
+
+.pagina-artista .foto-perfil-artista {
+    width: 100px;
+    height: 100px;
+    border-radius: var(--borda-raio-full);
+    border: 4px solid var(--fundo-card);
+    margin-top: -50px;
+    position: relative;
+    z-index: 2;
+}
+
+.pagina-artista .redes-artista {
+    display: flex;
+    gap: var(--espaco-sm);
+    flex-wrap: wrap;
+    padding: var(--espaco-md);
+}
+
+.pagina-artista .link-rede {
+    display: flex;
+    align-items: center;
+    gap: var(--espaco-xs);
+    padding: 8px 14px;
+    background: var(--fundo-secundario);
+    border-radius: 20px;
+    font-size: var(--tamanho-sm);
+    color: var(--texto-principal);
+    font-weight: 500;
+    transition: all var(--transicao-rapida);
+}
+
+.pagina-artista .link-rede:hover {
+    background: var(--cor-primaria);
+    color: #ffffff;
+}
+
+/* ========== PLAYER FIXO (MOBILE) ========== */
+.player-fixo {
+    display: grid;
+    grid-template-columns: 48px 1fr auto auto;
+    gap: var(--espaco-sm);
+    align-items: center;
+    height: var(--player-altura);
+    padding: 0 var(--espaco-md);
+}
+
+.player-fixo .player-capa {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--borda-raio-sm);
+    object-fit: cover;
+}
+
+.player-fixo .player-info {
+    min-width: 0;
+}
+
+.player-fixo .player-titulo {
+    font-size: var(--tamanho-sm);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--texto-principal);
+}
+
+.player-fixo .player-artista {
+    font-size: var(--tamanho-xs);
+    color: var(--texto-terciario);
+}
+
+.player-fixo .player-controles {
+    display: flex;
+    align-items: center;
+    gap: var(--espaco-sm);
+}
+
+.player-fixo .btn-player {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--borda-raio-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    background: transparent;
+    color: var(--texto-principal);
+}
+
+.player-fixo .btn-play {
+    width: 44px;
+    height: 44px;
+    background: var(--gradiente-primario);
+    color: #ffffff;
+    font-size: 20px;
+    box-shadow: 0 4px 15px rgba(108, 60, 224, 0.3);
+}
+
+.player-fixo .btn-player:active {
+    transform: scale(0.9);
+}
+
+.player-fixo .player-progresso {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--borda);
+}
+
+.player-fixo .player-progresso-preenchido {
+    height: 100%;
+    background: var(--gradiente-primario);
+    border-radius: 0 2px 2px 0;
+    transition: width 0.3s linear;
+}
+
+/* ========== PÁGINA DA MÚSICA ========== */
+.pagina-musica .capa-musica {
+    width: 100%;
+    aspect-ratio: 1;
+    max-height: 360px;
+    object-fit: cover;
+    border-radius: 0;
+}
+
+.pagina-musica .detalhes-musica {
+    padding: var(--espaco-lg) var(--espaco-md);
+}
+
+.pagina-musica .titulo-musica {
+    font-size: var(--tamanho-xl);
+    font-weight: 700;
+    margin-bottom: var(--espaco-xs);
+}
+
+.pagina-musica .artista-musica {
+    font-size: var(--tamanho-md);
+    color: var(--cor-primaria);
+    font-weight: 500;
+    margin-bottom: var(--espaco-md);
+}
+
+.pagina-musica .meta-musica {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--espaco-sm);
+    margin-bottom: var(--espaco-lg);
+}
+
+.pagina-musica .meta-item {
+    padding: 6px 12px;
+    background: var(--fundo-secundario);
+    border-radius: 20px;
+    font-size: var(--tamanho-xs);
+    color: var(--texto-secundario);
+    font-weight: 500;
+}
+
+.pagina-musica .acoes-musica {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--espaco-sm);
+    margin-bottom: var(--espaco-lg);
+}
+
+.pagina-musica .btn-acao {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    border-radius: 25px;
+    font-size: var(--tamanho-sm);
+    font-weight: 600;
+    background: var(--fundo-secundario);
+    color: var(--texto-principal);
+}
+
+.pagina-musica .btn-acao.primario {
+    background: var(--gradiente-primario);
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(108, 60, 224, 0.3);
+}
+
+.pagina-musica .letra-musica {
+    padding: var(--espaco-md);
+    background: var(--fundo-secundario);
+    border-radius: var(--borda-raio-md);
+    white-space: pre-line;
+    font-size: var(--tamanho-sm);
+    line-height: 1.8;
+    max-height: 200px;
+    overflow-y: auto;
+    position: relative;
+}
+
+.pagina-musica .letra-musica.bloqueada {
+    max-height: 80px;
+    overflow: hidden;
+}
+
+.pagina-musica .letra-musica.bloqueada::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(transparent, var(--fundo-secundario));
+}
+
+/* ========== FORMULÁRIO DE POSTAGEM ========== */
+.form-postagem {
+    padding: var(--espaco-lg) var(--espaco-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaco-md);
+}
+
+.form-postagem .preview-capa {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    border-radius: var(--borda-raio-md);
+    background: var(--fundo-secundario);
+}
+
+.form-postagem .radio-group {
+    display: flex;
+    gap: var(--espaco-md);
+}
+
+.form-postagem .radio-opcao {
+    display: flex;
+    align-items: center;
+    gap: var(--espaco-xs);
+    font-size: var(--tamanho-sm);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* ========== PERFIL DO USUÁRIO ========== */
+.perfil-header {
+    text-align: center;
+    padding: var(--espaco-xl) var(--espaco-md);
+}
+
+.perfil-header .foto-perfil {
+    width: 100px;
+    height: 100px;
+    border-radius: var(--borda-raio-full);
+    object-fit: cover;
+    margin: 0 auto var(--espaco-md);
+    border: 3px solid var(--cor-primaria);
+}
+
+.perfil-header .nome-usuario {
+    font-size: var(--tamanho-xl);
+    font-weight: 700;
+}
+
+.perfil-header .localizacao {
+    font-size: var(--tamanho-sm);
+    color: var(--texto-terciario);
+}
+
+.perfil-redes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--espaco-sm);
+    justify-content: center;
+    padding: 0 var(--espaco-md) var(--espaco-lg);
+}
+
+.perfil-secoes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaco-lg);
+    padding: var(--espaco-md);
+}
+
+.secao-perfil h3 {
+    font-size: var(--tamanho-md);
+    margin-bottom: var(--espaco-md);
+    color: var(--texto-principal);
+}
+
+/* ========== FAVORITOS ========== */
+.favoritos-tabs {
+    display: flex;
+    gap: var(--espaco-xs);
+    padding: var(--espaco-md);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.favoritos-tab {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: var(--tamanho-sm);
+    font-weight: 500;
+    background: var(--fundo-secundario);
+    color: var(--texto-secundario);
+    white-space: nowrap;
+}
+
+.favoritos-tab.ativo {
+    background: var(--cor-primaria);
+    color: #ffffff;
+}
+
+/* ========== DEFINIÇÕES ========== */
+.definicoes-lista {
+    padding: var(--espaco-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaco-xs);
+}
+
+.definicao-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--espaco-md);
+    background: var(--fundo-card);
+    border-radius: var(--borda-raio-sm);
+    border: 1px solid var(--borda);
+}
+
+.definicao-item .label-definicao {
+    font-weight: 500;
+    font-size: var(--tamanho-sm);
+}
+
+/* ========== SWITCH TOGGLE ========== */
+.switch {
+    position: relative;
+    width: 52px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.switch .slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: var(--borda);
+    border-radius: 28px;
+    transition: var(--transicao-media);
+}
+
+.switch .slider::before {
+    content: '';
+    position: absolute;
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background: #ffffff;
+    border-radius: 50%;
+    transition: var(--transicao-media);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.switch input:checked + .slider {
+    background: var(--gradiente-primario);
+}
+
+.switch input:checked + .slider::before {
+    transform: translateX(24px);
+}
+
+/* ========== MODAL VÍDEO ========== */
+.modal-video .modal-conteudo {
+    width: 95vw;
+    max-width: 800px;
+    padding: 0;
+    overflow: hidden;
+    background: #000000;
+}
+
+.modal-video .video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+}
+
+.modal-video .video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.modal-video .fechar-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    color: #ffffff;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+/* ========== BOTÃO FLUTUANTE (POSTAR) ========== */
+.btn-flutuante {
+    position: fixed;
+    bottom: calc(var(--player-altura) + 80px);
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--gradiente-secundario);
+    color: #ffffff;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(224, 36, 94, 0.4);
+    z-index: 50;
+    transition: all var(--transicao-media);
+}
+
+.btn-flutuante:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 25px rgba(224, 36, 94, 0.6);
+}
+
+/* ========== LISTA DE PLATAFORMAS REGISTADAS ========== */
+.lista-plataformas {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--espaco-sm);
+    padding: var(--espaco-md);
+}
+
+.plataforma-item {
+    display: flex;
+    align-items: center;
+    gap: var(--espaco-sm);
+    padding: var(--espaco-md);
+    background: var(--fundo-card);
+    border: 1px solid var(--borda);
+    border-radius: var(--borda-raio-md);
+    cursor: pointer;
+    transition: all var(--transicao-rapida);
+}
+
+.plataforma-item:hover {
+    border-color: var(--cor-primaria);
+    box-shadow: var(--sombra);
+}
+
+.plataforma-item .icon-plataforma {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--borda-raio-sm);
+}
+
+/* ========== TIMER 30s ========== */
+.timer-30s {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: rgba(247, 183, 49, 0.15);
+    color: var(--cor-destaque);
+    border-radius: 20px;
+    font-size: var(--tamanho-xs);
+    font-weight: 700;
+}
+
+.timer-30s.esgotado {
+    background: rgba(224, 36, 94, 0.15);
+    color: var(--cor-secundaria);
+}
+
+/* ========== BARRA DE PROGRESSO 30s ========== */
+.barra-30s {
+    width: 100%;
+    height: 4px;
+    background: var(--borda);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.barra-30s-preenchida {
+    height: 100%;
+    background: var(--gradiente-destaque);
+    border-radius: 2px;
+    transition: width 0.1s linear;
+}
+
+.barra-30s-preenchida.esgotada {
+    background: var(--gradiente-secundario);
+}
+
+/* ========== MENSAGEM DE APROVAÇÃO/REJEIÇÃO ========== */
+.mensagem-sistema {
+    padding: var(--espaco-md);
+    border-radius: var(--borda-raio-md);
+    margin: var(--espaco-md);
+    font-size: var(--tamanho-sm);
+    font-weight: 500;
+}
+
+.mensagem-sistema.aprovado {
+    background: rgba(0, 201, 167, 0.1);
+    color: var(--cor-acento);
+    border: 1px solid rgba(0, 201, 167, 0.3);
+}
+
+.mensagem-sistema.rejeitado {
+    background: rgba(224, 36, 94, 0.1);
+    color: var(--cor-secundaria);
+    border: 1px solid rgba(224, 36, 94, 0.3);
+}
+
+/* ========== RESPONSIVIDADE MÍNIMA ========== */
+@media (max-width: 360px) {
+    html {
+        font-size: 14px;
+    }
+
+    .grid-artistas {
+        grid-template-columns: 1fr;
+        gap: var(--espaco-sm);
+    }
+
+    .container-login {
+        padding: var(--espaco-md) var(--espaco-sm);
+    }
+}
+
+@media (min-width: 480px) {
+    .grid-artistas {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .grid-eventos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .pagina-musica .capa-musica {
+        border-radius: var(--borda-raio-md);
+    }
+}

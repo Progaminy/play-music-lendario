@@ -1,0 +1,24 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad-a2album" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7b1fa2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4a148c;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="400" height="400" fill="url(#grad-a2album)"/>
+  
+  <circle cx="100" cy="100" r="35" fill="#fff" opacity="0.25"/>
+  <circle cx="320" cy="150" r="50" fill="#fff" opacity="0.2"/>
+  <circle cx="150" cy="320" r="40" fill="#fff" opacity="0.15"/>
+  
+  <g transform="translate(160, 140)" opacity="0.9">
+    <circle cx="30" cy="80" r="20" fill="#fff"/>
+    <rect x="48" y="15" width="6" height="65" fill="#fff"/>
+    <circle cx="75" cy="45" r="18" fill="none" stroke="#fff" stroke-width="3"/>
+  </g>
+  
+  <text x="200" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#fff">
+    Álbum 2 - Artista 2
+  </text>
+</svg>

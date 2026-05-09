@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Definições - Musica Alendaria</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/lit.css">
+    <link rel="stylesheet" href="css/dark.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="css/desktop.css">
+    <link rel="stylesheet" href="css/animacoes.css">
+    <link rel="stylesheet" href="css/player.css">
+    <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/componentes.css">
+    
+    <link rel="icon" href="assets/imagens/logo-lit.png" type="image/png">
+    <meta name="theme-color" content="#6c3ce0">
+</head>
+<body class="tema-lit">
+
+    <div class="marca-dagua">Criado por Pensador Sem Fronteira</div>
+
+    <!-- HEADER DESKTOP -->
+    <header class="header header-desktop desktop-only">
+        <div class="header-logo">
+            <a href="index.html" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+                <img src="assets/imagens/logo-lit.png" alt="Logo" style="width: 36px; height: 36px; border-radius: 8px;">
+                <span style="font-weight: 700; font-size: 1.1rem; background: var(--gradiente-primario); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Musica Alendaria</span>
+            </a>
+        </div>
+        <nav class="nav-desktop">
+            <a href="index.html" class="nav-link">🏠 Home</a>
+            <a href="artista.html" class="nav-link">🎤 Artistas</a>
+            <a href="eventos.html" class="nav-link">📅 Eventos</a>
+            <a href="favoritos.html" class="nav-link">❤️ Favoritos</a>
+            <a href="postar.html" class="nav-link">📤 Postar</a>
+        </nav>
+        <div class="header-acoes">
+            <a href="perfil.html"><img src="assets/imagens/avatar-padrao.svg" alt="Perfil" class="avatar usuario-avatar"></a>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="container" style="padding-bottom: calc(var(--player-altura) + 80px);">
+        
+        <!-- TÍTULO E VOLTAR -->
+        <div class="animar-entrada-cima" style="padding: 1rem; display: flex; align-items: center; gap: 1rem;">
+            <a href="perfil.html" class="btn-icone" title="Voltar" style="font-size: 1.2rem;">←</a>
+            <h1 style="font-size: 1.5rem;">⚙️ Definições</h1>
+        </div>
+
+        <!-- LISTA DE DEFINIÇÕES -->
+        <div class="definicoes-lista" style="padding: 0 1rem;">
+            
+            <!-- TEMA -->
+            <div class="definicao-item animar-entrada-cima" style="animation-delay: 0.05s;">
+                <div>
+                    <span class="label-definicao">🌓 Tema Dark</span>
+                    <p style="font-size: 0.75rem; color: var(--texto-terciario);">Alternar entre modo claro e escuro</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="switch-tema" class="switch-tema-input">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <!-- NOTIFICAÇÕES -->
+            <div class="definicao-item animar-entrada-cima" style="animation-delay: 0.1s;">
+                <div>
+                    <span class="label-definicao">🔔 Notificações</span>
+                    <p style="font-size: 0.75rem; color: var(--texto-terciario);">Receber notificações de aprovações e novidades</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="switch-notificacoes" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <!-- MODO OFFLINE -->
+            <div class="definicao-item animar-entrada-cima" style="animation-delay: 0.15s;">
+                <div>
+                    <span class="label-definicao">📡 Modo Offline</span>
+                    <p style="font-size: 0.75rem; color: var(--texto-terciario);">Ativar modo offline (apenas conteúdo baixado)</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="switch-offline">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <!-- REPRODUÇÃO AUTOMÁTICA -->
+            <div class="definicao-item animar-entrada-cima" style="animation-delay: 0.2s;">
+                <div>
+                    <span class="label-definicao">▶ Reprodução Automática</span>
+                    <p style="font-size: 0.75rem; color: var(--texto-terciario);">Tocar próxima música automaticamente</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="switch-autoplay" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <!-- QUALIDADE DE DOWNLOAD -->
+            <div class="definicao-item animar-entrada-cima" style="animation-delay: 0.25s;">
+                <div>
+                    <span class="label-definicao">⬇ Qualidade de Download</span>
+                    <p style="font-size: 0.75rem; color: var(--texto-terciario);">Qualidade padrão para downloads offline</p>
+                </div>
+                <select id="qualidade-download" style="width: auto; padding: 6px 12px; font-size: 0.85rem;">
+                    <option value="baixa">Baixa (MP3 128kbps)</option>
+                    <option value="media" selected>Média (MP3 256kbps)</option>
+                    <option value="alta">Alta (MP3 320kbps)</option>
+                </select>
+            </div>
+
+        </div>
+
+        <!-- SEÇÃO DE DADOS -->
+        <div style="padding: 1rem; margin-top: 1.5rem;">
+            <h3 style="margin-bottom: 1rem;">💾 Dados e Armazenamento</h3>
+            
+            <div class="definicao-item animar-entrada-cima">
+                <div>
+                    <span class="label-definicao">🗑️ Limpar Cache Offline</span>
+                    <p style="font-size: 0.75rem; color: var(--texto-terciario);">Remove todas as músicas baixadas</p>
+                </div>
+                <button class="btn btn-perigo btn-pequeno" onclick="window.offline?.limparCache()">
+                    Limpar
+                </button>
+            </div>
+
+            <div class="definicao-item animar-entrada-cima" style="animation-delay: 0.05s;">
+                <div>
+                    <span class="label-definicao">📊 Espaço Usado</span>
+                    <p style="font-size: 0.75rem; color: var(--texto-terciario);" id="espaco-usado-info">Calculando...</p>
+                </div>
+                <span style="font-weight: 600; font-size: 0.9rem;" id="espaco-usado-valor">-- MB</span>
+            </div>
+        </div>
+
+        <!-- SEÇÃO DE SUPORTE -->
+        <div style="padding: 1rem; margin-top: 1rem;">
+            <h3 style="margin-bottom: 1rem;">📞 Suporte</h3>
+            
+            <div class="definicao-item animar-entrada-cima">
+                <div>
+                    <span class="label-definicao">❓ Central de Ajuda</span>
+                    <p style="font-size: 0.75rem; color: var(--texto-terciario);">Contacte-nos por WhatsApp, Telegram ou outros canais</p>
+                </div>
+                <button class="btn btn-secundario btn-pequeno" onclick="window.modal?.suporte()">
+                    Abrir
+                </button>
+            </div>
+        </div>
+
+        <!-- SEÇÃO SOBRE -->
+        <div style="padding: 1rem; margin-top: 1rem; text-align: center;">
+            <p style="color: var(--texto-terciario); font-size: 0.8rem;">
+                🎵 <strong>Musica Alendaria</strong><br>
+                "Do Zero ao Infinito"<br>
+                Criado por <strong>Pensador Sem Fronteira</strong><br>
+                Versão 1.0.0
+            </p>
+        </div>
+
+    </main>
+
+    <!-- NAVEGAÇÃO MOBILE -->
+    <nav class="nav-mobile mobile-only">
+        <button class="nav-item" data-nav="index"><span class="icon-nav">🏠</span><span>Home</span></button>
+        <button class="nav-item" data-nav="favoritos"><span class="icon-nav">❤️</span><span>Favoritos</span></button>
+        <button class="nav-item" data-nav="postar"><span class="icon-nav">➕</span><span>Postar</span></button>
+        <button class="nav-item" data-nav="eventos"><span class="icon-nav">📅</span><span>Eventos</span></button>
+        <button class="nav-item" data-nav="perfil"><span class="icon-nav">👤</span><span>Perfil</span></button>
+    </nav>
+
+    <!-- PLAYER FIXO -->
+    <div class="player-fixo">
+        <div class="player-progresso-container">
+            <div class="player-progresso-preenchido" style="width: 0%;"></div>
+        </div>
+        <img src="assets/imagens/placeholder.svg" alt="Capa" class="player-capa">
+        <div class="player-info">
+            <div class="player-titulo">Nenhuma música</div>
+            <div class="player-artista">Selecione uma música</div>
+        </div>
+        <div class="player-controles">
+            <button class="btn-player btn-favorito">🤍</button>
+        </div>
+        <button class="btn-player btn-play">▶</button>
+    </div>
+
+    <div class="toast-container"></div>
+
+    <!-- SCRIPTS -->
+    <script src="js/dados.js"></script>
+    <script src="js/tema.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/modal.js"></script>
+    <script src="js/favoritos.js"></script>
+    <script src="js/filtros.js"></script>
+    <script src="js/eventos.js"></script>
+    <script src="js/postagem.js"></script>
+    <script src="js/offline.js"></script>
+    <script src="js/suporte.js"></script>
+    <script src="js/app.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!window.auth?.isAutenticado()) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Configurar switch de tema
+            const switchTema = document.getElementById('switch-tema');
+            if (switchTema) {
+                switchTema.checked = window.tema?.isDark() || false;
+                switchTema.addEventListener('change', function() {
+                    window.tema?.aplicar(this.checked ? 'dark' : 'lit');
+                });
+            }
+
+            // Switch de notificações
+            const switchNotif = document.getElementById('switch-notificacoes');
+            if (switchNotif) {
+                const usuario = window.auth?.getUsuarioAtual();
+                switchNotif.checked = usuario?.definicoes?.notificacoes !== false;
+                switchNotif.addEventListener('change', function() {
+                    const usuario = window.auth?.getUsuarioAtual();
+                    if (usuario) {
+                        if (!usuario.definicoes) usuario.definicoes = {};
+                        usuario.definicoes.notificacoes = this.checked;
+                        window.auth.atualizarPerfil({ definicoes: usuario.definicoes });
+                    }
+                });
+            }
+
+            // Switch modo offline
+            const switchOffline = document.getElementById('switch-offline');
+            if (switchOffline) {
+                switchOffline.addEventListener('change', function() {
+                    window.offline?.toggleModo();
+                });
+            }
+
+            // Qualidade de download
+            const selectQualidade = document.getElementById('qualidade-download');
+            if (selectQualidade) {
+                selectQualidade.addEventListener('change', function() {
+                    const estado = window.offline?.getEstado();
+                    if (estado) {
+                        estado.qualidade = this.value;
+                    }
+                });
+            }
+
+            // Atualizar espaço usado
+            atualizarEspacoUsado();
+        });
+
+        function atualizarEspacoUsado() {
+            const estado = window.offline?.getEstado();
+            if (estado) {
+                const usado = estado.espacoUsado || 0;
+                const total = estado.espacoTotal || 500;
+                document.getElementById('espaco-usado-valor').textContent = `${usado} MB / ${total} MB`;
+                document.getElementById('espaco-usado-info').textContent = 
+                    `${estado.downloads?.length || 0} itens offline`;
+            }
+        }
+    </script>
+
+</body>
+</html>

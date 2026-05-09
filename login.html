@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Musica Alendaria - Do Zero ao Infinito</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/lit.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="css/animacoes.css">
+</head>
+<body class="tema-lit">
+
+    <!-- MARCA D'ÁGUA ROTATIVA -->
+    <div class="marca-dagua">Criado por Pensador Sem Fronteira</div>
+
+    <!-- CONTAINER PRINCIPAL -->
+    <main class="container-login">
+
+        <!-- LOGO -->
+        <div class="logo-area">
+            <img src="assets/imagens/logo-lit.jpeg" alt="Musica Alendaria" class="logo">
+            <h1 class="nome-plataforma">Musica Alendaria</h1>
+            <p class="slogan">Do Zero ao Infinito</p>
+        </div>
+
+        <!-- TABS LOGIN / REGISTO -->
+        <div class="tabs-auth">
+            <button class="tab-ativo" id="tab-login">Entrar</button>
+            <button class="tab-inativo" id="tab-registo">Criar Conta</button>
+        </div>
+
+        <!-- FORMULÁRIO DE LOGIN -->
+        <form id="form-login" class="form-auth">
+            <div class="campo">
+                <label for="login-email">Email ou Telefone</label>
+                <input type="text" id="login-email" placeholder="pensador@email.com ou +258 8XX XXX XXX" required>
+            </div>
+
+            <div class="campo">
+                <label for="login-senha">Senha</label>
+                <input type="password" id="login-senha" placeholder="••••••••" required>
+                <span class="mostrar-senha">👁️</span>
+            </div>
+
+            <button type="submit" class="btn-principal">Entrar</button>
+        </form>
+
+        <!-- FORMULÁRIO DE REGISTO (inicialmente escondido) -->
+        <form id="form-registo" class="form-auth hidden">
+            
+            <!-- MÉTODO DE REGISTO -->
+            <div class="metodo-registo">
+                <button type="button" class="btn-metodo ativo" data-metodo="email">Email</button>
+                <button type="button" class="btn-metodo" data-metodo="telefone">Telefone</button>
+            </div>
+
+            <!-- CAMPOS EMAIL -->
+            <div id="campos-email">
+                <div class="campo">
+                    <label for="reg-email">Email</label>
+                    <input type="email" id="reg-email" placeholder="email@exemplo.com">
+                </div>
+            </div>
+
+            <!-- CAMPOS TELEFONE (inicialmente escondido) -->
+            <div id="campos-telefone" class="hidden">
+                <div class="campo">
+                    <label for="reg-codigo-pais">Código do País</label>
+                    <select id="reg-codigo-pais">
+                        <option value="+258">🇲🇿 Moçambique (+258)</option>
+                        <option value="+351">🇵🇹 Portugal (+351)</option>
+                        <option value="+55">🇧🇷 Brasil (+55)</option>
+                        <option value="+238">🇨🇻 Cabo Verde (+238)</option>
+                        <option value="+239">🇸🇹 São Tomé (+239)</option>
+                        <option value="+258">🇦🇴 Angola (+244)</option>
+                        <option value="+244">🇬🇼 Guiné-Bissau (+245)</option>
+                    </select>
+                </div>
+                <div class="campo">
+                    <label for="reg-telefone">Número de Telefone</label>
+                    <input type="tel" id="reg-telefone" placeholder="+258 XXX XXX">
+                </div>
+            </div>
+
+            <!-- CAMPOS OBRIGATÓRIOS -->
+            <div class="campo">
+                <label for="reg-nome">Nome Completo</label>
+                <input type="text" id="reg-nome" placeholder="Seu nome completo" required>
+            </div>
+
+            <div class="campo">
+                <label for="reg-senha">Senha</label>
+                <input type="password" id="reg-senha" placeholder="••••••••" required>
+                <span class="mostrar-senha">👁️</span>
+            </div>
+
+            <div class="campo">
+                <label for="reg-pais">País</label>
+                <select id="reg-pais" required>
+                    <option value="">Selecionar país</option>
+                    <option value="aMoçambique">Moçambiquea</option>
+                    <option value="Portugal">Portugal</option>
+                    <option value="Brasil">Brasil</option>
+                    <option value="Cabo Verde">Cabo Verde</option>
+                    <option value="São Tomé e Príncipe">São Tomé e Príncipe</option>
+                    <option value="Angola">Angola</option>
+                    <option value="Guiné-Bissau">Guiné-Bissau</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label for="reg-provincia">Província / Estado</label>
+                <input type="text" id="reg-provincia" placeholder="Sua província ou estado" required>
+            </div>
+
+            
+            </div>
+
+            <!-- CAMPOS OPCIONAIS (colapsáveis) -->
+            <button type="button" class="btn-opcionais" id="btn-opcionais">
+                + Informações Opcionais (Redes Sociais, Blog, Contacto para Show)
+            </button>
+
+            <div id="campos-opcionais" class="hidden">
+                <div class="campo">
+                    <label for="reg-foto">Foto de Perfil (URL)</label>
+                    <input type="url" id="reg-foto" placeholder="https://...">
+                </div>
+                <div class="campo">
+                    <label for="reg-contacto-show">Contacto para Show</label>
+                    <input type="text" id="reg-contacto-show" placeholder="Telefone ou email profissional">
+                </div>
+                <div class="campo">
+                    <label for="reg-blog">Blog Pessoal</label>
+                    <input type="url" id="reg-blog" placeholder="https://...">
+                </div>
+                <div class="campo">
+                    <label for="reg-youtube">Canal YouTube Oficial</label>
+                    <input type="url" id="reg-youtube" placeholder="https://youtube.com/@...">
+                </div>
+                <div class="campo">
+                    <label for="reg-tiktok">TikTok Oficial</label>
+                    <input type="url" id="reg-tiktok" placeholder="https://tiktok.com/@...">
+                </div>
+                <div class="campo">
+                    <label for="reg-instagram">Instagram Oficial</label>
+                    <input type="url" id="reg-instagram" placeholder="https://instagram.com/...">
+                </div>
+                <div class="campo">
+                    <label for="reg-outras-redes">Outras Redes Sociais</label>
+                    <input type="url" id="reg-outras-redes" placeholder="https://...">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-principal">Criar Conta</button>
+        </form>
+
+       
+
+    </main>
+
+
+    <!-- SCRIPTS - ORDEM CORRETA -->
+    <script src="js/dados.js"></script>      <!-- 1º: Dados -->
+    <script src="js/tema.js"></script>       <!-- 2º: Tema -->
+    <script src="js/auth.js"></script>       <!-- 3º: Auth (usa DB) -->
+</body>
+</html>

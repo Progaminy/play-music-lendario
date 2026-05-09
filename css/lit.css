@@ -1,0 +1,495 @@
+/* =============================================
+   MUSICA ALENDARIA - Do Zero ao Infinito
+   Criado por Pensador Sem Fronteira
+   ARQUIVO: lit.css - Tema Lit (Claro) Inicial
+   ============================================= */
+
+/* ========== TEMA LIT - VARIÁVEIS ========== */
+.tema-lit {
+    --fundo-principal: #f8f9fa;
+    --fundo-secundario: #f0f2f5;
+    --fundo-card: #ffffff;
+    --fundo-card-hover: #fafafa;
+    --fundo-input: #f0f2f5;
+    --fundo-input-foco: #ffffff;
+    --texto-principal: #1a1a2e;
+    --texto-secundario: #4a4a5a;
+    --texto-terciario: #8a8a9a;
+    --texto-inverso: #ffffff;
+    --borda: #e2e4e9;
+    --borda-foco: #6c3ce0;
+    --sombra-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --sombra: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --sombra-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+    --sombra-xl: 0 20px 60px rgba(0, 0, 0, 0.15);
+    --overlay: rgba(0, 0, 0, 0.5);
+    --brilho: none;
+    --neon: none;
+}
+
+/* ========== CORPO ========== */
+.tema-lit body {
+    background-color: var(--fundo-principal);
+    color: var(--texto-principal);
+}
+
+/* ========== HEADER ========== */
+.tema-lit .header {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--borda);
+}
+
+/* ========== CARDS ========== */
+.tema-lit .card {
+    background: var(--fundo-card);
+    border: 1px solid var(--borda);
+    border-radius: var(--borda-raio-md);
+    box-shadow: var(--sombra-sm);
+    transition: all var(--transicao-media);
+}
+
+.tema-lit .card:hover {
+    box-shadow: var(--sombra);
+    border-color: var(--cor-primaria);
+    transform: translateY(-2px);
+}
+
+/* ========== CARD DE MÚSICA ========== */
+.tema-lit .card-musica {
+    display: flex;
+    align-items: center;
+    gap: var(--espaco-md);
+    padding: var(--espaco-md);
+    background: var(--fundo-card);
+    border: 1px solid var(--borda);
+    border-radius: var(--borda-raio-md);
+    cursor: pointer;
+    transition: all var(--transicao-media);
+}
+
+.tema-lit .card-musica:hover {
+    background: var(--fundo-card-hover);
+    border-color: var(--cor-primaria);
+    box-shadow: var(--sombra);
+}
+
+.tema-lit .card-musica .capa {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--borda-raio-sm);
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.tema-lit .card-musica .info {
+    flex: 1;
+    min-width: 0;
+}
+
+.tema-lit .card-musica .titulo {
+    font-weight: 700;
+    font-size: var(--tamanho-base);
+    color: var(--texto-principal);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tema-lit .card-musica .artista {
+    font-size: var(--tamanho-sm);
+    color: var(--texto-secundario);
+}
+
+.tema-lit .card-musica .duracao {
+    font-size: var(--tamanho-xs);
+    color: var(--texto-terciario);
+    flex-shrink: 0;
+}
+
+/* ========== CARD DE ARTISTA ========== */
+.tema-lit .card-artista {
+    text-align: center;
+    padding: var(--espaco-lg);
+    background: var(--fundo-card);
+    border: 1px solid var(--borda);
+    border-radius: var(--borda-raio-lg);
+    transition: all var(--transicao-media);
+}
+
+.tema-lit .card-artista:hover {
+    box-shadow: var(--sombra-lg);
+    transform: translateY(-4px);
+}
+
+.tema-lit .card-artista .foto-artista {
+    width: 100px;
+    height: 100px;
+    border-radius: var(--borda-raio-full);
+    object-fit: cover;
+    margin: 0 auto var(--espaco-md);
+    border: 3px solid var(--cor-primaria);
+}
+
+.tema-lit .card-artista .nome-artista {
+    font-weight: 700;
+    font-size: var(--tamanho-lg);
+    color: var(--texto-principal);
+}
+
+.tema-lit .card-artista .genero {
+    font-size: var(--tamanho-sm);
+    color: var(--cor-primaria);
+    font-weight: 500;
+}
+
+/* ========== CARD DE EVENTO ========== */
+.tema-lit .card-evento {
+    padding: var(--espaco-md);
+    background: var(--fundo-card);
+    border: 1px solid var(--borda);
+    border-radius: var(--borda-raio-md);
+    border-left: 4px solid var(--cor-secundaria);
+    transition: all var(--transicao-media);
+}
+
+.tema-lit .card-evento:hover {
+    box-shadow: var(--sombra);
+}
+
+.tema-lit .card-evento .data-evento {
+    font-size: var(--tamanho-sm);
+    color: var(--cor-secundaria);
+    font-weight: 700;
+}
+
+.tema-lit .card-evento .tipo-evento {
+    display: inline-block;
+    padding: 2px 10px;
+    background: rgba(224, 36, 94, 0.1);
+    color: var(--cor-secundaria);
+    border-radius: 20px;
+    font-size: var(--tamanho-xs);
+    font-weight: 600;
+}
+
+/* ========== FORMULÁRIOS ========== */
+.tema-lit .form-auth {
+    background: var(--fundo-card);
+    padding: var(--espaco-xl);
+    border-radius: var(--borda-raio-lg);
+    box-shadow: var(--sombra);
+}
+
+.tema-lit .campo {
+    margin-bottom: var(--espaco-md);
+}
+
+.tema-lit input,
+.tema-lit select,
+.tema-lit textarea {
+    background: var(--fundo-input);
+    border: 2px solid var(--borda);
+    color: var(--texto-principal);
+}
+
+.tema-lit input:focus,
+.tema-lit select:focus,
+.tema-lit textarea:focus {
+    background: var(--fundo-input-foco);
+    border-color: var(--borda-foco);
+    box-shadow: 0 0 0 4px rgba(108, 60, 224, 0.1);
+}
+
+.tema-lit label {
+    color: var(--texto-secundario);
+    font-weight: 600;
+}
+
+/* ========== TABS (LOGIN/REGISTO) ========== */
+.tema-lit .tabs-auth {
+    display: flex;
+    background: var(--fundo-secundario);
+    border-radius: var(--borda-raio-md);
+    padding: 4px;
+    gap: 4px;
+    margin-bottom: var(--espaco-lg);
+}
+
+.tema-lit .tab-ativo {
+    flex: 1;
+    padding: 12px;
+    background: var(--fundo-card);
+    color: var(--cor-primaria);
+    border-radius: var(--borda-raio-sm);
+    font-weight: 700;
+    font-size: var(--tamanho-sm);
+    box-shadow: var(--sombra-sm);
+}
+
+.tema-lit .tab-inativo {
+    flex: 1;
+    padding: 12px;
+    background: transparent;
+    color: var(--texto-secundario);
+    border-radius: var(--borda-raio-sm);
+    font-weight: 500;
+    font-size: var(--tamanho-sm);
+}
+
+.tema-lit .tab-inativo:hover {
+    background: rgba(108, 60, 224, 0.05);
+    color: var(--cor-primaria);
+}
+
+/* ========== BOTÕES DE MÉTODO (EMAIL/TELEFONE) ========== */
+.tema-lit .metodo-registo {
+    display: flex;
+    gap: var(--espaco-sm);
+    margin-bottom: var(--espaco-lg);
+}
+
+.tema-lit .btn-metodo {
+    flex: 1;
+    padding: 10px;
+    background: var(--fundo-secundario);
+    color: var(--texto-secundario);
+    border-radius: var(--borda-raio-sm);
+    font-weight: 500;
+    font-size: var(--tamanho-sm);
+    border: 2px solid transparent;
+}
+
+.tema-lit .btn-metodo.ativo {
+    background: rgba(108, 60, 224, 0.1);
+    color: var(--cor-primaria);
+    border-color: var(--cor-primaria);
+    font-weight: 700;
+}
+
+/* ========== BOTÃO OPCIONAIS ========== */
+.tema-lit .btn-opcionais {
+    width: 100%;
+    padding: 12px;
+    background: var(--fundo-secundario);
+    color: var(--texto-secundario);
+    border-radius: var(--borda-raio-sm);
+    font-size: var(--tamanho-sm);
+    font-weight: 500;
+    margin-bottom: var(--espaco-lg);
+    text-align: left;
+    border: 1px dashed var(--borda);
+}
+
+.tema-lit .btn-opcionais:hover {
+    background: rgba(108, 60, 224, 0.05);
+    color: var(--cor-primaria);
+    border-color: var(--cor-primaria);
+}
+
+/* ========== SUPORTE ========== */
+.tema-lit .suporte-login {
+    margin-top: var(--espaco-xl);
+    padding: var(--espaco-lg);
+    background: var(--fundo-card);
+    border-radius: var(--borda-raio-lg);
+    box-shadow: var(--sombra);
+    text-align: center;
+}
+
+.tema-lit .suporte-login p {
+    font-weight: 600;
+    color: var(--texto-secundario);
+    margin-bottom: var(--espaco-md);
+}
+
+.tema-lit .botoes-suporte {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--espaco-sm);
+    justify-content: center;
+}
+
+.tema-lit .btn-suporte {
+    display: flex;
+    align-items: center;
+    gap: var(--espaco-xs);
+    padding: 10px 16px;
+    background: var(--fundo-secundario);
+    color: var(--texto-principal);
+    border-radius: 25px;
+    font-size: var(--tamanho-sm);
+    font-weight: 500;
+    border: 1px solid var(--borda);
+    transition: all var(--transicao-rapida);
+}
+
+.tema-lit .btn-suporte:hover {
+    background: var(--cor-primaria);
+    color: #ffffff;
+    border-color: var(--cor-primaria);
+    transform: translateY(-1px);
+}
+
+.tema-lit .btn-suporte img {
+    width: 18px;
+    height: 18px;
+}
+
+/* ========== MODAL ========== */
+.tema-lit .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--overlay);
+    z-index: var(--z-modal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tema-lit .modal-conteudo {
+    background: var(--fundo-card);
+    border-radius: var(--borda-raio-lg);
+    padding: var(--espaco-xl);
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--sombra-xl);
+}
+
+/* ========== PLAYER FIXO ========== */
+.tema-lit .player-fixo {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--borda);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* ========== FILTROS ========== */
+.tema-lit .barra-filtros {
+    display: flex;
+    gap: var(--espaco-sm);
+    padding: var(--espaco-md);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.tema-lit .filtro-tag {
+    padding: 8px 16px;
+    background: var(--fundo-card);
+    border: 1px solid var(--borda);
+    border-radius: 25px;
+    font-size: var(--tamanho-sm);
+    color: var(--texto-secundario);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all var(--transicao-rapida);
+}
+
+.tema-lit .filtro-tag:hover {
+    border-color: var(--cor-primaria);
+    color: var(--cor-primaria);
+}
+
+.tema-lit .filtro-tag.ativo {
+    background: var(--cor-primaria);
+    color: #ffffff;
+    border-color: var(--cor-primaria);
+}
+
+/* ========== BADGE/ETIQUETA ========== */
+.tema-lit .badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: var(--tamanho-xs);
+    font-weight: 600;
+}
+
+.tema-lit .badge-publico {
+    background: rgba(0, 201, 167, 0.1);
+    color: var(--cor-acento);
+}
+
+.tema-lit .badge-privado {
+    background: rgba(224, 36, 94, 0.1);
+    color: var(--cor-secundaria);
+}
+
+.tema-lit .badge-pendente {
+    background: rgba(247, 183, 49, 0.1);
+    color: var(--cor-destaque);
+}
+
+/* ========== NOTIFICAÇÃO ========== */
+.tema-lit .notificacao {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: var(--z-notificacao);
+    padding: 16px 20px;
+    background: var(--fundo-card);
+    border-radius: var(--borda-raio-md);
+    box-shadow: var(--sombra-lg);
+    border-left: 4px solid var(--cor-acento);
+    animation: slideIn var(--transicao-media) ease;
+}
+
+.tema-lit .notificacao.erro {
+    border-left-color: var(--cor-secundaria);
+}
+
+/* ========== BOTÃO DESTRANCAR ========== */
+.tema-lit .btn-destrancar {
+    display: flex;
+    align-items: center;
+    gap: var(--espaco-sm);
+    padding: 12px 20px;
+    background: var(--gradiente-primario);
+    color: #ffffff;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: var(--tamanho-sm);
+    box-shadow: 0 4px 15px rgba(108, 60, 224, 0.3);
+}
+
+.tema-lit .btn-destrancar:hover {
+    box-shadow: 0 6px 25px rgba(108, 60, 224, 0.5);
+    transform: translateY(-2px);
+}
+
+/* ========== LOADING ========== */
+.tema-lit .loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--espaco-2xl);
+}
+
+.tema-lit .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--borda);
+    border-top-color: var(--cor-primaria);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ========== VAZIO ========== */
+.tema-lit .estado-vazio {
+    text-align: center;
+    padding: var(--espaco-2xl);
+    color: var(--texto-terciario);
+}
+
+.tema-lit .estado-vazio .icone-vazio {
+    font-size: 48px;
+    margin-bottom: var(--espaco-md);
+    opacity: 0.5;
+}

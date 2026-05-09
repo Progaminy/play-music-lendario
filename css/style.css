@@ -1,0 +1,318 @@
+/* =============================================
+   MUSICA ALENDARIA - Do Zero ao Infinito
+   Criado por Pensador Sem Fronteira
+   ARQUIVO: style.css - Variáveis e Estilos Globais
+   ============================================= */
+
+/* ========== VARIÁVEIS CSS ========== */
+:root {
+    /* --- Tema Lit (Claro) - Padrão Inicial --- */
+    --fundo-principal: #f8f9fa;
+    --fundo-card: #ffffff;
+    --fundo-input: #f0f0f0;
+    --texto-principal: #1a1a2e;
+    --texto-secundario: #555555;
+    --texto-terciario: #888888;
+    --borda: #e0e0e0;
+    --sombra: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --sombra-hover: 0 8px 30px rgba(0, 0, 0, 0.15);
+
+    /* --- Cores Vibrantes --- */
+    --cor-primaria: #6c3ce0;
+    --cor-primaria-hover: #5a2fd0;
+    --cor-secundaria: #e0245e;
+    --cor-secundaria-hover: #c01d4e;
+    --cor-acento: #00c9a7;
+    --cor-acento-hover: #00a88c;
+    --cor-destaque: #f7b731;
+    --cor-destaque-hover: #e5a620;
+
+    /* --- Gradientes --- */
+    --gradiente-primario: linear-gradient(135deg, #6c3ce0, #a855f7);
+    --gradiente-secundario: linear-gradient(135deg, #e0245e, #f7436e);
+    --gradiente-acento: linear-gradient(135deg, #00c9a7, #00d9b9);
+    --gradiente-destaque: linear-gradient(135deg, #f7b731, #ffc94b);
+    --gradiente-dark: linear-gradient(135deg, #1a1a2e, #16213e);
+
+    /* --- Tipografia --- */
+    --fonte-principal: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+    --fonte-titulos: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+    --tamanho-xs: 0.75rem;
+    --tamanho-sm: 0.875rem;
+    --tamanho-base: 1rem;
+    --tamanho-md: 1.125rem;
+    --tamanho-lg: 1.25rem;
+    --tamanho-xl: 1.5rem;
+    --tamanho-2xl: 2rem;
+    --tamanho-3xl: 2.5rem;
+
+    /* --- Espaçamentos --- */
+    --espaco-xs: 0.25rem;
+    --espaco-sm: 0.5rem;
+    --espaco-md: 1rem;
+    --espaco-lg: 1.5rem;
+    --espaco-xl: 2rem;
+    --espaco-2xl: 3rem;
+
+    /* --- Bordas --- */
+    --borda-raio-sm: 8px;
+    --borda-raio-md: 12px;
+    --borda-raio-lg: 20px;
+    --borda-raio-full: 50%;
+
+    /* --- Transições --- */
+    --transicao-rapida: 0.15s ease;
+    --transicao-media: 0.3s ease;
+    --transicao-lenta: 0.5s ease;
+
+    /* --- Player --- */
+    --player-altura: 72px;
+
+    /* --- Z-index --- */
+    --z-marca-dagua: 10;
+    --z-header: 100;
+    --z-modal: 1000;
+    --z-player: 2000;
+    --z-notificacao: 3000;
+
+    /* --- Tema Dark (será aplicado via classe) --- */
+}
+
+/* ========== RESET E ESTILOS GLOBAIS ========== */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: var(--fonte-principal);
+    background-color: var(--fundo-principal);
+    color: var(--texto-principal);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background-color var(--transicao-media), color var(--transicao-media);
+}
+
+/* ========== TIPOGRAFIA ========== */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--fonte-titulos);
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+h1 { font-size: var(--tamanho-3xl); }
+h2 { font-size: var(--tamanho-2xl); }
+h3 { font-size: var(--tamanho-xl); }
+h4 { font-size: var(--tamanho-lg); }
+
+a {
+    color: var(--cor-primaria);
+    text-decoration: none;
+    transition: color var(--transicao-rapida);
+}
+
+a:hover {
+    color: var(--cor-primaria-hover);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ========== UTILITÁRIAS ========== */
+.hidden {
+    display: none !important;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ========== MARCA D'ÁGUA ROTATIVA ========== */
+.marca-dagua {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: var(--z-marca-dagua);
+    font-size: var(--tamanho-xs);
+    color: var(--texto-terciario);
+    opacity: 0.5;
+    writing-mode: horizontal-tb;
+    animation: rodar-marca 20s linear infinite;
+    pointer-events: none;
+    user-select: none;
+}
+
+@keyframes rodar-marca {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ========== SCROLLBAR ========== */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--cor-primaria);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--cor-primaria-hover);
+}
+
+/* ========== SELEÇÃO DE TEXTO ========== */
+::selection {
+    background: var(--cor-primaria);
+    color: #ffffff;
+}
+
+/* ========== FOCO DE ACESSIBILIDADE ========== */
+:focus-visible {
+    outline: 2px solid var(--cor-acento);
+    outline-offset: 2px;
+}
+
+/* ========== BOTÕES BASE ========== */
+button {
+    cursor: pointer;
+    font-family: var(--fonte-principal);
+    border: none;
+    outline: none;
+    transition: all var(--transicao-rapida);
+}
+
+button:active {
+    transform: scale(0.96);
+}
+
+.btn-principal {
+    display: block;
+    width: 100%;
+    padding: 14px 24px;
+    background: var(--gradiente-primario);
+    color: #ffffff;
+    font-size: var(--tamanho-base);
+    font-weight: 600;
+    border-radius: var(--borda-raio-md);
+    box-shadow: 0 4px 15px rgba(108, 60, 224, 0.3);
+    letter-spacing: 0.5px;
+}
+
+.btn-principal:hover {
+    box-shadow: 0 6px 25px rgba(108, 60, 224, 0.5);
+    transform: translateY(-1px);
+}
+
+/* ========== INPUTS BASE ========== */
+input,
+select,
+textarea {
+    font-family: var(--fonte-principal);
+    font-size: var(--tamanho-base);
+    padding: 12px 16px;
+    border: 2px solid var(--borda);
+    border-radius: var(--borda-raio-sm);
+    background-color: var(--fundo-input);
+    color: var(--texto-principal);
+    transition: all var(--transicao-rapida);
+    width: 100%;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 0 4px rgba(108, 60, 224, 0.1);
+    outline: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--texto-terciario);
+}
+
+label {
+    display: block;
+    font-size: var(--tamanho-sm);
+    font-weight: 600;
+    margin-bottom: var(--espaco-xs);
+    color: var(--texto-secundario);
+}
+
+/* ========== CONTAINER PADRÃO ========== */
+.container {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 var(--espaco-md);
+}
+
+@media (min-width: 768px) {
+    .container {
+        max-width: 720px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container {
+        max-width: 960px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .container {
+        max-width: 1200px;
+    }
+}
+
+/* ========== HEADER PADRÃO ========== */
+.header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background-color: var(--fundo-card);
+    border-bottom: 1px solid var(--borda);
+    padding: var(--espaco-sm) var(--espaco-md);
+    backdrop-filter: blur(10px);
+}
+
+/* ========== PLAYER FIXO BASE ========== */
+.player-fixo {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--player-altura);
+    background-color: var(--fundo-card);
+    border-top: 1px solid var(--borda);
+    z-index: var(--z-player);
+    display: flex;
+    align-items: center;
+    padding: 0 var(--espaco-md);
+}

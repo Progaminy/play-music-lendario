@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favoritos - Musica Alendaria</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/lit.css">
+    <link rel="stylesheet" href="css/dark.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="css/desktop.css">
+    <link rel="stylesheet" href="css/animacoes.css">
+    <link rel="stylesheet" href="css/player.css">
+    <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/componentes.css">
+    
+    <link rel="icon" href="assets/imagens/logo-lit.png" type="image/png">
+    <meta name="theme-color" content="#6c3ce0">
+</head>
+<body class="tema-lit">
+
+    <div class="marca-dagua">Criado por Pensador Sem Fronteira</div>
+
+    <!-- HEADER DESKTOP -->
+    <header class="header header-desktop desktop-only">
+        <div class="header-logo">
+            <a href="index.html" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+                <img src="assets/imagens/logo-lit.png" alt="Logo" style="width: 36px; height: 36px; border-radius: 8px;">
+                <span style="font-weight: 700; font-size: 1.1rem; background: var(--gradiente-primario); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Musica Alendaria</span>
+            </a>
+        </div>
+        <nav class="nav-desktop">
+            <a href="index.html" class="nav-link">🏠 Home</a>
+            <a href="artista.html" class="nav-link">🎤 Artistas</a>
+            <a href="eventos.html" class="nav-link">📅 Eventos</a>
+            <a href="favoritos.html" class="nav-link ativo">❤️ Favoritos</a>
+            <a href="postar.html" class="nav-link">📤 Postar</a>
+        </nav>
+        <div class="header-acoes">
+            <button class="btn-icone btn-alternar-tema" onclick="window.tema?.alternar()">🌓</button>
+            <a href="perfil.html"><img src="assets/imagens/avatar-padrao.svg" alt="Perfil" class="avatar usuario-avatar"></a>
+        </div>
+    </header>
+
+    <main class="container" style="padding-bottom: calc(var(--player-altura) + 80px);">
+        
+        <!-- TÍTULO E AÇÕES -->
+        <div class="animar-entrada-cima" style="padding: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+                <h1 style="font-size: 1.5rem;">❤️ Meus Favoritos</h1>
+                <p style="color: var(--texto-terciario); font-size: 0.85rem;">
+                    <span class="favoritos-contador">0</span> músicas favoritas
+                </p>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+                <button class="btn btn-secundario btn-pequeno" onclick="window.favoritos?.compartilhar()">
+                    📤 Partilhar
+                </button>
+                <button class="btn btn-secundario btn-pequeno" onclick="window.favoritos?.exportar()">
+                    📥 Exportar
+                </button>
+                <button class="btn btn-perigo btn-pequeno" onclick="window.favoritos?.limparTodos()">
+                    🗑️ Limpar
+                </button>
+            </div>
+        </div>
+
+        <!-- ORDENAÇÃO -->
+        <div style="padding: 0 1rem; margin-bottom: 0.5rem;">
+            <label for="ordenacao-favoritos" style="font-size: 0.8rem; color: var(--texto-terciario);">Ordenar por:</label>
+            <select id="ordenacao-favoritos" style="width: auto; padding: 6px 12px; font-size: 0.85rem;">
+                <option value="recente">🕐 Mais recentes</option>
+                <option value="titulo">🔤 Título (A-Z)</option>
+                <option value="artista">🎤 Artista (A-Z)</option>
+                <option value="genero">🎸 Gênero</option>
+                <option value="lingua">🌐 Língua</option>
+                <option value="ano">📅 Ano</option>
+            </select>
+        </div>
+
+        <!-- TABS DE AGRUPAMENTO -->
+        <div class="favoritos-tabs" style="padding: 0 1rem; margin-bottom: 1rem;">
+            <button class="favoritos-tab ativo" data-agrupamento="nenhum">📋 Tudo</button>
+            <button class="favoritos-tab" data-agrupamento="estilo">🎸 Por Estilo</button>
+            <button class="favoritos-tab" data-agrupamento="cantor">🎤 Por Cantor</button>
+            <button class="favoritos-tab" data-agrupamento="lingua">🌐 Por Língua</button>
+        </div>
+
+        <!-- LISTA DE FAVORITOS -->
+        <div class="favoritos-container" style="padding: 0 1rem;">
+            <!-- Preenchido pelo JS -->
+            <div class="loading-container">
+                <div class="spinner"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- NAVEGAÇÃO MOBILE -->
+    <nav class="nav-mobile mobile-only">
+        <button class="nav-item" data-nav="index"><span class="icon-nav">🏠</span><span>Home</span></button>
+        <button class="nav-item ativo" data-nav="favoritos"><span class="icon-nav">❤️</span><span>Favoritos</span></button>
+        <button class="nav-item" data-nav="postar"><span class="icon-nav">➕</span><span>Postar</span></button>
+        <button class="nav-item" data-nav="eventos"><span class="icon-nav">📅</span><span>Eventos</span></button>
+        <button class="nav-item" data-nav="perfil"><span class="icon-nav">👤</span><span>Perfil</span></button>
+    </nav>
+
+    <!-- PLAYER FIXO -->
+    <div class="player-fixo">
+        <div class="player-progresso-container">
+            <div class="player-progresso-preenchido" style="width: 0%;"></div>
+        </div>
+        <img src="assets/imagens/placeholder.svg" alt="Capa" class="player-capa">
+        <div class="player-info">
+            <div class="player-titulo">Nenhuma música</div>
+            <div class="player-artista">Selecione uma música</div>
+        </div>
+        <div class="player-controles">
+            <button class="btn-player btn-favorito">🤍</button>
+        </div>
+        <button class="btn-player btn-play">▶</button>
+    </div>
+
+    <div class="toast-container"></div>
+
+    <!-- SCRIPTS -->
+    <script src="js/dados.js"></script>
+    <script src="js/tema.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/modal.js"></script>
+    <script src="js/favoritos.js"></script>
+    <script src="js/filtros.js"></script>
+    <script src="js/eventos.js"></script>
+    <script src="js/postagem.js"></script>
+    <script src="js/offline.js"></script>
+    <script src="js/suporte.js"></script>
+    <script src="js/app.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!window.auth?.isAutenticado()) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Renderizar favoritos
+            setTimeout(() => {
+                window.favoritos?.renderizar();
+                atualizarContador();
+            }, 300);
+        });
+
+        function atualizarContador() {
+            const contador = document.querySelector('.favoritos-contador');
+            if (contador) {
+                contador.textContent = window.favoritos?.contar() || 0;
+            }
+        }
+
+        // Ouvir mudanças nos favoritos para atualizar contador
+        document.addEventListener('favoritos-atualizados', atualizarContador);
+    </script>
+
+</body>
+</html>

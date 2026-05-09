@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Música Lendária - Eventos</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/lit.css">
+    <link rel="stylesheet" href="css/dark.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="css/desktop.css">
+    <link rel="stylesheet" href="css/animacoes.css">
+    <link rel="stylesheet" href="css/player.css">
+    <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/componentes.css">
+
+    <link rel="icon" href="assets/imagens/logo-lit.png" type="image/png">
+    <meta name="description" content="Música Lendária - Eventos de artistas e shows.">
+    <meta name="theme-color" content="#6c3ce0">
+</head>
+<body class="tema-lit">
+
+    <div class="marca-dagua">Criado por Pensador Sem Fronteira</div>
+
+    <header class="header header-desktop desktop-only">
+        <div class="header-logo">
+            <a href="index.html" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+                <img src="assets/imagens/logo-lit.png" alt="Logo" style="width: 36px; height: 36px; border-radius: 8px;">
+                <span style="font-weight: 700; font-size: 1.1rem; background: var(--gradiente-primario); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Música Lendária</span>
+            </a>
+        </div>
+        <nav class="nav-desktop">
+            <a href="index.html" class="nav-link">🏠 Home</a>
+            <a href="artista.html" class="nav-link">🎤 Artistas</a>
+            <a href="eventos.html" class="nav-link ativo">📅 Eventos</a>
+            <a href="favoritos.html" class="nav-link">❤️ Favoritos</a>
+            <a href="postar.html" class="nav-link">📤 Postar</a>
+        </nav>
+        <div class="header-acoes">
+            <button class="btn-icone btn-alternar-tema" onclick="window.tema?.alternar()">🌓</button>
+            <a href="perfil.html" class="avatar-link" title="Meu Perfil">
+                <img src="assets/imagens/avatar-padrao.svg" alt="Perfil" class="avatar usuario-avatar" onerror="this.style.display='none'">
+            </a>
+        </div>
+    </header>
+
+    <main class="container conteudo-principal" style="padding: 2rem;">
+        <section class="secao-principal">
+            <h1>Eventos</h1>
+            <p>Confira os próximos eventos, shows e encontros dos artistas.</p>
+
+            <div class="card card-eventos" style="margin-top: 1.5rem; padding: 1.5rem; border-radius: 16px; background: rgba(255,255,255,0.92); box-shadow: 0 8px 24px rgba(0,0,0,0.08);">
+                <h2>Em construção</h2>
+                <p>Esta página foi criada para evitar o erro 404. Você pode adicionar o conteúdo de eventos aqui.</p>
+                <ul>
+                    <li>Lista de eventos</li>
+                    <li>Filtros por data</li>
+                    <li>Detalhes de local e hora</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/dados.js"></script>
+    <script src="js/tema.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/modal.js"></script>
+    <script src="js/favoritos.js"></script>
+    <script src="js/filtros.js"></script>
+    <script src="js/eventos.js"></script>
+    <script src="js/postagem.js"></script>
+    <script src="js/offline.js"></script>
+    <script src="js/suporte.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

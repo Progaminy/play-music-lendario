@@ -1,0 +1,60 @@
+musica-alendaria/
+│
+├── index.html                      # Página inicial (após login)
+├── login.html                      # Página de login/registo
+├── artista.html                    # Perfil do artista
+├── musica.html                     # Página individual da música
+├── perfil.html                     # Perfil do usuário
+├── favoritos.html                  # Favoritos do usuário
+├── eventos.html                    # Eventos
+├── postar.html                     # Nova postagem
+├── definicoes.html                 # Definições (tema, notificações)
+├── suporte.html                    # Página de suporte
+│
+├── css/
+│   ├── style.css                   # Estilos globais e variáveis
+│   ├── mobile.css                  # Estilos mobile first
+│   ├── desktop.css                 # Estilos para desktop
+│   ├── dark.css                    # Tema dark
+│   ├── lit.css                     # Tema lit (claro)
+│   ├── player.css                  # Player de música
+│   ├── modal.css                   # Modal de vídeo
+│   ├── animacoes.css              # Animações
+│   └── componentes.css            # Cards, botões, filtros
+│
+├── js/
+│   ├── app.js                      # Inicialização e configuração
+│   ├── tema.js                     # Alternância lit/dark
+│   ├── auth.js                     # Registo e login
+│   ├── player.js                   # Player com limite 30s
+│   ├── modal.js                    # Modal anti-navegação
+│   ├── favoritos.js               # Gestão de favoritos
+│   ├── filtros.js                  # Sistema de filtros
+│   ├── eventos.js                  # Criação e exibição de eventos
+│   ├── postagem.js                # Envio para aprovação
+│   ├── suporte.js                  # Links de suporte
+│   ├── offline.js                  # Download e modo offline
+│   └── dados.js                    # Dados mockados (3 artistas)
+│
+├── assets/
+│   ├── imagens/
+│   │   ├── logo-lit.png            # Logo modo claro
+│   │   ├── logo-dark.png           # Logo modo escuro
+│   │   ├── marca-dagua.png         # Marca d'água
+│   │   ├── artista1/               # Fotos artista 1
+│   │   ├── artista2/               # Fotos artista 2
+│   │   └── artista3/               # Fotos artista 3
+│   ├── icones/
+│   │   ├── whatsapp.svg
+│   │   ├── telegram.svg
+│   │   ├── telefone.svg
+│   │   ├── sms.svg
+│   │   └── ...
+│   └── musicas/
+│       ├── previews/               # Previews 30s
+│       └── offline/                # Conteúdo offline
+│
+└── docs/
+    └── plano-completo.md
+    
+    

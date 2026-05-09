@@ -1,0 +1,22 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad-a3m3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ec407a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c2185b;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="400" height="400" fill="url(#grad-a3m3)"/>
+  
+  <!-- Pulse circles -->
+  <circle cx="200" cy="200" r="70" fill="none" stroke="#fff" stroke-width="2" opacity="0.3"/>
+  <circle cx="200" cy="200" r="50" fill="none" stroke="#fff" stroke-width="2" opacity="0.4"/>
+  <circle cx="200" cy="200" r="30" fill="none" stroke="#fff" stroke-width="2" opacity="0.5"/>
+  
+  <!-- Central speaker -->
+  <polygon points="200,120 240,160 240,240 200,280 160,240 160,160" fill="#fff" opacity="0.15"/>
+  
+  <text x="200" y="320" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#fff">
+    Música 3 - Artista 3
+  </text>
+</svg>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Musica Alendaria - Do Zero ao Infinito</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/lit.css">
+    <link rel="stylesheet" href="css/dark.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="css/desktop.css">
+    <link rel="stylesheet" href="css/animacoes.css">
+    <link rel="stylesheet" href="css/player.css">
+    <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/componentes.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="assets/imagens/logo-lit.png" type="image/png">
+    
+    <!-- Meta tags -->
+    <meta name="description" content="Musica Alendaria - A sua plataforma de música com artistas reais. Do Zero ao Infinito.">
+    <meta name="theme-color" content="#6c3ce0">
+   <meta name="mobile-web-app-capable" content="yes">
+   <meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+<body class="tema-lit">
+
+    <!-- MARCA D'ÁGUA -->
+    <div class="marca-dagua">Criado por Pensador Sem Fronteira</div>
+
+    <!-- HEADER DESKTOP -->
+    <header class="header header-desktop desktop-only">
+        <div class="header-logo">
+            <a href="index.html" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+                <img src="assets/imagens/logo-lit.png" alt="Logo" style="width: 36px; height: 36px; border-radius: 8px;">
+                <span style="font-weight: 700; font-size: 1.1rem; background: var(--gradiente-primario); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Musica Alendaria</span>
+            </a>
+        </div>
+        <nav class="nav-desktop">
+            <a href="index.html" class="nav-link ativo">🏠 Home</a>
+            <a href="artista.html" class="nav-link">🎤 Artistas</a>
+            <a href="eventos.html" class="nav-link">📅 Eventos</a>
+            <a href="favoritos.html" class="nav-link">❤️ Favoritos</a>
+            <a href="postar.html" class="nav-link">📤 Postar</a>
+        </nav>
+        <div class="header-acoes">
+            <div class="search-bar" style="width: 240px;">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="busca-livre" placeholder="Buscar músicas, artistas...">
+                <span class="search-clear">✕</span>
+            </div>
+            <button class="btn-icone tooltip" data-tooltip="Notificações" onclick="window.modal?.abrir(window.app?.getNotificacoesHTML?.() || '<p>Nenhuma notificação</p>', {classeExtra: 'modal-suporte'})">
+                🔔
+                <span class="notificacoes-badge hidden" style="position: absolute; top: -2px; right: -2px; background: var(--cor-secundaria); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center;">0</span>
+            </button>
+            <a href="perfil.html" class="avatar-link" title="Meu Perfil">
+                <img src="assets/imagens/avatar-padrao.svg" alt="Perfil" class="avatar usuario-avatar" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22><circle cx=%2220%22 cy=%2220%22 r=%2220%22 fill=%22%236c3ce0%22/><text x=%2220%22 y=%2226%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2216%22>👤</text></svg>'"
+            </a>
+            <button class="btn-icone btn-alternar-tema tooltip" data-tooltip="Alternar tema" onclick="window.tema?.alternar()">
+                🌓
+            </button>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="container" style="padding-top: 1rem; padding-bottom: calc(var(--player-altura) + 80px);">
+        
+        <!-- BOAS-VINDAS -->
+        <section class="boas-vindas animar-entrada-cima" style="margin-bottom: 1.5rem;">
+            <h2 style="font-size: 1.5rem; margin-bottom: 0.25rem;">
+                👋 Bem-vindo, <span class="usuario-nome">Visitante</span>!
+            </h2>
+            <p style="color: var(--texto-terciario); font-size: 0.9rem;">
+                Continue de onde parou ou descubra novas músicas.
+            </p>
+        </section>
+
+        <!-- FILTROS RÁPIDOS -->
+        <section class="barra-filtros animar-entrada-cima" style="animation-delay: 0.1s;">
+            <span class="filtro-item ativo" data-filtro-tipo="" data-filtro-valor="">🔥 Todos</span>
+            <span class="filtro-item" data-filtro-tipo="estilo" data-filtro-valor="Kizomba">🎸 Kizomba</span>
+            <span class="filtro-item" data-filtro-tipo="estilo" data-filtro-valor="Semba">🥁 Semba</span>
+            <span class="filtro-item" data-filtro-tipo="estilo" data-filtro-valor="Afrobeat">🌍 Afrobeat</span>
+            <span class="filtro-item" data-filtro-tipo="estilo" data-filtro-valor="R&B">🎹 R&B</span>
+            <span class="filtro-item" data-filtro-tipo="estilo" data-filtro-valor="Música Romântica">💕 Romântica</span>
+        </section>
+
+        <!-- INDICADOR DE FILTROS ATIVOS -->
+        <div id="filtros-ativos-tags" class="hidden" style="padding: 0 1rem; margin-bottom: 0.5rem;"></div>
+
+        <!-- CONTADOR DE RESULTADOS -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 1rem; margin-bottom: 0.5rem;">
+            <span id="resultados-contador" style="font-size: 0.85rem; color: var(--texto-terciario);"></span>
+            <button id="limpar-filtros" class="btn-pequeno btn-secundario hidden" style="font-size: 0.75rem;">Limpar Filtros</button>
+        </div>
+
+        <!-- GRID DE MÚSICAS -->
+        <section class="grid-musicas" style="padding: 0 1rem;">
+            <!-- Será preenchido pelo JS -->
+            <div class="loading-container" style="grid-column: 1 / -1;">
+                <div class="spinner"></div>
+            </div>
+        </section>
+
+        <!-- EVENTOS PRÓXIMOS -->
+        <section style="margin-top: 2rem; padding: 0 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3 style="font-size: 1.2rem;">📅 Próximos Eventos</h3>
+                <a href="eventos.html" style="font-size: 0.85rem; color: var(--cor-primaria);">Ver todos →</a>
+            </div>
+            <div class="grid-eventos">
+                <!-- Será preenchido pelo JS -->
+            </div>
+        </section>
+
+        <!-- ARTISTAS EM DESTAQUE -->
+        <section style="margin-top: 2rem; padding: 0 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3 style="font-size: 1.2rem;">🎤 Artistas</h3>
+                <a href="artista.html" style="font-size: 0.85rem; color: var(--cor-primaria);">Ver todos →</a>
+            </div>
+            <div class="grid-artistas">
+                <!-- Será preenchido pelo JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- NAVEGAÇÃO MOBILE -->
+    <nav class="nav-mobile mobile-only">
+        <button class="nav-item ativo" data-nav="index">
+            <span class="icon-nav">🏠</span>
+            <span>Home</span>
+        </button>
+        <button class="nav-item" data-nav="favoritos">
+            <span class="icon-nav">❤️</span>
+            <span>Favoritos</span>
+        </button>
+        <button class="nav-item" data-nav="postar">
+            <span class="icon-nav">➕</span>
+            <span>Postar</span>
+        </button>
+        <button class="nav-item" data-nav="eventos">
+            <span class="icon-nav">📅</span>
+            <span>Eventos</span>
+        </button>
+        <button class="nav-item" data-nav="perfil">
+            <span class="icon-nav">👤</span>
+            <span>Perfil</span>
+        </button>
+    </nav>
+
+    <!-- PLAYER FIXO -->
+    <div class="player-fixo">
+        <div class="player-progresso-container">
+            <div class="player-progresso-preenchido" style="width: 0%;"></div>
+        </div>
+        <img src="assets/imagens/placeholder.svg" alt="Capa" class="player-capa" onerror="this.style.display='none'">
+        <div class="player-info">
+            <div class="player-titulo">Nenhuma música</div>
+            <div class="player-artista">Selecione uma música</div>
+        </div>
+        <div class="player-controles">
+            <div class="player-equalizador">
+                <div class="eq-barra" style="height: 4px;"></div>
+                <div class="eq-barra" style="height: 4px;"></div>
+                <div class="eq-barra" style="height: 4px;"></div>
+                <div class="eq-barra" style="height: 4px;"></div>
+            </div>
+            <button class="btn-player btn-favorito" title="Favoritar">🤍</button>
+        </div>
+        <button class="btn-player btn-play" title="Play/Pause">▶</button>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container"></div>
+
+    <!-- SCRIPTS -->
+    <script src="js/dados.js"></script>
+    <script src="js/tema.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/modal.js"></script>
+    <script src="js/favoritos.js"></script>
+    <script src="js/filtros.js"></script>
+    <script src="js/eventos.js"></script>
+    <script src="js/postagem.js"></script>
+    <script src="js/offline.js"></script>
+    <script src="js/suporte.js"></script>
+    <script src="js/app.js"></script>
+
+    <!-- INICIALIZAÇÃO DA PÁGINA -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Verificar autenticação
+            if (!window.auth?.isAutenticado()) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Atualizar nome do usuário
+            const usuario = window.auth.getUsuarioAtual();
+            if (usuario) {
+                document.querySelectorAll('.usuario-nome').forEach(el => {
+                    el.textContent = usuario.nome.split(' ')[0];
+                });
+                if (usuario.fotoPerfil) {
+                    document.querySelectorAll('.usuario-avatar').forEach(el => {
+                        el.src = usuario.fotoPerfil;
+                    });
+                }
+            }
+
+            // Renderizar artistas
+            renderizarArtistasHome();
+
+            // Aplicar filtros iniciais
+            setTimeout(() => {
+                window.filtros?.aplicar();
+            }, 300);
+        });
+
+        function renderizarArtistasHome() {
+            const grid = document.querySelector('.grid-artistas');
+            if (!grid) return;
+
+            const artistas = DB.artistas;
+            grid.innerHTML = artistas.map((artista, i) => `
+                <div class="card-artista stagger-item" 
+                     style="animation-delay: ${i * 0.1}s; cursor: pointer;"
+                     onclick="window.location.href='artista.html?id=${artista.id}'">
+                    <img src="${artista.fotoPerfil}" alt="${artista.nome}" class="foto-artista" 
+                         onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 90 90%22><circle cx=%2245%22 cy=%2245%22 r=%2245%22 fill=%22%236c3ce0%22/><text x=%2245%22 y=%2255%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2230%22>🎤</text></svg>'">
+                    <h4 class="nome-artista">${artista.nome}</h4>
+                    <p class="genero-artista">${artista.genero.slice(0, 2).join(' • ')}</p>
+                    <p class="seguidores">${formatarNumero(artista.totalSeguidores)} seguidores</p>
+                </div>
+            `).join('');
+        }
+
+        function formatarNumero(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(0) + 'K';
+            return num.toString();
+        }
+    </script>
+
+</body>
+</html>

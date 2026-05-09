@@ -1,0 +1,22 @@
+<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="300" height="300" fill="#e8f0fe"/>
+  
+  <!-- Circle for face -->
+  <circle cx="150" cy="100" r="50" fill="#d0dfe8"/>
+  
+  <!-- Body -->
+  <ellipse cx="150" cy="200" rx="70" ry="80" fill="#c5d9e8"/>
+  
+  <!-- Musical notes accent -->
+  <g transform="translate(200, 80)">
+    <circle cx="0" cy="20" r="6" fill="#1976d2"/>
+    <rect x="5" y="0" width="2" height="20" fill="#1976d2"/>
+    <circle cx="12" cy="10" r="5" fill="#1976d2"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="150" y="270" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#666">
+    Artista 1
+  </text>
+</svg>

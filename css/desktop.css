@@ -1,0 +1,430 @@
+/* =============================================
+   MUSICA ALENDARIA - Do Zero ao Infinito
+   Criado por Pensador Sem Fronteira
+   ARQUIVO: desktop.css - Estilos para Desktop
+   ============================================= */
+
+/* ========== BREAKPOINT: TABLET (768px+) ========== */
+@media (min-width: 768px) {
+
+    /* Container */
+    .container {
+        max-width: 720px;
+        padding: 0 var(--espaco-lg);
+    }
+
+    .container-login {
+        max-width: 480px;
+    }
+
+    /* Grid de artistas */
+    .grid-artistas {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--espaco-lg);
+    }
+
+    /* Grid de eventos */
+    .grid-eventos {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--espaco-lg);
+    }
+
+    /* Grid de músicas */
+    .grid-musicas {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--espaco-md);
+    }
+
+    /* Lista de músicas */
+    .lista-musicas {
+        gap: var(--espaco-sm);
+    }
+
+    /* Página da música */
+    .pagina-musica {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: var(--espaco-xl);
+        max-width: 900px;
+        margin: 0 auto;
+        padding: var(--espaco-xl);
+    }
+
+    .pagina-musica .capa-musica {
+        border-radius: var(--borda-raio-lg);
+        max-height: 300px;
+    }
+
+    .pagina-musica .detalhes-musica {
+        padding: 0;
+    }
+
+    /* Página do artista */
+    .pagina-artista {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .pagina-artista .capa-artista {
+        height: 320px;
+        border-radius: 0 0 var(--borda-raio-lg) var(--borda-raio-lg);
+        overflow: hidden;
+    }
+
+    .pagina-artista .info-artista {
+        display: flex;
+        gap: var(--espaco-xl);
+        align-items: flex-start;
+    }
+
+    .pagina-artista .foto-perfil-artista {
+        width: 130px;
+        height: 130px;
+        margin-top: -65px;
+    }
+
+    /* Player fixo */
+    .player-fixo {
+        height: 80px;
+        padding: 0 var(--espaco-xl);
+        grid-template-columns: 60px 1fr auto auto auto;
+    }
+
+    .player-fixo .player-capa {
+        width: 60px;
+        height: 60px;
+        border-radius: var(--borda-raio-sm);
+    }
+
+    .player-fixo .player-titulo {
+        font-size: var(--tamanho-base);
+    }
+
+    .player-fixo .player-artista {
+        font-size: var(--tamanho-sm);
+    }
+
+    .player-fixo .btn-play {
+        width: 52px;
+        height: 52px;
+    }
+
+    /* Nav mobile (esconder no desktop) */
+    .nav-mobile {
+        display: none;
+    }
+
+    /* Header desktop */
+    .header-desktop {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--espaco-md) var(--espaco-xl);
+        position: sticky;
+        top: 0;
+        z-index: var(--z-header);
+    }
+
+    .header-desktop .nav-desktop {
+        display: flex;
+        align-items: center;
+        gap: var(--espaco-xl);
+    }
+
+    .header-desktop .nav-link {
+        font-size: var(--tamanho-sm);
+        font-weight: 500;
+        color: var(--texto-secundario);
+        padding: var(--espaco-xs) 0;
+        border-bottom: 2px solid transparent;
+        transition: all var(--transicao-rapida);
+    }
+
+    .header-desktop .nav-link:hover,
+    .header-desktop .nav-link.ativo {
+        color: var(--cor-primaria);
+        border-bottom-color: var(--cor-primaria);
+    }
+
+    .header-desktop .header-acoes {
+        display: flex;
+        align-items: center;
+        gap: var(--espaco-md);
+    }
+
+    /* Sidebar (opcional para desktop) */
+    .layout-desktop {
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        min-height: 100vh;
+    }
+
+    .sidebar {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        padding: var(--espaco-xl) var(--espaco-md);
+        border-right: 1px solid var(--borda);
+        background: var(--fundo-card);
+        overflow-y: auto;
+    }
+
+    .sidebar .sidebar-logo {
+        margin-bottom: var(--espaco-xl);
+    }
+
+    .sidebar .sidebar-nav {
+        display: flex;
+        flex-direction: column;
+        gap: var(--espaco-xs);
+    }
+
+    .sidebar .sidebar-link {
+        display: flex;
+        align-items: center;
+        gap: var(--espaco-md);
+        padding: 12px 16px;
+        border-radius: var(--borda-raio-md);
+        font-size: var(--tamanho-sm);
+        font-weight: 500;
+        color: var(--texto-secundario);
+        transition: all var(--transicao-rapida);
+    }
+
+    .sidebar .sidebar-link:hover {
+        background: var(--fundo-secundario);
+        color: var(--texto-principal);
+    }
+
+    .sidebar .sidebar-link.ativo {
+        background: rgba(108, 60, 224, 0.1);
+        color: var(--cor-primaria);
+        font-weight: 600;
+    }
+
+    .sidebar .sidebar-link .sidebar-icone {
+        font-size: 20px;
+        width: 24px;
+        text-align: center;
+    }
+
+    .conteudo-principal {
+        padding: var(--espaco-xl);
+        max-width: 1100px;
+    }
+
+    /* Perfil */
+    .perfil-header {
+        display: flex;
+        align-items: center;
+        gap: var(--espaco-xl);
+        text-align: left;
+    }
+
+    .perfil-header .foto-perfil {
+        width: 120px;
+        height: 120px;
+        margin: 0;
+    }
+
+    .perfil-redes {
+        justify-content: flex-start;
+    }
+
+    .perfil-secoes {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--espaco-xl);
+    }
+
+    /* Favoritos */
+    .favoritos-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--espaco-md);
+    }
+
+    /* Form de postagem */
+    .form-postagem {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* Modal */
+    .modal-conteudo {
+        max-width: 560px;
+    }
+
+    .modal-video .modal-conteudo {
+        max-width: 860px;
+    }
+
+    /* Botão flutuante */
+    .btn-flutuante {
+        bottom: 100px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        font-size: 30px;
+    }
+
+    /* Lista de plataformas */
+    .lista-plataformas {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    /* Suporte no login */
+    .botoes-suporte {
+        gap: var(--espaco-md);
+    }
+}
+
+/* ========== BREAKPOINT: DESKTOP GRANDE (1024px+) ========== */
+@media (min-width: 1024px) {
+
+    .container {
+        max-width: 960px;
+    }
+
+    /* Grid de artistas */
+    .grid-artistas {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    /* Grid de eventos */
+    .grid-eventos {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* Grid de músicas */
+    .grid-musicas {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* Layout com sidebar */
+    .conteudo-principal {
+        padding: var(--espaco-2xl);
+    }
+
+    /* Página da música */
+    .pagina-musica {
+        grid-template-columns: 350px 1fr;
+    }
+
+    /* Lista de plataformas */
+    .lista-plataformas {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    /* Favoritos */
+    .favoritos-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* Modal de suporte */
+    .modal-suporte .suporte-opcoes {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* ========== BREAKPOINT: DESKTOP XL (1280px+) ========== */
+@media (min-width: 1280px) {
+
+    .container {
+        max-width: 1200px;
+    }
+
+    /* Grid de artistas */
+    .grid-artistas {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    /* Grid de eventos */
+    .grid-eventos {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    /* Grid de músicas */
+    .grid-musicas {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    /* Página da música */
+    .pagina-musica {
+        grid-template-columns: 400px 1fr;
+        gap: var(--espaco-2xl);
+    }
+
+    /* Favoritos */
+    .favoritos-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* ========== OCULTAR/MOSTRAR ELEMENTOS ========== */
+
+/* Elementos mobile-only (ocultar no desktop) */
+@media (min-width: 768px) {
+    .mobile-only {
+        display: none !important;
+    }
+}
+
+/* Elementos desktop-only (ocultar no mobile) */
+@media (max-width: 767px) {
+    .desktop-only {
+        display: none !important;
+    }
+}
+
+/* ========== AJUSTES DE TOQUE PARA DESKTOP ========== */
+@media (hover: hover) and (pointer: fine) {
+    /* Hover effects apenas para dispositivos com mouse */
+    .card-click:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--sombra-lg);
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .btn:active {
+        transform: scale(0.97);
+    }
+}
+
+/* ========== SCROLLBAR PERSONALIZADA ========== */
+@media (min-width: 768px) {
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--borda);
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--texto-terciario);
+    }
+}
+
+/* ========== LAYOUT SEM SIDEBAR (ALTERNATIVO) ========== */
+@media (min-width: 768px) {
+    .layout-topo {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .layout-topo .conteudo-principal {
+        max-width: 1100px;
+        margin: 0 auto;
+        width: 100%;
+    }
+}
