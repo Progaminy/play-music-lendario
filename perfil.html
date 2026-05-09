@@ -19,7 +19,7 @@
 </head>
 <body class="tema-lit">
 
-    <div class="marca-dagua">Criado por Pensador Sem Fronteira</div>
+    <div class="marca-dagua">Pensador Sem Fronteira</div>
 
     <header class="header header-desktop desktop-only">
         <div class="header-logo">
@@ -47,20 +47,20 @@
         <div class="perfil-header animar-entrada-cima" style="padding: 1.5rem 1rem; text-align: center;">
             <div style="position: relative; display: inline-block; cursor: pointer;" onclick="document.getElementById('input-foto-perfil').click()">
                 <span id="foto-perfil-display" style="width: 100px; height: 100px; border-radius: 50%; background: var(--gradiente-primario); display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto;">👤</span>
-                <span style="position: absolute; bottom: 0; right: 0; background: var(--cor-acento); color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 14px;">📷</span>
+                <span style="position: absolute; bottom: 0; right: 0; background: var(--cor-acento); color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">📷</span>
                 <input type="file" id="input-foto-perfil" accept="image/*" style="display: none;" onchange="atualizarFotoPerfil(event)">
             </div>
             <h1 class="nome-usuario" id="perfil-nome" style="margin-top: 0.75rem;">Visitante Musical</h1>
             <p class="localizacao" id="perfil-localizacao">📍 Angola, Luanda</p>
             <p class="localizacao" id="perfil-lingua">🌐 Português</p>
             
-            <!-- REDES SOCIAIS -->
             <div id="perfil-redes" style="margin-top: 0.5rem; display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;"></div>
+            <div id="perfil-contacto" style="margin-top: 0.25rem; font-size: 0.85rem; color: var(--texto-secundario);"></div>
             
-            <div style="margin-top: 0.75rem; display: flex; gap: 1rem; justify-content: center; font-size: 0.85rem; color: var(--texto-secundario);">
-                <span>❤️ <strong id="contador-favoritos">0</strong> favoritos</span>
-                <span>📤 <strong id="contador-postes">0</strong> postes</span>
-                <span>📅 <strong id="contador-eventos">0</strong> eventos</span>
+            <div style="margin-top: 0.75rem; display: flex; gap: 1.5rem; justify-content: center; font-size: 0.85rem; color: var(--texto-secundario);">
+                <span>❤️ <strong id="contador-favoritos">0</strong></span>
+                <span>📤 <strong id="contador-postes">0</strong></span>
+                <span>📅 <strong id="contador-eventos">0</strong></span>
             </div>
         </div>
 
@@ -72,27 +72,33 @@
 
         <!-- TABS -->
         <div class="tabs" style="padding: 0 1rem; margin-bottom: 1rem; overflow-x: auto;">
-            <button class="tab ativo" data-tab="favoritos" onclick="alternarTab('favoritos')">❤️ Favoritos</button>
-            <button class="tab" data-tab="postes" onclick="alternarTab('postes')">📤 Meus Postes</button>
+            <button class="tab ativo" data-tab="postes" onclick="alternarTab('postes')">📤 Meus Postes</button>
             <button class="tab" data-tab="eventos" onclick="alternarTab('eventos')">📅 Meus Eventos</button>
+            <button class="tab" data-tab="favoritos" onclick="alternarTab('favoritos')">❤️ Favoritos</button>
         </div>
 
         <!-- CONTEÚDO DAS TABS -->
         <div style="padding: 0 1rem;">
             
-            <!-- TAB FAVORITOS -->
-            <div id="tab-favoritos" class="tab-conteudo">
-                <div id="lista-favoritos-perfil" class="lista-musicas" style="padding: 0;"></div>
-            </div>
-
-            <!-- TAB POSTES (EDITÁVEIS) -->
-            <div id="tab-postes" class="tab-conteudo hidden">
-                <div id="lista-postes-perfil" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
+            <!-- TAB POSTES -->
+            <div id="tab-postes" class="tab-conteudo">
+                <div id="lista-postes-perfil" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <div class="estado-vazio"><p class="vazio-descricao">Carregando...</p></div>
+                </div>
             </div>
 
             <!-- TAB EVENTOS -->
             <div id="tab-eventos" class="tab-conteudo hidden">
-                <div id="lista-eventos-perfil" class="grid-eventos" style="padding: 0;"></div>
+                <div id="lista-eventos-perfil" class="grid-eventos" style="padding: 0;">
+                    <div class="estado-vazio" style="grid-column: 1 / -1;"><p class="vazio-descricao">Carregando...</p></div>
+                </div>
+            </div>
+
+            <!-- TAB FAVORITOS -->
+            <div id="tab-favoritos" class="tab-conteudo hidden">
+                <div id="lista-favoritos-perfil" class="lista-musicas" style="padding: 0;">
+                    <div class="estado-vazio"><p class="vazio-descricao">Nenhuma música favorita ainda</p></div>
+                </div>
             </div>
 
         </div>
@@ -141,19 +147,22 @@
     </nav>
 
     <!-- PLAYER FIXO -->
-    <div class="player-fixo">
+    <div class="player-fixo" style="min-height: 72px;">
         <div class="player-progresso-container">
             <div class="player-progresso-preenchido" style="width: 0%;"></div>
         </div>
-        <span style="font-size: 2rem; width: 48px; text-align: center;">🎵</span>
-        <div class="player-info">
-            <div class="player-titulo">Nenhuma música</div>
-            <div class="player-artista">Selecione uma música</div>
+        <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 1rem; width: 100%;">
+            <span style="font-size: 2rem;">🎵</span>
+            <div class="player-info" style="flex: 1; min-width: 0;">
+                <div class="player-titulo" style="font-size: 0.9rem; font-weight: 600;">Nenhuma música</div>
+                <div class="player-artista" style="font-size: 0.75rem; color: var(--texto-terciario);">Selecione uma música</div>
+                <div class="timer-30s hidden" style="font-size: 0.7rem;">⏳ 30s</div>
+            </div>
+            <button class="btn-player btn-favorito" title="Like" style="font-size: 1.2rem;">🤍</button>
+            <button class="btn-player btn-play" title="Play/Pause" style="background: var(--gradiente-primario); color: white; width: 40px; height: 40px; border-radius: 50%; font-size: 1rem;">▶</button>
+            <button class="btn-destrancar-player btn-pequeno" title="Destrancar" style="font-size: 0.75rem; white-space: nowrap;" onclick="window.player?.destrancar()">🔓 Destrancar</button>
         </div>
-        <div class="player-controles">
-            <button class="btn-player btn-favorito">🤍</button>
-        </div>
-        <button class="btn-player btn-play">▶</button>
+        <div id="player-iframe-container" style="display: none;"></div>
     </div>
 
     <div class="toast-container"></div>
@@ -172,17 +181,15 @@
     <script src="js/app.js"></script>
 
     <script>
-        let postes = [];
-        let eventosUsuario = [];
-
         document.addEventListener('DOMContentLoaded', () => {
             if (!window.auth?.isAutenticado()) {
                 window.location.href = 'login.html';
                 return;
             }
             carregarPerfil();
-            carregarPostes();
-            carregarEventosUsuario();
+            carregarPostesPerfil();
+            carregarEventosPerfil();
+            carregarFavoritosPerfil();
             atualizarContadores();
         });
 
@@ -190,13 +197,13 @@
             const usuario = window.auth?.getUsuarioAtual();
             if (!usuario) return;
 
-            document.getElementById('perfil-nome').textContent = usuario.nome;
-            document.getElementById('perfil-localizacao').textContent = `📍 ${usuario.pais}, ${usuario.provincia}`;
+            document.getElementById('perfil-nome').textContent = usuario.nome || 'Visitante Musical';
+            document.getElementById('perfil-localizacao').textContent = `📍 ${usuario.pais || 'Angola'}, ${usuario.provincia || 'Luanda'}`;
             document.getElementById('perfil-lingua').textContent = `🌐 ${usuario.lingua || 'Português'}`;
 
             // Foto de perfil
+            const fotoDisplay = document.getElementById('foto-perfil-display');
             if (usuario.fotoPerfil) {
-                const fotoDisplay = document.getElementById('foto-perfil-display');
                 fotoDisplay.innerHTML = `<img src="${usuario.fotoPerfil}" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">`;
             }
 
@@ -205,73 +212,102 @@
             if (usuario.redesSociais?.youtube) redes.push({ nome: 'YouTube', link: usuario.redesSociais.youtube });
             if (usuario.redesSociais?.instagram) redes.push({ nome: 'Instagram', link: usuario.redesSociais.instagram });
             if (usuario.redesSociais?.tiktok) redes.push({ nome: 'TikTok', link: usuario.redesSociais.tiktok });
-            document.getElementById('perfil-redes').innerHTML = redes.map(r => 
-                `<a href="${r.link}" target="_blank" class="link-rede">🔗 ${r.nome}</a>`
-            ).join('') || '<span style="font-size: 0.8rem; color: var(--texto-terciario);">Nenhuma rede social</span>';
+            document.getElementById('perfil-redes').innerHTML = redes.length > 0
+                ? redes.map(r => `<a href="${r.link}" target="_blank" class="link-rede">🔗 ${r.nome}</a>`).join('')
+                : '';
 
-            // Favoritos
-            const favoritos = window.favoritos?.getMusicas() || [];
-            document.getElementById('lista-favoritos-perfil').innerHTML = favoritos.length === 0
-                ? '<div class="estado-vazio"><p class="vazio-descricao">Nenhuma música favorita</p></div>'
-                : favoritos.map(m => `
-                    <div class="card-musica-h" style="margin-bottom: 0.5rem; cursor: pointer;" onclick="window.player?.tocar(buscarMusica('${m.id}'))">
-                        <span style="font-size: 2rem;">🎵</span>
-                        <div class="info-musica">
-                            <div class="titulo-musica">${m.titulo}</div>
-                            <div class="artista-musica">${m.genero} • ${m.ano}</div>
-                        </div>
-                        <button class="btn-icone-pequeno" onclick="event.stopPropagation(); window.favoritos?.remover('${m.id}'); carregarPerfil();">💔</button>
-                    </div>
-                `).join('');
+            // Contacto
+            document.getElementById('perfil-contacto').textContent = usuario.contactoShow ? `📞 ${usuario.contactoShow}` : '';
         }
 
-        function carregarPostes() {
+        function carregarPostesPerfil() {
             const usuario = window.auth?.getUsuarioAtual();
-            postes = JSON.parse(localStorage.getItem('postes') || '[]').filter(p => p.usuarioId === usuario?.id);
-            
             const container = document.getElementById('lista-postes-perfil');
-            if (postes.length === 0) {
-                container.innerHTML = '<div class="estado-vazio"><p class="vazio-descricao">Nenhum poste ainda</p><a href="postar.html" class="btn btn-primario btn-pequeno">+ Criar Poste</a></div>';
+            
+            // USAR A MESMA CHAVE do postagem.js
+            const todosPostes = JSON.parse(localStorage.getItem('musica-alendaria-postes') || '[]');
+            const meusPostes = todosPostes.filter(p => p.usuarioId === usuario?.id);
+
+            if (meusPostes.length === 0) {
+                container.innerHTML = `
+                    <div class="estado-vazio">
+                        <p class="vazio-descricao">Nenhum poste ainda</p>
+                        <a href="postar.html" class="btn btn-primario btn-pequeno">+ Criar Poste</a>
+                    </div>
+                `;
                 return;
             }
 
-            container.innerHTML = postes.map((p, i) => `
+            container.innerHTML = meusPostes.map(p => `
                 <div class="card-musica-h" style="position: relative;">
                     <span style="font-size: 2rem;">🎬</span>
                     <div class="info-musica">
                         <div class="titulo-musica">${p.artista}</div>
-                        <div class="artista-musica">${p.estilo || 'Diversa'} • ${p.lingua || 'Idioma não definido'} • ${p.ano || 'Ano não definido'}</div>
-                        ${p.descricao ? `<p style="font-size: 0.75rem; color: var(--texto-terciario);">${p.descricao.substring(0, 60)}...</p>` : ''}
-                        <span class="badge ${p.bloqueio === 'bloquear' ? 'badge-privado' : 'badge-publico'}">${p.bloqueio === 'bloquear' ? '🔒 Bloqueado' : '🔓 Livre'}</span>
-                        <span class="badge badge-contorno">${p.visibilidade === 'publico' ? '🌍' : '🔒'}</span>
+                        <div class="artista-musica">${p.estilo || 'Diversa'} ${p.lingua ? '• ' + p.lingua : ''} ${p.ano ? '• ' + p.ano : ''}</div>
+                        ${p.descricao ? `<p style="font-size: 0.75rem; color: var(--texto-terciario);">${p.descricao.substring(0, 80)}...</p>` : ''}
+                        <span class="badge ${p.bloqueio === 'bloquear' ? 'badge-privado' : 'badge-publico'}" style="font-size: 0.7rem;">${p.bloqueio === 'bloquear' ? '🔒 Bloqueado' : '🔓 Livre'}</span>
+                        <span class="badge badge-contorno" style="font-size: 0.7rem;">${p.visibilidade === 'publico' ? '🌍 Público' : '🔒 Privado'}</span>
                     </div>
                     <button class="btn-icone-pequeno" onclick="abrirEdicaoPoste('${p.id}')" title="Editar" style="position: absolute; top: 0.5rem; right: 0.5rem;">✏️</button>
                 </div>
             `).join('');
         }
 
-        function carregarEventosUsuario() {
+        function carregarEventosPerfil() {
             const usuario = window.auth?.getUsuarioAtual();
-            eventosUsuario = JSON.parse(localStorage.getItem('eventos') || '[]').filter(e => e.usuarioId === usuario?.id);
-            eventosUsuario.sort((a, b) => new Date(b.dataCriacao) - new Date(a.dataCriacao));
-
             const container = document.getElementById('lista-eventos-perfil');
-            if (eventosUsuario.length === 0) {
-                container.innerHTML = '<div class="estado-vazio" style="grid-column: 1 / -1;"><p class="vazio-descricao">Nenhum evento criado</p><a href="eventos.html" class="btn btn-primario btn-pequeno">+ Criar Evento</a></div>';
+            
+            // USAR A MESMA CHAVE do eventos.html
+            const todosEventos = JSON.parse(localStorage.getItem('eventos') || '[]');
+            const meusEventos = todosEventos.filter(e => e.usuarioId === usuario?.id);
+            meusEventos.sort((a, b) => new Date(b.dataCriacao) - new Date(a.dataCriacao));
+
+            if (meusEventos.length === 0) {
+                container.innerHTML = `
+                    <div class="estado-vazio" style="grid-column: 1 / -1;">
+                        <p class="vazio-descricao">Nenhum evento criado</p>
+                        <a href="eventos.html" class="btn btn-primario btn-pequeno">+ Criar Evento</a>
+                    </div>
+                `;
                 return;
             }
 
-            container.innerHTML = eventosUsuario.map(evt => `
-                <div class="card-evento">
-                    <div class="data-evento">
-                        <span class="dia-evento">${new Date(evt.dataInicio + 'T00:00:00').getDate().toString().padStart(2, '0')}</span>
-                        <span class="mes-evento">${new Date(evt.dataInicio + 'T00:00:00').toLocaleString('pt', {month: 'short'}).toUpperCase()}</span>
+            container.innerHTML = meusEventos.map(evt => {
+                const dataInicio = evt.dataInicio ? new Date(evt.dataInicio + 'T00:00:00') : null;
+                return `
+                    <div class="card-evento">
+                        <div class="data-evento">
+                            <span class="dia-evento">${dataInicio ? dataInicio.getDate().toString().padStart(2, '0') : '??'}</span>
+                            <span class="mes-evento">${dataInicio ? dataInicio.toLocaleString('pt', {month: 'short'}).toUpperCase() : '???'}</span>
+                        </div>
+                        <div class="info-evento">
+                            <span class="tipo-evento">${evt.visibilidade === 'publico' ? '🌍 Público' : '🔒 Privado'}</span>
+                            <h4 class="nome-evento">${evt.artista}</h4>
+                            ${evt.descricao ? `<p style="font-size: 0.8rem; color: var(--texto-secundario);">${evt.descricao}</p>` : ''}
+                            <p style="font-size: 0.75rem; color: var(--texto-terciario);">📆 ${evt.dataInicio || '?'} → ${evt.dataFim || '?'}</p>
+                        </div>
                     </div>
-                    <div class="info-evento">
-                        <span class="tipo-evento">${evt.visibilidade === 'publico' ? '🌍 Público' : '🔒 Privado'}</span>
-                        <h4 class="nome-evento">${evt.artista}</h4>
-                        <p style="font-size: 0.75rem; color: var(--texto-terciario);">📆 ${evt.dataInicio} → ${evt.dataFim}</p>
+                `;
+            }).join('');
+        }
+
+        function carregarFavoritosPerfil() {
+            const container = document.getElementById('lista-favoritos-perfil');
+            const favoritos = window.favoritos?.getMusicas() || [];
+            
+            if (favoritos.length === 0) {
+                container.innerHTML = '<div class="estado-vazio"><p class="vazio-descricao">Nenhuma música favorita</p></div>';
+                return;
+            }
+
+            container.innerHTML = favoritos.map(m => `
+                <div class="card-musica-h" style="margin-bottom: 0.5rem;">
+                    <span style="font-size: 2rem;">🎵</span>
+                    <div class="info-musica">
+                        <div class="titulo-musica">${m.titulo}</div>
+                        <div class="artista-musica">${m.genero} • ${m.ano}</div>
                     </div>
+                    <button class="btn-icone-pequeno" onclick="window.favoritos?.remover('${m.id}'); carregarFavoritosPerfil(); atualizarContadores();">💔</button>
                 </div>
             `).join('');
         }
@@ -285,9 +321,12 @@
 
         function atualizarContadores() {
             const usuario = window.auth?.getUsuarioAtual();
+            const postes = JSON.parse(localStorage.getItem('musica-alendaria-postes') || '[]').filter(p => p.usuarioId === usuario?.id);
+            const eventos = JSON.parse(localStorage.getItem('eventos') || '[]').filter(e => e.usuarioId === usuario?.id);
+            
             document.getElementById('contador-favoritos').textContent = window.favoritos?.contar() || 0;
-            document.getElementById('contador-postes').textContent = JSON.parse(localStorage.getItem('postes') || '[]').filter(p => p.usuarioId === usuario?.id).length;
-            document.getElementById('contador-eventos').textContent = JSON.parse(localStorage.getItem('eventos') || '[]').filter(e => e.usuarioId === usuario?.id).length;
+            document.getElementById('contador-postes').textContent = postes.length;
+            document.getElementById('contador-eventos').textContent = eventos.length;
         }
 
         function atualizarFotoPerfil(event) {
@@ -296,18 +335,22 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 const usuario = window.auth?.getUsuarioAtual();
-                usuario.fotoPerfil = e.target.result;
-                window.auth.atualizarPerfil({ fotoPerfil: e.target.result });
-                carregarPerfil();
-                mostrarToast('📷 Foto de perfil atualizada!', 'sucesso');
+                if (usuario) {
+                    usuario.fotoPerfil = e.target.result;
+                    window.auth.atualizarPerfil({ fotoPerfil: e.target.result });
+                    carregarPerfil();
+                    mostrarToast('📷 Foto de perfil atualizada!', 'sucesso');
+                }
             };
             reader.readAsDataURL(file);
         }
 
         // ====== EDIÇÃO DE POSTE ======
         function abrirEdicaoPoste(posteId) {
-            const poste = postes.find(p => p.id === posteId);
+            const todosPostes = JSON.parse(localStorage.getItem('musica-alendaria-postes') || '[]');
+            const poste = todosPostes.find(p => p.id === posteId);
             if (!poste) return;
+            
             document.getElementById('editar-poste-id').value = posteId;
             document.getElementById('editar-poste-artista').value = poste.artista || '';
             document.getElementById('editar-poste-descricao').value = poste.descricao || '';
@@ -323,7 +366,7 @@
 
         function salvarEdicaoPoste() {
             const id = document.getElementById('editar-poste-id').value;
-            const todosPostes = JSON.parse(localStorage.getItem('postes') || '[]');
+            const todosPostes = JSON.parse(localStorage.getItem('musica-alendaria-postes') || '[]');
             const index = todosPostes.findIndex(p => p.id === id);
             if (index === -1) return;
 
@@ -333,9 +376,9 @@
             todosPostes[index].lingua = document.getElementById('editar-poste-lingua').value;
             todosPostes[index].ano = document.getElementById('editar-poste-ano').value;
 
-            localStorage.setItem('postes', JSON.stringify(todosPostes));
+            localStorage.setItem('musica-alendaria-postes', JSON.stringify(todosPostes));
             fecharModalEdicao();
-            carregarPostes();
+            carregarPostesPerfil();
             mostrarToast('✅ Poste atualizado!', 'sucesso');
         }
 
@@ -346,6 +389,11 @@
             document.querySelector('.toast-container')?.appendChild(toast);
             setTimeout(() => { toast.classList.add('saindo'); setTimeout(() => toast.remove(), 300); }, 3000);
         }
+
+        // Fechar modal ao clicar fora
+        document.getElementById('modal-editar-poste').addEventListener('click', function(e) {
+            if (e.target === this) fecharModalEdicao();
+        });
     </script>
 </body>
 </html>

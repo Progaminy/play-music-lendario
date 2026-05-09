@@ -129,7 +129,7 @@ function fecharTodosModais() {
     }
 }
 
-// ========== MODAL DE VÍDEO (ANTI-NAVEGAÇÃO) ==========
+// ========== MODAL DE VÍDEO (ANTI-NAVEGAÇÃO + 15s) ==========
 function abrirModalVideo(musica) {
     if (!musica || !musica.linkYoutube) {
         mostrarToast('Link do vídeo não disponível', 'erro');
@@ -146,51 +146,100 @@ function abrirModalVideo(musica) {
     const artista = buscarArtista(musica.artistaId);
     const nomeArtista = artista ? artista.nome : 'Artista';
 
+    // Verificar se já está desbloqueado
+    const usuario = window.auth?.getUsuarioAtual();
+    const isDono = musica.usuarioId === usuario?.id;
+    let jaDesbloqueou = isDono || musica.bloqueio === 'nao-bloquear';
+    if (!jaDesbloqueou && usuario) {
+        const desbloqueios = JSON.parse(localStorage.getItem('musica-alendaria-desbloqueios') || '{}');
+        jaDesbloqueou = !!desbloqueios[`${usuario.id}_${musica.id}`];
+    }
+
     const conteudoHTML = `
         <div class="video-topo">
             <span class="video-titulo-modal">🎬 ${musica.titulo} - ${nomeArtista}</span>
             <button class="btn-fechar-video" onclick="window.modal.fecharAtual()">✕</button>
         </div>
-        <div class="video-container">
-            <div class="camada-protetora"></div>
+        <div class="video-container" style="position: relative;">
+            <div class="camada-protetora" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; cursor: default;" 
+                onclick="event.stopPropagation()" title="Vídeo protegido"></div>
             <iframe
-                src="https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0&controls=0&modestbranding=1&showinfo=0"
-                title="${musica.titulo}"
+                id="modal-video-iframe"
+                src="https://www.youtube.com/embed/${youtubeId}?autoplay=0&rel=0&controls=0&modestbranding=1&enablejsapi=1&disablekb=1&iv_load_policy=3"
                 frameborder="0"
-                allow="autoplay; encrypted-media"
-                allowfullscreen>
+                allow="encrypted-media"
+                allowfullscreen
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;">
             </iframe>
+            ${!jaDesbloqueou ? `
+                <div style="position: absolute; top: 10px; right: 10px; z-index: 3; background: rgba(0,0,0,0.8); color: #ff9800; padding: 4px 10px; border-radius: 15px; font-size: 0.8rem; font-weight: 600;">
+                    ⏳ <span id="modal-timer-15s">15s</span>
+                </div>
+            ` : ''}
         </div>
         <div class="video-info">
             <h4 class="video-titulo-info">${musica.titulo}</h4>
             <p class="video-artista-info">${nomeArtista}</p>
             <div class="video-acoes">
-                <button class="btn-video-acao" onclick="window.player.destrancar('${musica.id}')">
-                    🔓 Destrancar
-                </button>
-                <button class="btn-video-acao" onclick="window.player.baixar('${musica.id}', 'video')">
-                    ⬇ Baixar Vídeo
-                </button>
-                <button class="btn-video-acao" onclick="window.player.baixar('${musica.id}', 'audio')">
-                    🎵 Baixar Áudio
-                </button>
+                ${!jaDesbloqueou ? `
+                    <button class="btn-video-acao" onclick="window.player.destrancar('${musica.id}')">
+                        🔓 Destrancar
+                    </button>
+                ` : `
+                    <button class="btn-video-acao" onclick="window.player.baixarVideo('${musica.id}')">
+                        ⬇ Baixar Vídeo
+                    </button>
+                    <button class="btn-video-acao" onclick="window.player.baixarAudio('${musica.id}')">
+                        🎵 Baixar Áudio
+                    </button>
+                    <button class="btn-video-acao" onclick="window.player.transferirOffline('${musica.id}')">
+                        📲 Offline
+                    </button>
+                `}
             </div>
         </div>
         <div class="aviso-navegacao">
             <span class="aviso-icone">⚠️</span>
-            Conteúdo oficial. A navegação externa está bloqueada para proteger os direitos do artista.
+            Conteúdo oficial. Navegação externa bloqueada.
         </div>
     `;
 
-    return abrirModal(conteudoHTML, {
+    const modalId = abrirModal(conteudoHTML, {
         classeExtra: 'modal-video',
         fecharAoCliqueFora: false,
         animacao: 'modalSlideUp',
         aoFechar: () => {
-            // Parar vídeo ao fechar (o iframe é removido)
+            // Limpar timer se existir
+            if (modalId && estadoModais.timerModal) {
+                clearInterval(estadoModais.timerModal);
+                estadoModais.timerModal = null;
+            }
             console.log('📹 Modal de vídeo fechado');
         }
     });
+
+    // Iniciar timer de 15s se não estiver desbloqueado
+    if (!jaDesbloqueou) {
+        let segundos = 15;
+        const timerEl = document.getElementById('modal-timer-15s');
+        
+        estadoModais.timerModal = setInterval(() => {
+            segundos--;
+            if (timerEl) {
+                timerEl.textContent = `${segundos}s`;
+                if (segundos <= 5) timerEl.style.color = '#f7436e';
+            }
+            if (segundos <= 0) {
+                clearInterval(estadoModais.timerModal);
+                estadoModais.timerModal = null;
+                const iframe = document.getElementById('modal-video-iframe');
+                if (iframe) iframe.src = '';
+                mostrarToast('⏰ 15 segundos esgotados! Destranque para continuar.', 'aviso');
+            }
+        }, 1000);
+    }
+
+    return modalId;
 }
 
 // ========== MODAL DE CONFIRMAÇÃO ==========
@@ -394,10 +443,8 @@ function configurarBotoesFechar() {
     });
 }
 
-// ========== SELEcionar PLATAFORMA (POSTAGEM) ==========
+// ========== SELECIONAR PLATAFORMA (POSTAGEM) ==========
 function selecionarPlataforma(urlBase) {
-    // Esta função é chamada do modal de postagem
-    // Leva o usuário ao perfil da plataforma para escolher conteúdo
     const linkInput = document.getElementById('post-link');
     if (linkInput) {
         linkInput.value = urlBase + '/';
@@ -428,12 +475,10 @@ function enviarPostagem() {
         return;
     }
 
-    // Simular envio para aprovação
     console.log('📤 Postagem enviada para aprovação:', { titulo, link, visibilidade });
 
     fecharModalAtual();
 
-    // Simular email para o admin
     setTimeout(() => {
         mostrarToast('📧 Postagem enviada para aprovação! Receberá uma notificação em breve.', 'sucesso');
     }, 500);
@@ -447,11 +492,6 @@ function extrairYoutubeId(url) {
 }
 
 function mostrarToast(mensagem, tipo = 'info') {
-    // Usa o toast do player ou cria um próprio
-    if (window.player?.mostrarToast) {
-        // Não exposto publicamente, criar aqui
-    }
-
     const toast = document.createElement('div');
     toast.className = `toast toast-${tipo}`;
     toast.innerHTML = `
@@ -501,4 +541,4 @@ window.modal = {
 // ========== INICIALIZAR ==========
 document.addEventListener('DOMContentLoaded', inicializarModais);
 
-console.log('🪟 Modais prontos! (Vídeo anti-navegação incluso)');
+console.log('🪟 Modais prontos! (15s + Anti-navegação)');

@@ -44,7 +44,7 @@
     <main class="container" style="padding-bottom: calc(var(--player-altura) + 100px);">
         
         <!-- TÍTULO -->
-        <div class="animar-entrada-cima" style="padding: 1rem; display: flex; justify-content: space-between; align-items: center;">
+        <div class="animar-entrada-cima" style="padding: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
             <div>
                 <h1 style="font-size: 1.5rem;">📅 Eventos</h1>
                 <p style="color: var(--texto-terciario); font-size: 0.85rem;">Shows, lançamentos e encontros musicais</p>
@@ -52,24 +52,21 @@
             <button class="btn btn-primario" onclick="mostrarFormEvento()">+ Criar Evento</button>
         </div>
 
-        <!-- FORMULÁRIO DE EVENTO (INICIALMENTE ESCONDIDO) -->
+        <!-- FORMULÁRIO DE EVENTO -->
         <div id="form-evento-container" class="hidden" style="padding: 0 1rem; margin-bottom: 1.5rem;">
             <form id="form-evento" class="form-auth" style="padding: 1.5rem;">
                 <h3 style="margin-bottom: 1rem;">📝 Criar Novo Evento</h3>
                 
-                <!-- NOME DO ARTISTA (OBRIGATÓRIO) -->
                 <div class="campo">
                     <label for="evento-artista">Nome do Artista *</label>
                     <input type="text" id="evento-artista" placeholder="Nome do cantor ou banda" required>
                 </div>
 
-                <!-- LINK DO VÍDEO (OBRIGATÓRIO) -->
                 <div class="campo">
-                    <label for="evento-link">Link do Vídeo *</label>
+                    <label for="evento-link">Link do Vídeo (YouTube) *</label>
                     <input type="url" id="evento-link" placeholder="https://youtube.com/watch?v=..." required>
                 </div>
 
-                <!-- DATAS (SÓ PARA EVENTO) -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                     <div class="campo">
                         <label for="evento-data-inicio">Data de Início *</label>
@@ -81,7 +78,6 @@
                     </div>
                 </div>
 
-                <!-- VISIBILIDADE -->
                 <div class="campo">
                     <label>Visibilidade *</label>
                     <div class="radio-group">
@@ -94,7 +90,6 @@
                     </div>
                 </div>
 
-                <!-- CAMPOS OPCIONAIS -->
                 <button type="button" class="btn btn-secundario btn-pequeno" id="btn-opcionais-evento" style="margin-bottom: 1rem; width: 100%;">
                     + Adicionar mais informações (opcional)
                 </button>
@@ -142,19 +137,21 @@
     </nav>
 
     <!-- PLAYER FIXO -->
-    <div class="player-fixo">
+    <div class="player-fixo" style="min-height: 72px;">
         <div class="player-progresso-container">
             <div class="player-progresso-preenchido" style="width: 0%;"></div>
         </div>
-        <span style="font-size: 2rem; width: 48px; text-align: center;">🎵</span>
-        <div class="player-info">
-            <div class="player-titulo">Nenhuma música</div>
-            <div class="player-artista">Selecione uma música</div>
+        <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 1rem; width: 100%;">
+            <span style="font-size: 2rem;">🎵</span>
+            <div class="player-info" style="flex: 1; min-width: 0;">
+                <div class="player-titulo" style="font-size: 0.9rem; font-weight: 600;">Nenhuma música</div>
+                <div class="player-artista" style="font-size: 0.75rem; color: var(--texto-terciario);">Selecione uma música</div>
+                <div class="timer-30s hidden" style="font-size: 0.7rem;">⏳ 30s</div>
+            </div>
+            <button class="btn-player btn-favorito" title="Like" style="font-size: 1.2rem;">🤍</button>
+            <button class="btn-player btn-play" title="Play/Pause" style="background: var(--gradiente-primario); color: white; width: 40px; height: 40px; border-radius: 50%; font-size: 1rem;">▶</button>
         </div>
-        <div class="player-controles">
-            <button class="btn-player btn-favorito">🤍</button>
-        </div>
-        <button class="btn-player btn-play">▶</button>
+        <div id="player-iframe-container" style="display: none;"></div>
     </div>
 
     <div class="toast-container"></div>
@@ -196,13 +193,8 @@
             e.preventDefault();
             const campos = document.getElementById('campos-opcionais-evento');
             const isHidden = campos.classList.contains('hidden');
-            if (isHidden) {
-                campos.classList.remove('hidden');
-                this.textContent = '- Ocultar informações opcionais';
-            } else {
-                campos.classList.add('hidden');
-                this.textContent = '+ Adicionar mais informações (opcional)';
-            }
+            campos.classList.toggle('hidden');
+            this.textContent = isHidden ? '- Ocultar informações opcionais' : '+ Adicionar mais informações (opcional)';
         });
 
         // Submeter evento
@@ -210,26 +202,27 @@
             e.preventDefault();
             
             const evento = {
+                id: 'evt-' + Date.now(),
                 artista: document.getElementById('evento-artista').value.trim(),
                 link: document.getElementById('evento-link').value.trim(),
                 dataInicio: document.getElementById('evento-data-inicio').value,
                 dataFim: document.getElementById('evento-data-fim').value,
-                visibilidade: document.querySelector('input[name="evento-visibilidade"]:checked').value,
+                visibilidade: document.querySelector('input[name="evento-visibilidade"]:checked')?.value || 'publico',
                 local: document.getElementById('evento-local').value.trim(),
                 hora: document.getElementById('evento-hora').value,
-                descricao: document.getElementById('evento-descricao').value.trim()
+                descricao: document.getElementById('evento-descricao').value.trim(),
+                dataCriacao: new Date().toISOString(),
+                usuarioId: window.auth?.getUsuarioAtual()?.id,
+                usuarioNome: window.auth?.getUsuarioAtual()?.nome
             };
 
             if (!evento.artista || !evento.link || !evento.dataInicio || !evento.dataFim) {
-                mostrarToast('Preencha todos os campos obrigatórios', 'erro');
+                mostrarToast('Preencha todos os campos obrigatórios (*)', 'erro');
                 return;
             }
 
-            // Guardar evento
+            // Guardar no localStorage com a chave 'eventos'
             const eventos = JSON.parse(localStorage.getItem('eventos') || '[]');
-            evento.id = 'evt-' + Date.now();
-            evento.dataCriacao = new Date().toISOString();
-            evento.usuarioId = window.auth?.getUsuarioAtual()?.id;
             eventos.unshift(evento);
             localStorage.setItem('eventos', JSON.stringify(eventos));
 
@@ -241,39 +234,43 @@
         function carregarEventos() {
             const container = document.getElementById('lista-eventos');
             const usuario = window.auth?.getUsuarioAtual();
-            const eventos = JSON.parse(localStorage.getItem('eventos') || '[]');
+            const todosEventos = JSON.parse(localStorage.getItem('eventos') || '[]');
             
-            // Ordenar do mais recente ao mais antigo
-            eventos.sort((a, b) => new Date(b.dataCriacao) - new Date(a.dataCriacao));
-
-            const eventosFiltrados = eventos.filter(evt => 
+            // Filtrar: públicos + privados do usuário
+            let eventos = todosEventos.filter(evt => 
                 evt.visibilidade === 'publico' || evt.usuarioId === usuario?.id
             );
 
-            if (eventosFiltrados.length === 0) {
+            // Ordenar por data de criação (mais recente primeiro)
+            eventos.sort((a, b) => new Date(b.dataCriacao) - new Date(a.dataCriacao));
+
+            if (eventos.length === 0) {
                 container.innerHTML = `
                     <div class="estado-vazio" style="grid-column: 1 / -1;">
                         <div class="vazio-icone">📅</div>
-                        <h4 class="vazio-titulo">Nenhum evento ainda</h4>
+                        <h4 class="vazio-titulo">Nenhum evento encontrado</h4>
                         <p class="vazio-descricao">Crie o primeiro evento!</p>
                     </div>
                 `;
                 return;
             }
 
-            container.innerHTML = eventosFiltrados.map(evt => {
-                const videoId = extrairIdYoutube(evt.link);
-                const dataInicio = new Date(evt.dataInicio + 'T' + (evt.hora || '00:00'));
-                const dia = dataInicio.getDate().toString().padStart(2, '0');
-                const mes = dataInicio.toLocaleString('pt', { month: 'short' }).toUpperCase();
+            container.innerHTML = eventos.map(evt => {
+                const videoId = extrairYoutubeId(evt.link);
+                const dataInicio = evt.dataInicio ? new Date(evt.dataInicio + 'T' + (evt.hora || '00:00')) : null;
+                const dia = dataInicio ? dataInicio.getDate().toString().padStart(2, '0') : '??';
+                const mes = dataInicio ? dataInicio.toLocaleString('pt', { month: 'short' }).toUpperCase().substring(0, 3) : '???';
+                const isDono = evt.usuarioId === usuario?.id;
 
                 return `
                     <div class="card-evento" style="overflow: hidden;">
                         ${videoId ? `
-                            <div style="position: relative; padding-bottom: 56.25%; height: 0; margin: -1rem -1rem 1rem -1rem;">
-                                <iframe src="https://www.youtube.com/embed/${videoId}" 
+                            <div style="position: relative; padding-bottom: 56.25%; height: 0; margin: -1rem -1rem 1rem -1rem; background: #000;">
+                                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; cursor: pointer;" 
+                                     onclick="abrirVideoEvento('${evt.id}')" title="Clique para assistir"></div>
+                                <iframe src="https://www.youtube.com/embed/${videoId}?controls=0&modestbranding=1&rel=0" 
                                     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
-                                    allowfullscreen>
+                                    allow="autoplay; encrypted-media">
                                 </iframe>
                             </div>
                         ` : ''}
@@ -282,15 +279,21 @@
                             <span class="mes-evento">${mes}</span>
                         </div>
                         <div class="info-evento">
-                            <span class="tipo-evento">${evt.visibilidade === 'publico' ? '🌍 Público' : '🔒 Privado'}</span>
+                            <div style="display: flex; gap: 0.25rem; flex-wrap: wrap; margin-bottom: 0.25rem;">
+                                <span class="tipo-evento">${evt.visibilidade === 'publico' ? '🌍 Público' : '🔒 Privado'}</span>
+                                ${isDono ? '<span class="badge badge-aviso" style="font-size: 0.7rem;">👤 Seu evento</span>' : ''}
+                            </div>
                             <h4 class="nome-evento">${evt.artista}</h4>
-                            ${evt.descricao ? `<p style="font-size: 0.8rem; color: var(--texto-secundario);">${evt.descricao}</p>` : ''}
-                            <div style="display: flex; gap: 1rem; margin-top: 0.5rem; font-size: 0.75rem; color: var(--texto-terciario);">
+                            ${evt.descricao ? `<p style="font-size: 0.8rem; color: var(--texto-secundario); margin: 0.25rem 0;">${evt.descricao}</p>` : ''}
+                            <div style="display: flex; gap: 0.75rem; margin-top: 0.5rem; font-size: 0.75rem; color: var(--texto-terciario); flex-wrap: wrap;">
                                 ${evt.hora ? `<span>🕐 ${evt.hora}</span>` : ''}
                                 ${evt.local ? `<span>📍 ${evt.local}</span>` : ''}
                             </div>
-                            <div style="font-size: 0.7rem; color: var(--texto-terciario); margin-top: 0.25rem;">
+                            <div style="font-size: 0.72rem; color: var(--texto-terciario); margin-top: 0.25rem;">
                                 📆 ${formatarData(evt.dataInicio)} → ${formatarData(evt.dataFim)}
+                            </div>
+                            <div style="font-size: 0.65rem; color: var(--texto-terciario); margin-top: 0.25rem;">
+                                Por ${evt.usuarioNome || 'Usuário'} • ${new Date(evt.dataCriacao).toLocaleDateString('pt')}
                             </div>
                         </div>
                     </div>
@@ -298,14 +301,39 @@
             }).join('');
         }
 
-        function extrairIdYoutube(url) {
+        function abrirVideoEvento(eventoId) {
+            const eventos = JSON.parse(localStorage.getItem('eventos') || '[]');
+            const evento = eventos.find(e => e.id === eventoId);
+            if (!evento) return;
+
+            const videoId = extrairYoutubeId(evento.link);
+            if (!videoId) return;
+
+            // Abrir no modal da home (simples)
+            const modal = document.createElement('div');
+            modal.style.cssText = 'position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 5000; display: flex; align-items: center; justify-content: center;';
+            modal.innerHTML = `
+                <div style="width: 90vw; max-width: 800px; position: relative;">
+                    <button onclick="this.parentElement.parentElement.remove()" style="position: absolute; top: -40px; right: 0; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">✕</button>
+                    <div style="position: relative; padding-bottom: 56.25%; height: 0;">
+                        <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" allowfullscreen></iframe>
+                    </div>
+                    <p style="color: white; text-align: center; margin-top: 0.5rem;">${evento.artista}</p>
+                </div>
+            `;
+            modal.addEventListener('click', function(e) { if (e.target === this) this.remove(); });
+            document.body.appendChild(modal);
+        }
+
+        function extrairYoutubeId(url) {
+            if (!url) return null;
             const regex = /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
             const match = url.match(regex);
             return match ? match[1] : null;
         }
 
         function formatarData(data) {
-            if (!data) return '';
+            if (!data) return '?';
             const d = new Date(data + 'T00:00:00');
             return d.toLocaleDateString('pt');
         }

@@ -1,7 +1,7 @@
 /* =============================================
    MUSICA ALENDARIA - Do Zero ao Infinito
    Criado por Pensador Sem Fronteira
-   ARQUIVO: dark.css - Tema Dark (Alternativo)
+   ARQUIVO: dark.css - Tema Dark Corrigido
    ============================================= */
 
 /* ========== TEMA DARK - VARIÁVEIS ========== */
@@ -14,7 +14,7 @@
     --fundo-input-foco: #252535;
     --texto-principal: #e8e8f0;
     --texto-secundario: #b0b0c0;
-    --texto-terciario: #6a6a7a;
+    --texto-terciario: #8888a0;
     --texto-inverso: #1a1a2e;
     --borda: #2a2a3a;
     --borda-foco: #a855f7;
@@ -33,9 +33,18 @@
     color: var(--texto-principal);
 }
 
+/* ========== MARCA D'ÁGUA - CORRIGIDA (VISÍVEL) ========== */
+.tema-dark .marca-dagua {
+    color: rgba(255, 255, 255, 0.6) !important;
+    opacity: 0.8 !important;
+    font-weight: 600;
+    text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+    font-size: 0.8rem;
+}
+
 /* ========== HEADER ========== */
 .tema-dark .header {
-    background: rgba(18, 18, 26, 0.9);
+    background: rgba(18, 18, 26, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--borda);
@@ -45,7 +54,7 @@
 .tema-dark .card {
     background: var(--fundo-card);
     border: 1px solid var(--borda);
-    box-shadow: var(--sombra-sm);
+    color: var(--texto-principal);
 }
 
 .tema-dark .card:hover {
@@ -54,78 +63,78 @@
 }
 
 /* ========== CARD DE MÚSICA ========== */
-.tema-dark .card-musica {
+.tema-dark .card-musica-h {
     background: var(--fundo-card);
     border: 1px solid var(--borda);
+    color: var(--texto-principal);
 }
 
-.tema-dark .card-musica:hover {
+.tema-dark .card-musica-h:hover {
     background: var(--fundo-card-hover);
-    border-color: var(--cor-primaria);
-    box-shadow: var(--sombra), var(--brilho);
 }
 
-.tema-dark .card-musica .titulo {
+.tema-dark .card-musica-h .titulo-musica {
     color: var(--texto-principal);
 }
 
-.tema-dark .card-musica .artista {
+.tema-dark .card-musica-h .artista-musica {
     color: var(--texto-secundario);
-}
-
-.tema-dark .card-musica .duracao {
-    color: var(--texto-terciario);
-}
-
-/* ========== CARD DE ARTISTA ========== */
-.tema-dark .card-artista {
-    background: var(--fundo-card);
-    border: 1px solid var(--borda);
-}
-
-.tema-dark .card-artista:hover {
-    box-shadow: var(--sombra-lg), var(--brilho);
-}
-
-.tema-dark .card-artista .foto-artista {
-    border-color: var(--cor-primaria);
-    box-shadow: var(--neon);
-}
-
-.tema-dark .card-artista .nome-artista {
-    color: var(--texto-principal);
-}
-
-.tema-dark .card-artista .genero {
-    color: #a855f7;
 }
 
 /* ========== CARD DE EVENTO ========== */
 .tema-dark .card-evento {
     background: var(--fundo-card);
     border: 1px solid var(--borda);
+    color: var(--texto-principal);
 }
 
-.tema-dark .card-evento:hover {
-    box-shadow: var(--sombra), var(--brilho);
-}
-
-.tema-dark .card-evento .data-evento {
-    color: #f7436e;
+.tema-dark .card-evento .nome-evento {
+    color: var(--texto-principal);
 }
 
 .tema-dark .card-evento .tipo-evento {
-    background: rgba(247, 67, 110, 0.15);
-    color: #f7436e;
+    background: rgba(168, 85, 247, 0.2);
+    color: #c084fc;
+}
+
+/* ========== TABS ========== */
+.tema-dark .tabs {
+    border-bottom-color: var(--borda);
+}
+
+.tema-dark .tab {
+    color: var(--texto-terciario);
+}
+
+.tema-dark .tab:hover {
+    color: var(--texto-principal);
+}
+
+.tema-dark .tab.ativo {
+    color: #a855f7;
+    border-bottom-color: #a855f7;
+}
+
+/* ========== FILTROS ========== */
+.tema-dark .filtro-item {
+    background: var(--fundo-card);
+    border-color: var(--borda);
+    color: var(--texto-secundario);
+}
+
+.tema-dark .filtro-item:hover {
+    border-color: #a855f7;
+    color: #a855f7;
+}
+
+.tema-dark .filtro-item.ativo {
+    background: var(--gradiente-primario);
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow: var(--neon);
 }
 
 /* ========== FORMULÁRIOS ========== */
-.tema-dark .form-auth {
-    background: var(--fundo-card);
-    box-shadow: var(--sombra-lg);
-    border: 1px solid var(--borda);
-}
-
 .tema-dark input,
 .tema-dark select,
 .tema-dark textarea {
@@ -139,102 +148,41 @@
 .tema-dark textarea:focus {
     background: var(--fundo-input-foco);
     border-color: var(--borda-foco);
-    box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.15), var(--brilho);
-}
-
-.tema-dark input::placeholder,
-.tema-dark textarea::placeholder {
-    color: var(--texto-terciario);
+    box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.15);
 }
 
 .tema-dark label {
     color: var(--texto-secundario);
 }
 
-/* ========== TABS ========== */
-.tema-dark .tabs-auth {
-    background: var(--fundo-secundario);
-}
-
-.tema-dark .tab-ativo {
-    background: var(--fundo-card);
-    color: #a855f7;
-    box-shadow: var(--sombra-sm);
-}
-
-.tema-dark .tab-inativo {
+.tema-dark input::placeholder {
     color: var(--texto-terciario);
 }
 
-.tema-dark .tab-inativo:hover {
-    background: rgba(168, 85, 247, 0.08);
-    color: #a855f7;
+/* ========== BOTÕES ========== */
+.tema-dark .btn-primario {
+    box-shadow: var(--neon);
 }
 
-/* ========== BOTÕES DE MÉTODO ========== */
-.tema-dark .btn-metodo {
-    background: var(--fundo-secundario);
-    color: var(--texto-secundario);
+.tema-dark .btn-primario:hover {
+    box-shadow: 0 6px 30px rgba(168, 85, 247, 0.5), var(--neon);
 }
 
-.tema-dark .btn-metodo.ativo {
-    background: rgba(168, 85, 247, 0.15);
-    color: #a855f7;
-    border-color: #a855f7;
-    box-shadow: var(--brilho);
-}
-
-/* ========== BOTÃO OPCIONAIS ========== */
-.tema-dark .btn-opcionais {
-    background: var(--fundo-secundario);
-    color: var(--texto-secundario);
-    border-color: var(--borda);
-}
-
-.tema-dark .btn-opcionais:hover {
-    background: rgba(168, 85, 247, 0.08);
-    color: #a855f7;
-    border-color: #a855f7;
-}
-
-/* ========== SUPORTE ========== */
-.tema-dark .suporte-login {
+.tema-dark .btn-secundario {
     background: var(--fundo-card);
-    border: 1px solid var(--borda);
-    box-shadow: var(--sombra);
-}
-
-.tema-dark .suporte-login p {
-    color: var(--texto-secundario);
-}
-
-.tema-dark .btn-suporte {
-    background: var(--fundo-secundario);
     color: var(--texto-principal);
     border-color: var(--borda);
 }
 
-.tema-dark .btn-suporte:hover {
-    background: var(--gradiente-primario);
-    color: #ffffff;
-    border-color: transparent;
-    box-shadow: var(--neon);
-}
-
-/* ========== MODAL ========== */
-.tema-dark .modal-conteudo {
-    background: var(--fundo-card);
-    border: 1px solid var(--borda);
-    box-shadow: var(--sombra-xl);
+.tema-dark .btn-secundario:hover {
+    border-color: #a855f7;
+    color: #a855f7;
 }
 
 /* ========== PLAYER FIXO ========== */
 .tema-dark .player-fixo {
-    background: rgba(18, 18, 26, 0.95);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(18, 18, 26, 0.98);
     border-top: 1px solid var(--borda);
-    box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.5);
 }
 
 .tema-dark .player-fixo .player-titulo {
@@ -242,80 +190,59 @@
 }
 
 .tema-dark .player-fixo .player-artista {
-    color: var(--texto-terciario);
-}
-
-.tema-dark .player-fixo .btn-player {
-    color: var(--texto-principal);
-}
-
-.tema-dark .player-fixo .btn-play {
-    box-shadow: var(--neon);
-}
-
-.tema-dark .player-fixo .player-progresso {
-    background: var(--borda);
-}
-
-/* ========== FILTROS ========== */
-.tema-dark .filtro-tag {
-    background: var(--fundo-card);
-    border-color: var(--borda);
     color: var(--texto-secundario);
 }
 
-.tema-dark .filtro-tag:hover {
-    border-color: #a855f7;
-    color: #a855f7;
-    box-shadow: var(--brilho);
-}
-
-.tema-dark .filtro-tag.ativo {
-    background: var(--gradiente-primario);
-    color: #ffffff;
-    border-color: transparent;
-    box-shadow: var(--neon);
+/* ========== MODAL ========== */
+.tema-dark .modal-conteudo {
+    background: var(--fundo-card);
+    border: 1px solid var(--borda);
+    color: var(--texto-principal);
 }
 
 /* ========== BADGES ========== */
 .tema-dark .badge-publico {
-    background: rgba(0, 217, 185, 0.15);
+    background: rgba(0, 217, 185, 0.2);
     color: #00d9b9;
 }
 
 .tema-dark .badge-privado {
-    background: rgba(247, 67, 110, 0.15);
+    background: rgba(247, 67, 110, 0.2);
     color: #f7436e;
 }
 
 .tema-dark .badge-pendente {
-    background: rgba(255, 201, 75, 0.15);
+    background: rgba(255, 201, 75, 0.2);
     color: #ffc94b;
 }
 
-/* ========== NOTIFICAÇÃO ========== */
-.tema-dark .notificacao {
-    background: var(--fundo-card);
-    border: 1px solid var(--borda);
-    box-shadow: var(--sombra-lg);
-}
-
-/* ========== BOTÃO DESTRANCAR ========== */
-.tema-dark .btn-destrancar {
-    box-shadow: var(--neon);
-}
-
-.tema-dark .btn-destrancar:hover {
-    box-shadow: 0 6px 30px rgba(168, 85, 247, 0.5), var(--neon);
-}
-
-/* ========== LOADING ========== */
-.tema-dark .spinner {
+.tema-dark .badge-contorno {
     border-color: var(--borda);
-    border-top-color: #a855f7;
+    color: var(--texto-secundario);
 }
 
-/* ========== NAVEGAÇÃO INFERIOR ========== */
+/* ========== TAGS E LINKS ========== */
+.tema-dark .link-rede {
+    background: var(--fundo-card);
+    color: var(--texto-principal);
+    border: 1px solid var(--borda);
+}
+
+.tema-dark .link-rede:hover {
+    background: var(--gradiente-primario);
+    color: #ffffff;
+}
+
+/* ========== ESTADO VAZIO ========== */
+.tema-dark .estado-vazio {
+    color: var(--texto-terciario);
+}
+
+.tema-dark .estado-vazio .vazio-titulo {
+    color: var(--texto-secundario);
+}
+
+/* ========== NAVEGAÇÃO MOBILE ========== */
 .tema-dark .nav-mobile {
     background: var(--fundo-card);
     border-top: 1px solid var(--borda);
@@ -344,155 +271,23 @@
     color: #ffffff;
 }
 
-/* ========== PÁGINA DA MÚSICA ========== */
-.tema-dark .pagina-musica .artista-musica {
-    color: #a855f7;
-}
-
-.tema-dark .pagina-musica .meta-item {
-    background: var(--fundo-secundario);
-    color: var(--texto-secundario);
-}
-
-.tema-dark .pagina-musica .letra-musica {
-    background: var(--fundo-secundario);
+/* ========== TOAST ========== */
+.tema-dark .toast {
+    background: var(--fundo-card);
+    border: 1px solid var(--borda);
     color: var(--texto-principal);
 }
 
-.tema-dark .pagina-musica .letra-musica.bloqueada::after {
-    background: linear-gradient(transparent, var(--fundo-secundario));
-}
-
-.tema-dark .pagina-musica .btn-acao {
-    background: var(--fundo-secundario);
+/* ========== RADIO E CHECKBOX ========== */
+.tema-dark .radio-opcao {
     color: var(--texto-principal);
-}
-
-.tema-dark .pagina-musica .btn-acao.primario {
-    color: #ffffff;
-    box-shadow: var(--neon);
 }
 
 /* ========== PERFIL ========== */
 .tema-dark .perfil-header .localizacao {
-    color: var(--texto-terciario);
-}
-
-.tema-dark .link-rede {
-    background: var(--fundo-secundario);
-    color: var(--texto-principal);
-}
-
-.tema-dark .link-rede:hover {
-    background: var(--gradiente-primario);
-    color: #ffffff;
-    box-shadow: var(--brilho);
-}
-
-/* ========== FAVORITOS ========== */
-.tema-dark .favoritos-tab {
-    background: var(--fundo-secundario);
     color: var(--texto-secundario);
 }
 
-.tema-dark .favoritos-tab.ativo {
-    background: var(--gradiente-primario);
-    color: #ffffff;
-    box-shadow: var(--brilho);
-}
-
-/* ========== DEFINIÇÕES ========== */
-.tema-dark .definicao-item {
-    background: var(--fundo-card);
-    border-color: var(--borda);
-}
-
-.tema-dark .switch .slider {
-    background: var(--borda);
-}
-
-/* ========== FORM POSTAGEM ========== */
-.tema-dark .form-postagem .preview-capa {
-    background: var(--fundo-secundario);
-    border: 1px solid var(--borda);
-}
-
-/* ========== PLATAFORMAS ========== */
-.tema-dark .plataforma-item {
-    background: var(--fundo-card);
-    border-color: var(--borda);
-}
-
-.tema-dark .plataforma-item:hover {
-    border-color: #a855f7;
-    box-shadow: var(--sombra), var(--brilho);
-}
-
-/* ========== MENSAGEM SISTEMA ========== */
-.tema-dark .mensagem-sistema.aprovado {
-    background: rgba(0, 217, 185, 0.1);
-    border-color: rgba(0, 217, 185, 0.25);
-    color: #00d9b9;
-}
-
-.tema-dark .mensagem-sistema.rejeitado {
-    background: rgba(247, 67, 110, 0.1);
-    border-color: rgba(247, 67, 110, 0.25);
-    color: #f7436e;
-}
-
-/* ========== TIMER 30s ========== */
-.tema-dark .timer-30s {
-    background: rgba(255, 201, 75, 0.12);
-    color: #ffc94b;
-}
-
-.tema-dark .timer-30s.esgotado {
-    background: rgba(247, 67, 110, 0.12);
-    color: #f7436e;
-}
-
-/* ========== BARRA 30s ========== */
-.tema-dark .barra-30s {
-    background: var(--borda);
-}
-
-/* ========== ANIMAÇÕES NEON PARA ELEMENTOS IMPORTANTES ========== */
-.tema-dark .nome-plataforma {
-    background: linear-gradient(135deg, #a855f7, #c084fc, #e879f9);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: var(--neon);
-}
-
-.tema-dark .logo {
-    box-shadow: var(--neon);
-}
-
-.tema-dark .btn-principal {
-    box-shadow: var(--neon);
-}
-
-.tema-dark .btn-principal:hover {
-    box-shadow: 0 6px 30px rgba(168, 85, 247, 0.5), var(--neon);
-}
-
-/* ========== GLOW EM ELEMENTOS INTERATIVOS ========== */
-.tema-dark a:hover {
-    color: #a855f7;
-    text-shadow: 0 0 8px rgba(168, 85, 247, 0.4);
-}
-
-.tema-dark .btn-flutuante {
-    box-shadow: 0 4px 25px rgba(247, 67, 110, 0.5);
-}
-
-.tema-dark .btn-flutuante:hover {
-    box-shadow: 0 6px 35px rgba(247, 67, 110, 0.7);
-}
-
-/* ========== MARCA D'ÁGUA ========== */
-.tema-dark .marca-dagua {
-    color: rgba(255, 255, 255, 0.15);
+.tema-dark .contador-perfil {
+    color: var(--texto-secundario);
 }

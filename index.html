@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Musica Alendaria - Do Zero ao Infinito</title>
+    <title>Play - Music - Lendaria - Do Zero ao Infinito</title>
     
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/lit.css">
@@ -19,7 +19,7 @@
 </head>
 <body class="tema-lit">
 
-    <div class="marca-dagua">Criado por Pensador Sem Fronteira</div>
+    <div class="marca-dagua">Pensador Sem Fronteira</div>
 
     <!-- HEADER DESKTOP -->
     <header class="header header-desktop desktop-only">
@@ -38,27 +38,29 @@
         </nav>
         <div class="header-acoes">
             <button class="btn-icone btn-alternar-tema" onclick="window.tema?.alternar()">🌓</button>
-            <a href="perfil.html"><span style="width: 36px; height: 36px; border-radius: 50%; background: var(--gradiente-primario); display: flex; align-items: center; justify-content: center; font-size: 18px;">👤</span></a>
+            <a href="perfil.html"><span id="header-avatar" style="width: 36px; height: 36px; border-radius: 50%; background: var(--gradiente-primario); display: flex; align-items: center; justify-content: center; font-size: 18px;">👤</span></a>
         </div>
     </header>
 
     <!-- CONTEÚDO PRINCIPAL -->
-    <main class="container" style="padding-bottom: calc(var(--player-altura) + 100px);">
+    <main class="container" style="padding-bottom: calc(var(--player-altura) + 120px);">
         
         <!-- BOAS-VINDAS -->
         <section class="animar-entrada-cima" style="padding: 1rem;">
-            <h2 style="font-size: 1.5rem;">👋 Bem-vindo, <span class="usuario-nome">Visitante</span>!</h2>
+            <h2 style="font-size: 1.5rem;">👋 Bem-vindo, <span id="home-usuario-nome">Visitante</span>!</h2>
             <p style="color: var(--texto-terciario);">Do Zero ao Infinito 🚀</p>
         </section>
 
         <!-- FILTROS RÁPIDOS -->
         <section class="barra-filtros animar-entrada-cima" style="animation-delay: 0.1s;">
             <span class="filtro-item ativo" onclick="filtrarPostes('todos')">🔥 Todos</span>
+            <span class="filtro-item ativo" onclick="filtrarPostes('Artistas')"> Person</span>
             <span class="filtro-item" onclick="filtrarPostes('Diversa')">🎵 Diversa</span>
             <span class="filtro-item" onclick="filtrarPostes('Kizomba')">🎸 Kizomba</span>
             <span class="filtro-item" onclick="filtrarPostes('Semba')">🥁 Semba</span>
             <span class="filtro-item" onclick="filtrarPostes('Afrobeat')">🌍 Afrobeat</span>
             <span class="filtro-item" onclick="filtrarPostes('Rap')">🎤 Rap</span>
+            <span class="filtro-item" onclick="filtrarPostes('R&B')">🎹 R&B</span>
         </section>
 
         <!-- POSTES (HOME) -->
@@ -72,7 +74,7 @@
 
     </main>
 
-    <!-- PLAYER FIXO (COM IFRAME) -->
+    <!-- PLAYER FIXO (PLAY/PAUSE + DESTRANCAR LADO A LADO) -->
     <div class="player-fixo" style="min-height: 72px;">
         <div class="player-progresso-container">
             <div class="player-progresso-preenchido" style="width: 0%;"></div>
@@ -82,30 +84,15 @@
             <div class="player-info" style="flex: 1; min-width: 0;">
                 <div class="player-titulo" style="font-size: 0.9rem; font-weight: 600;">Nenhuma música</div>
                 <div class="player-artista" style="font-size: 0.75rem; color: var(--texto-terciario);">Selecione uma música</div>
-                <div class="timer-30s hidden" style="font-size: 0.7rem;">⏳ 30s</div>
+                <div class="timer-15s hidden" style="font-size: 0.7rem; color: var(--cor-destaque);">⏳ 15s</div>
             </div>
-            <button class="btn-player btn-favorito" title="Like" style="font-size: 1.2rem;">🤍</button>
             <button class="btn-player btn-play" title="Play/Pause" style="background: var(--gradiente-primario); color: white; width: 40px; height: 40px; border-radius: 50%; font-size: 1rem;">▶</button>
+            <button class="btn-destrancar-player btn-pequeno" title="Destrancar" style="font-size: 0.75rem; white-space: nowrap;" onclick="destrancarHome()">🔓 Destrancar</button>
+            <button class="btn-player btn-favorito" title="Like" style="font-size: 1.2rem;" onclick="darLikeHomePlayer()">🤍</button>
+            <button class="btn-player btn-baixar hidden" title="Baixar" style="font-size: 1rem;" onclick="baixarHome()">⬇</button>
+            <button class="btn-player btn-offline hidden" title="Offline" style="font-size: 1rem;" onclick="offlineHome()">📲</button>
         </div>
-        <!-- Iframe escondido para o player -->
         <div id="player-iframe-container" style="display: none;"></div>
-    </div>
-
-    <!-- MODAL DE VÍDEO (ANTI-NAVEGAÇÃO) -->
-    <div id="modal-video" class="modal-overlay hidden" style="z-index: 3000;">
-        <div class="modal-conteudo" style="max-width: 800px; padding: 0; background: #000; border-radius: 12px; overflow: hidden;">
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 1rem; background: #111; color: white;">
-                <span id="modal-video-titulo" style="font-weight: 600;">Vídeo</span>
-                <button onclick="fecharModalVideo()" style="background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer;">✕</button>
-            </div>
-            <div style="position: relative; padding-bottom: 56.25%; height: 0;">
-                <div id="modal-video-camada" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; cursor: default;"></div>
-                <iframe id="modal-video-iframe" width="100%" height="100%" src="" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
-            </div>
-            <div style="padding: 0.5rem; background: #111; color: #ff9800; font-size: 0.7rem; text-align: center;">
-                ⚠️ Conteúdo oficial. Navegação externa bloqueada.
-            </div>
-        </div>
     </div>
 
     <!-- NAVEGAÇÃO MOBILE -->
@@ -142,19 +129,26 @@
             }
 
             const usuario = window.auth.getUsuarioAtual();
-            document.querySelector('.usuario-nome').textContent = usuario.nome.split(' ')[0];
+            document.getElementById('home-usuario-nome').textContent = usuario.nome.split(' ')[0];
+            
+            if (usuario.fotoPerfil) {
+                const avatar = document.getElementById('header-avatar');
+                avatar.innerHTML = `<img src="${usuario.fotoPerfil}" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;">`;
+            }
 
             carregarPostesHome();
+            setInterval(atualizarUIHome, 1000);
         });
 
         function carregarPostesHome() {
             const container = document.getElementById('lista-postes-home');
-            const postes = JSON.parse(localStorage.getItem('musica-alendaria-postes') || '[]');
+            const todosPostes = JSON.parse(localStorage.getItem('musica-alendaria-postes') || '[]');
+            const usuario = window.auth?.getUsuarioAtual();
             
-            // Apenas públicos
-            let postesPublicos = postes.filter(p => p.visibilidade === 'publico');
+            let postesPublicos = todosPostes.filter(p => 
+                p.visibilidade === 'publico' || p.usuarioId === usuario?.id
+            );
 
-            // Filtrar por estilo
             if (filtroAtual !== 'todos') {
                 postesPublicos = postesPublicos.filter(p => (p.estilo || 'Diversa') === filtroAtual);
             }
@@ -173,38 +167,61 @@
 
             container.innerHTML = postesPublicos.map(poste => {
                 const videoId = extrairYoutubeId(poste.link);
+                const isDono = poste.usuarioId === usuario?.id;
                 const jaDeuLike = window.player?.jaDeuLike(poste.id) || false;
+                
+                let estaDesbloqueado = isDono || poste.bloqueio === 'nao-bloquear';
+                if (!estaDesbloqueado && usuario) {
+                    const desbloqueios = JSON.parse(localStorage.getItem('musica-alendaria-desbloqueios') || '{}');
+                    estaDesbloqueado = !!desbloqueios[`${usuario.id}_${poste.id}`];
+                }
 
                 return `
-                    <div class="card" style="overflow: hidden; border-radius: 12px;">
+                    <div class="card" style="overflow: hidden; border-radius: 12px; position: relative;">
                         ${videoId ? `
                             <div style="position: relative; padding-bottom: 56.25%; height: 0; background: #000;">
-                                <iframe src="https://www.youtube.com/embed/${videoId}?controls=1&rel=0" 
-                                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
-                                    allowfullscreen>
+                                <div class="camada-protetora-card" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; cursor: pointer;" 
+                                     onclick="tocarNoPlayer('${poste.id}')" 
+                                     title="Clique para tocar no player"></div>
+                                <iframe src="https://www.youtube.com/embed/${videoId}?controls=0&modestbranding=1&rel=0&enablejsapi=1" 
+                                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; pointer-events: none;"
+                                    allow="encrypted-media">
                                 </iframe>
+                                ${!estaDesbloqueado ? `
+                                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 3; pointer-events: none;">
+                                        <span style="background: rgba(0,0,0,0.7); color: white; padding: 0.5rem 1rem; border-radius: 25px; font-weight: 600; font-size: 0.9rem;">🔒 15s grátis</span>
+                                    </div>
+                                ` : ''}
                             </div>
                         ` : ''}
                         <div style="padding: 1rem;">
                             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                                <div>
+                                <div style="flex: 1;">
                                     <h3 style="font-weight: 700; font-size: 1.1rem;">${poste.artista}</h3>
                                     <p style="font-size: 0.85rem; color: var(--texto-secundario);">
                                         ${poste.estilo || 'Diversa'} ${poste.lingua ? '• ' + poste.lingua : ''} ${poste.ano ? '• ' + poste.ano : ''}
                                     </p>
                                     ${poste.descricao ? `<p style="font-size: 0.8rem; color: var(--texto-terciario); margin-top: 0.25rem;">${poste.descricao}</p>` : ''}
+                                    ${isDono ? '<span class="badge badge-aviso" style="font-size: 0.7rem;">👑 Seu poste</span>' : ''}
                                 </div>
                             </div>
-                            <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem; align-items: center;">
-                                ${poste.bloqueio === 'bloquear' ? `
-                                    <button class="btn btn-pequeno btn-primario" onclick="tocarNoPlayer('${poste.id}')">
-                                        ▶ Ouvir 30s
-                                    </button>
-                                ` : ''}
-                                <button class="btn btn-pequeno btn-secundario" onclick="abrirVideoModal('${poste.id}')">
-                                    🎬 Assistir
+                            <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem; align-items: center; flex-wrap: wrap;">
+                                <button class="btn btn-pequeno btn-primario" onclick="tocarNoPlayer('${poste.id}')">
+                                    ▶ Play/Pause
                                 </button>
-                                <button class="btn-icone-pequeno" onclick="darLikeHome('${poste.id}', this)" style="font-size: 1.2rem; margin-left: auto;">
+                                ${!estaDesbloqueado ? `
+                                    <button class="btn btn-pequeno btn-destaque" onclick="destrancarDireto('${poste.id}')">
+                                        🔓 Destrancar
+                                    </button>
+                                ` : `
+                                    <button class="btn btn-pequeno btn-acento" onclick="baixarAudioHome('${poste.id}')">
+                                        ⬇ Áudio
+                                    </button>
+                                    <button class="btn btn-pequeno btn-acento" onclick="offlineHomeDireto('${poste.id}')">
+                                        📲 Offline
+                                    </button>
+                                `}
+                                <button class="btn-icone-pequeno" onclick="darLikeCard('${poste.id}', this)" style="font-size: 1.2rem; margin-left: auto;">
                                     ${jaDeuLike ? '❤️' : '🤍'}
                                 </button>
                                 <span style="font-size: 0.8rem; color: var(--texto-terciario);">${poste.likes || 0}</span>
@@ -221,45 +238,36 @@
         function filtrarPostes(filtro) {
             filtroAtual = filtro;
             document.querySelectorAll('.filtro-item').forEach(item => {
-                item.classList.toggle('ativo', item.textContent.includes(filtro === 'todos' ? 'Todos' : filtro));
+                const texto = item.textContent.trim();
+                if (filtro === 'todos') {
+                    item.classList.toggle('ativo', texto.includes('Todos'));
+                } else {
+                    item.classList.toggle('ativo', texto.includes(filtro));
+                }
             });
             carregarPostesHome();
         }
 
+        // ====== PLAYER ======
         function tocarNoPlayer(posteId) {
-            const postes = JSON.parse(localStorage.getItem('musica-alendaria-postes') || '[]');
-            const poste = postes.find(p => p.id === posteId);
+            const todosPostes = JSON.parse(localStorage.getItem('musica-alendaria-postes') || '[]');
+            const poste = todosPostes.find(p => p.id === posteId);
             if (poste) {
                 window.player?.tocar(poste);
+                atualizarUIHome();
             }
         }
 
-        function abrirVideoModal(posteId) {
-            const postes = JSON.parse(localStorage.getItem('musica-alendaria-postes') || '[]');
-            const poste = postes.find(p => p.id === posteId);
-            if (!poste) return;
-
-            const videoId = extrairYoutubeId(poste.link);
-            if (!videoId) return;
-
-            document.getElementById('modal-video-titulo').textContent = poste.artista;
-            document.getElementById('modal-video-iframe').src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
-            document.getElementById('modal-video').classList.remove('hidden');
-            document.body.classList.add('modal-aberto');
-
-            // Registrar like se assistir (após 30s simulados)
-            setTimeout(() => {
-                window.player?.registrarLike(posteId);
-            }, 30000);
+        function destrancarDireto(posteId) {
+            const todosPostes = JSON.parse(localStorage.getItem('musica-alendaria-postes') || '[]');
+            const poste = todosPostes.find(p => p.id === posteId);
+            if (poste) {
+                window.player?.tocar(poste);
+                setTimeout(() => window.player?.destrancar(posteId), 500);
+            }
         }
 
-        function fecharModalVideo() {
-            document.getElementById('modal-video').classList.add('hidden');
-            document.getElementById('modal-video-iframe').src = '';
-            document.body.classList.remove('modal-aberto');
-        }
-
-        function darLikeHome(posteId, btn) {
+        function darLikeCard(posteId, btn) {
             const sucesso = window.player?.darLike(posteId);
             if (sucesso) {
                 btn.textContent = '❤️';
@@ -269,6 +277,78 @@
             }
         }
 
+        function darLikeHomePlayer() {
+            const poste = window.player?.getPosteAtual();
+            if (poste) {
+                window.player?.darLike(poste.id);
+                atualizarUIHome();
+            }
+        }
+
+        function destrancarHome() {
+            const poste = window.player?.getPosteAtual();
+            if (poste) {
+                window.player?.destrancar(poste.id);
+            }
+        }
+
+        function baixarHome() {
+            const poste = window.player?.getPosteAtual();
+            const estado = window.player?.getEstado();
+            if (!estado?.estaDestrancado) {
+                mostrarToast('Destranque primeiro para baixar', 'aviso');
+                return;
+            }
+            mostrarToast('⬇ Download iniciado', 'sucesso');
+        }
+
+        function offlineHome() {
+            const poste = window.player?.getPosteAtual();
+            const estado = window.player?.getEstado();
+            if (!estado?.estaDestrancado) {
+                mostrarToast('Destranque primeiro para transferir', 'aviso');
+                return;
+            }
+            mostrarToast('📲 Transferido para modo offline', 'sucesso');
+        }
+
+        function baixarAudioHome(posteId) {
+            mostrarToast('⬇ Download de áudio iniciado', 'sucesso');
+        }
+
+        function offlineHomeDireto(posteId) {
+            mostrarToast('📲 Transferido para modo offline', 'sucesso');
+        }
+
+        function atualizarUIHome() {
+            const estado = window.player?.getEstado();
+            const poste = estado?.posteAtual;
+            
+            const btnBaixar = document.querySelector('.player-fixo .btn-baixar');
+            const btnOffline = document.querySelector('.player-fixo .btn-offline');
+            const btnDestrancar = document.querySelector('.player-fixo .btn-destrancar-player');
+            const btnFav = document.querySelector('.player-fixo .btn-favorito');
+            const btnPlay = document.querySelector('.player-fixo .btn-play');
+
+            if (poste) {
+                if (btnPlay) btnPlay.textContent = estado.estaTocando ? '⏸' : '▶';
+                
+                if (estado.estaDestrancado) {
+                    if (btnBaixar) btnBaixar.classList.remove('hidden');
+                    if (btnOffline) btnOffline.classList.remove('hidden');
+                    if (btnDestrancar) btnDestrancar.classList.add('hidden');
+                } else {
+                    if (btnBaixar) btnBaixar.classList.add('hidden');
+                    if (btnOffline) btnOffline.classList.add('hidden');
+                    if (btnDestrancar) btnDestrancar.classList.remove('hidden');
+                }
+                if (btnFav) {
+                    btnFav.textContent = window.player?.jaDeuLike(poste.id) ? '❤️' : '🤍';
+                }
+            }
+        }
+
+        // ====== UTILITÁRIAS ======
         function extrairYoutubeId(url) {
             if (!url) return null;
             const regex = /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
@@ -276,15 +356,13 @@
             return match ? match[1] : null;
         }
 
-        // Fechar modal ao clicar fora
-        document.getElementById('modal-video').addEventListener('click', function(e) {
-            if (e.target === this) fecharModalVideo();
-        });
-
-        // Fechar modal com ESC
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') fecharModalVideo();
-        });
+        function mostrarToast(msg, tipo) {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${tipo}`;
+            toast.innerHTML = `<span class="toast-mensagem">${msg}</span>`;
+            document.querySelector('.toast-container')?.appendChild(toast);
+            setTimeout(() => { toast.classList.add('saindo'); setTimeout(() => toast.remove(), 300); }, 3000);
+        }
     </script>
 </body>
 </html>

@@ -61,7 +61,7 @@ const DB = {
 
     // ========== FILTROS DISPONÍVEIS ==========
     filtros: {
-        paises: ['Angola', 'Portugal', 'Brasil', 'Cabo Verde', 'Moçambique', 'São Tomé e Príncipe', 'Guiné-Bissau'],
+        paises: ['Moçambique', 'Portugal', 'Brasil', 'Cabo Verde', 'Angola', 'São Tomé e Príncipe', 'Guiné-Bissau'],
         provincias: ['Luanda', 'Benguela', 'Huíla', 'Namibe', 'Cabinda', 'Lisboa', 'Porto', 'São Paulo', 'Rio de Janeiro'],
         generos: ['Kizomba', 'Semba', 'R&B', 'Afrobeat', 'Pop', 'Música Romântica', 'Hip Hop', 'Rap'],
         linguas: ['Português', 'Inglês', 'Francês', 'Espanhol', 'Kimbundu', 'Umbundu', 'Kikongo', 'Crioulo'],

@@ -44,7 +44,6 @@ function criarPostagem(dados) {
         return null;
     }
 
-    // Validar campos obrigatórios
     if (!dados.artista || !dados.link) {
         mostrarToast('Nome do artista e link são obrigatórios', 'erro');
         return null;
@@ -54,6 +53,7 @@ function criarPostagem(dados) {
         id: 'post-' + Date.now(),
         usuarioId: usuario.id,
         usuarioNome: usuario.nome,
+        usuarioFoto: usuario.fotoPerfil || '',
         artista: dados.artista,
         link: dados.link,
         visibilidade: dados.visibilidade || 'publico',
@@ -64,14 +64,15 @@ function criarPostagem(dados) {
         ano: dados.ano || '',
         dataCriacao: new Date().toISOString(),
         status: 'aprovado',
-        likes: [],
+        likes: 0,
         quemDeuLike: []
     };
 
     estadoPostagem.postagens.unshift(novaPostagem);
     salvarPostagens();
 
-    console.log('📤 Postagem criada:', novaPostagem.artista);
+    mostrarToast('✅ Postagem publicada com sucesso!', 'sucesso');
+    console.log('📤 Postagem criada:', novaPostagem.artista, '- Estilo:', novaPostagem.estilo);
     return novaPostagem;
 }
 
@@ -94,14 +95,19 @@ function configurarFormPostagem() {
             ano: document.getElementById('post-ano')?.value.trim() || ''
         };
 
+        if (!dados.artista || !dados.link) {
+            mostrarToast('Preencha nome do artista e link do vídeo', 'erro');
+            return;
+        }
+
         const postagem = criarPostagem(dados);
 
         if (postagem) {
             form.reset();
-            document.getElementById('preview-video').style.display = 'none';
-            document.querySelector('input[name="visibilidade"][value="publico"]').checked = true;
-            document.querySelector('input[name="bloqueio"][value="bloquear"]').checked = true;
-            mostrarToast('✅ Postagem publicada com sucesso!', 'sucesso');
+            const previewVideo = document.getElementById('preview-video');
+            if (previewVideo) previewVideo.style.display = 'none';
+            document.querySelector('input[name="visibilidade"][value="publico"]')?.setAttribute('checked', 'checked');
+            document.querySelector('input[name="bloqueio"][value="bloquear"]')?.setAttribute('checked', 'checked');
         }
     });
 }
@@ -112,13 +118,25 @@ function darLike(posteId) {
     if (!usuario) return false;
 
     const poste = estadoPostagem.postagens.find(p => p.id === posteId);
-    if (!poste) return false;
+    if (!poste) {
+        // Tentar carregar do localStorage diretamente
+        const todosPostes = JSON.parse(localStorage.getItem(CONFIG_POSTAGEM.chaveStorage) || '[]');
+        const posteLocal = todosPostes.find(p => p.id === posteId);
+        if (!posteLocal) return false;
+        
+        if (!posteLocal.quemDeuLike) posteLocal.quemDeuLike = [];
+        if (posteLocal.quemDeuLike.includes(usuario.id)) return false;
+        
+        posteLocal.quemDeuLike.push(usuario.id);
+        posteLocal.likes = (posteLocal.likes || 0) + 1;
+        localStorage.setItem(CONFIG_POSTAGEM.chaveStorage, JSON.stringify(todosPostes));
+        return true;
+    }
 
     if (!poste.quemDeuLike) poste.quemDeuLike = [];
 
-    // Verificar se já deu like
     if (poste.quemDeuLike.includes(usuario.id)) {
-        return false; // Já deu like
+        return false;
     }
 
     poste.quemDeuLike.push(usuario.id);
@@ -144,16 +162,19 @@ function removerLike(posteId) {
     return true;
 }
 
-// ========== VERIFICAR SE USUÁRIO DEU LIKE ==========
+// ========== VERIFICAR SE DEU LIKE ==========
 function jaDeuLike(posteId) {
     const usuario = window.auth?.getUsuarioAtual();
     if (!usuario) return false;
+
     const poste = estadoPostagem.postagens.find(p => p.id === posteId);
-    return poste?.quemDeuLike?.includes(usuario.id) || false;
+    if (!poste || !poste.quemDeuLike) return false;
+    
+    return poste.quemDeuLike.includes(usuario.id);
 }
 
-// ========== REGISTRAR LIKE (desbloquear/assistir completo) ==========
-function registrarLikeAutomatico(posteId) {
+// ========== REGISTRAR LIKE AUTOMÁTICO ==========
+function registrarLike(posteId) {
     const usuario = window.auth?.getUsuarioAtual();
     if (!usuario) return;
 
@@ -180,9 +201,7 @@ function editarPoste(posteId, novosDados) {
         descricao: novosDados.descricao || '',
         estilo: novosDados.estilo || 'Diversa',
         lingua: novosDados.lingua || '',
-        ano: novosDados.ano || '',
-        visibilidade: novosDados.visibilidade || estadoPostagem.postagens[index].visibilidade,
-        bloqueio: novosDados.bloqueio || estadoPostagem.postagens[index].bloqueio
+        ano: novosDados.ano || ''
     };
 
     salvarPostagens();
@@ -195,7 +214,7 @@ function apagarPoste(posteId) {
     salvarPostagens();
 }
 
-// ========== OBTER POSTES PÚBLICOS (HOME) ==========
+// ========== OBTER POSTES PÚBLICOS ==========
 function getPostesPublicos() {
     return estadoPostagem.postagens.filter(p => p.visibilidade === 'publico');
 }
@@ -217,7 +236,10 @@ function mostrarToast(msg, tipo) {
         document.body.appendChild(container);
     }
     container.appendChild(toast);
-    setTimeout(() => { toast.classList.add('saindo'); setTimeout(() => toast.remove(), 300); }, 3000);
+    setTimeout(() => { 
+        toast.classList.add('saindo'); 
+        setTimeout(() => toast.remove(), 300); 
+    }, 3000);
 }
 
 // ========== EXPORTAR ==========
@@ -229,7 +251,7 @@ window.postagem = {
     darLike: darLike,
     removerLike: removerLike,
     jaDeuLike: jaDeuLike,
-    registrarLike: registrarLikeAutomatico,
+    registrarLike: registrarLike,
     getPublicos: getPostesPublicos,
     getDoUsuario: getPostesDoUsuario,
     getTodas: () => estadoPostagem.postagens
@@ -237,4 +259,4 @@ window.postagem = {
 
 document.addEventListener('DOMContentLoaded', inicializarPostagem);
 
-console.log('📤 Postagem pronto! (Bloquear/Não Bloquear + Like único)');
+console.log('📤 Postagem pronto! (Estilo Diversa padrão)');
