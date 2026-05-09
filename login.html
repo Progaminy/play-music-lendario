@@ -551,13 +551,6 @@
                 }
             });
         });
-
-        // ========== MENSAGEM ==========
-        function mostrarMsg(texto, tipo) {
-            const msg = document.getElementById('msg-auth');
-            msg.innerHTML = `<div class="msg-erro ${tipo}">${texto}</div>`;
-            setTimeout(() => { msg.innerHTML = ''; }, 5000);
-        }
     </script>
 </body>
 </html>
