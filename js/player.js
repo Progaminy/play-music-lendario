@@ -2,7 +2,7 @@
    MUSICA ALENDARIA - Do Zero ao Infinito
    Criado por Pensador Sem Fronteira
    ARQUIVO: player.js - Player Completo (15s)
-   CORRIGIDO: Play funcional + UI instantânea
+   VÍDEO VISÍVEL + PROTEGIDO + PLAY + DESTRANCAR
    ============================================= */
 
 const CONFIG_PLAYER = {
@@ -38,7 +38,7 @@ function inicializarPlayer() {
         if (typeof carregarPostesHome === 'function') carregarPostesHome();
     });
     
-    console.log('🎧 Player pronto! (15s grátis)');
+    console.log('🎧 Player pronto! (15s grátis - Vídeo visível)');
 }
 
 function carregarDados() {
@@ -77,7 +77,10 @@ function pararPlayerAtual() {
     }
     if (estadoPlayer.videoIdAtual) {
         const playerContainer = document.getElementById('player-iframe-container');
-        if (playerContainer) playerContainer.innerHTML = '';
+        if (playerContainer) {
+            playerContainer.innerHTML = '';
+            playerContainer.style.display = 'none';
+        }
         estadoPlayer.iframeElement = null;
         estadoPlayer.iframePronto = false;
     }
@@ -188,23 +191,44 @@ function tocarVideo(poste) {
     }
 }
 
-// ========== CRIAR IFRAME (BLOQUEADO) ==========
+// ========== CRIAR IFRAME (VISÍVEL + PROTEGIDO) ==========
 function criarIframePlayer(videoId) {
     const container = document.getElementById('player-iframe-container');
     if (!container) return;
 
     estadoPlayer.iframePronto = false;
 
+    // Tornar visível como miniatura no player fixo
+    container.style.display = 'block';
+    container.style.position = 'relative';
+    container.style.width = '100%';
+    container.style.maxWidth = '300px';
+    container.style.height = 'auto';
+    container.style.aspectRatio = '16 / 9';
+    container.style.margin = '0 auto 0.5rem auto';
+    container.style.borderRadius = '8px';
+    container.style.overflow = 'hidden';
+    container.style.boxShadow = '0 2px 12px rgba(0,0,0,0.3)';
+
     container.innerHTML = `
-        <div style="position: relative; width: 100%; height: 100%;">
+        <div style="position: relative; width: 100%; height: 100%; padding-bottom: 56.25%;">
+            <!-- CAMADA PROTETORA ANTI-CLIQUE -->
             <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; cursor: default;" 
-                 title="Controle pelo player"></div>
+                 title="Vídeo protegido - Controle pelo player"></div>
+            <!-- SELO DE BLOQUEIO (se aplicável) -->
+            ${!estadoPlayer.estaDestrancado ? `
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 3; pointer-events: none; background: rgba(0,0,0,0.75); color: white; padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">
+                    🔒 15s grátis
+                </div>
+            ` : ''}
             <iframe id="player-iframe" 
                 width="100%" 
                 height="100%" 
-                src="https://www.youtube.com/embed/${videoId}?autoplay=0&controls=0&modestbranding=1&rel=0&enablejsapi=1&disablekb=1&iv_load_policy=3&showinfo=0&origin=${window.location.origin}"
+                src="https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&modestbranding=1&rel=0&enablejsapi=1&disablekb=1&iv_load_policy=3&showinfo=0&origin=${window.location.origin}"
                 frameborder="0" 
-                allow="encrypted-media; autoplay"
+                allow="autoplay; encrypted-media"
+                sandbox="allow-scripts allow-same-origin allow-presentation"
+                allowfullscreen
                 style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; pointer-events: none;">
             </iframe>
         </div>
@@ -318,6 +342,10 @@ function destrancarVideo(posteId) {
         atualizarTimer15sDisplay();
         atualizarBotaoPlay();
         animarDestrancar();
+        
+        // Remover selo de bloqueio do iframe
+        const seloBloqueio = document.querySelector('#player-iframe-container div[style*="z-index: 3"]');
+        if (seloBloqueio) seloBloqueio.remove();
         
         document.dispatchEvent(new CustomEvent('player-destrancado', { 
             detail: { posteId: poste.id } 
@@ -712,8 +740,9 @@ document.addEventListener('DOMContentLoaded', inicializarPlayer);
 
 console.log('🎧 Player completo pronto!');
 console.log('   ✅ 15s grátis com bloqueio');
+console.log('   ✅ Vídeo VISÍVEL no player');
+console.log('   ✅ Protegido (anti-clique + sandbox)');
 console.log('   ✅ Play com retry automático');
 console.log('   ✅ UI instantânea ao destrancar');
 console.log('   ✅ Desbloqueio PERMANENTE');
-console.log('   ✅ Iframe bloqueado (anti-clique)');
 console.log('   ✅ Pagamento simulado');
