@@ -270,7 +270,7 @@ body {
     background: var(--gradiente-primario);
     color: #ffffff;
     font-size: 20px;
-    box-shadow: 0 4px 15px rgba(108, 60, 224, 0.3);
+    box-shadow: 0 4px 15px rgba(60, 224, 147, 0.3);
 }
 
 .player-fixo .btn-player:active {

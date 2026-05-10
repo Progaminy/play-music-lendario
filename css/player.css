@@ -122,11 +122,11 @@
     background: var(--gradiente-primario);
     color: #ffffff;
     font-size: 20px;
-    box-shadow: 0 4px 15px rgba(108, 60, 224, 0.3);
+    box-shadow: 0 4px 15px rgba(60, 224, 197, 0.3);
 }
 
 .player-fixo .btn-play:hover {
-    box-shadow: 0 6px 25px rgba(108, 60, 224, 0.5);
+    box-shadow: 0 6px 25px rgba(60, 224, 147, 0.5);
     transform: scale(1.05);
 }
 
@@ -290,7 +290,7 @@
     background: var(--gradiente-primario);
     color: #ffffff;
     font-size: 26px;
-    box-shadow: 0 4px 20px rgba(108, 60, 224, 0.4);
+    box-shadow: 0 4px 20px rgba(60, 224, 188, 0.4);
 }
 
 .player-expandido .btn-expandido-play:active {
@@ -357,13 +357,13 @@
     border-radius: 25px;
     font-weight: 600;
     font-size: var(--tamanho-sm);
-    box-shadow: 0 4px 15px rgba(108, 60, 224, 0.3);
+    box-shadow: 0 4px 15px rgba(60, 224, 183, 0.3);
     transition: all var(--transicao-media);
     white-space: nowrap;
 }
 
 .btn-destrancar-player:hover {
-    box-shadow: 0 6px 25px rgba(108, 60, 224, 0.5);
+    box-shadow: 0 6px 25px rgba(60, 224, 142, 0.5);
     transform: translateY(-2px);
 }
 

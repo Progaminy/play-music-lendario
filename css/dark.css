@@ -17,14 +17,14 @@
     --texto-terciario: #8888a0;
     --texto-inverso: #1a1a2e;
     --borda: #2a2a3a;
-    --borda-foco: #a855f7;
+    --borda-foco: #55f7ab;
     --sombra-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
     --sombra: 0 4px 20px rgba(0, 0, 0, 0.5);
     --sombra-lg: 0 8px 30px rgba(0, 0, 0, 0.6);
     --sombra-xl: 0 20px 60px rgba(0, 0, 0, 0.7);
     --overlay: rgba(0, 0, 0, 0.8);
-    --brilho: 0 0 20px rgba(168, 85, 247, 0.3);
-    --neon: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 40px rgba(168, 85, 247, 0.2);
+    --brilho: 0 0 20px rgba(15, 119, 59, 0.3);
+    --neon: 0 0 10px rgba(22, 116, 34, 0.5), 0 0 40px rgba(168, 85, 247, 0.2);
 }
 
 /* ========== CORPO ========== */
@@ -38,7 +38,7 @@
     color: rgba(255, 255, 255, 0.6) !important;
     opacity: 0.8 !important;
     font-weight: 600;
-    text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+    text-shadow: 0 0 10px rgba(85, 247, 126, 0.5);
     font-size: 0.8rem;
 }
 
@@ -93,8 +93,8 @@
 }
 
 .tema-dark .card-evento .tipo-evento {
-    background: rgba(168, 85, 247, 0.2);
-    color: #c084fc;
+    background: rgba(28, 85, 38, 0.2);
+    color: #84fcca;
 }
 
 /* ========== TABS ========== */
@@ -111,8 +111,8 @@
 }
 
 .tema-dark .tab.ativo {
-    color: #a855f7;
-    border-bottom-color: #a855f7;
+    color: #55f78b;
+    border-bottom-color: #55f78b;
 }
 
 /* ========== FILTROS ========== */
@@ -123,8 +123,8 @@
 }
 
 .tema-dark .filtro-item:hover {
-    border-color: #a855f7;
-    color: #a855f7;
+    border-color: #55f7cf;
+    color: #55f7d4;
 }
 
 .tema-dark .filtro-item.ativo {
@@ -165,7 +165,7 @@
 }
 
 .tema-dark .btn-primario:hover {
-    box-shadow: 0 6px 30px rgba(168, 85, 247, 0.5), var(--neon);
+    box-shadow: 0 6px 30px rgba(85, 247, 247, 0.5), var(--neon);
 }
 
 .tema-dark .btn-secundario {
@@ -175,8 +175,8 @@
 }
 
 .tema-dark .btn-secundario:hover {
-    border-color: #a855f7;
-    color: #a855f7;
+    border-color: #55f786;
+    color: #55f7a6;
 }
 
 /* ========== PLAYER FIXO ========== */
@@ -253,7 +253,7 @@
 }
 
 .tema-dark .nav-item.ativo {
-    color: #a855f7;
+    color: #55f78b;
 }
 
 /* ========== SCROLLBAR ========== */
@@ -262,12 +262,12 @@
 }
 
 .tema-dark ::-webkit-scrollbar-thumb:hover {
-    background: #a855f7;
+    background: #55c4f7;
 }
 
 /* ========== SELEÇÃO ========== */
 .tema-dark ::selection {
-    background: #a855f7;
+    background: #55f2f7;
     color: #ffffff;
 }
 

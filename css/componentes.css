@@ -810,7 +810,7 @@
 }
 
 .chip.selecionado {
-    background: rgba(108, 60, 224, 0.1);
+    background: rgba(25, 107, 66, 0.1);
     border-color: var(--cor-primaria);
     color: var(--cor-primaria);
 }

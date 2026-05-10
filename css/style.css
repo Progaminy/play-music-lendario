@@ -18,8 +18,8 @@
     --sombra-hover: 0 8px 30px rgba(0, 0, 0, 0.15);
 
     /* --- Cores Vibrantes --- */
-    --cor-primaria: #6c3ce0;
-    --cor-primaria-hover: #5a2fd0;
+    --cor-primaria: #3ce0a9;
+    --cor-primaria-hover: #2fd08d;
     --cor-secundaria: #e0245e;
     --cor-secundaria-hover: #c01d4e;
     --cor-acento: #00c9a7;
@@ -28,7 +28,7 @@
     --cor-destaque-hover: #e5a620;
 
     /* --- Gradientes --- */
-    --gradiente-primario: linear-gradient(135deg, #6c3ce0, #a855f7);
+    --gradiente-primario: linear-gradient(135deg, #3ce08e, #55f7ab);
     --gradiente-secundario: linear-gradient(135deg, #e0245e, #f7436e);
     --gradiente-acento: linear-gradient(135deg, #00c9a7, #00d9b9);
     --gradiente-destaque: linear-gradient(135deg, #f7b731, #ffc94b);
@@ -220,12 +220,12 @@ button:active {
     font-size: var(--tamanho-base);
     font-weight: 600;
     border-radius: var(--borda-raio-md);
-    box-shadow: 0 4px 15px rgba(108, 60, 224, 0.3);
+    box-shadow: 0 4px 15px rgba(60, 224, 109, 0.3);
     letter-spacing: 0.5px;
 }
 
 .btn-principal:hover {
-    box-shadow: 0 6px 25px rgba(108, 60, 224, 0.5);
+    box-shadow: 0 6px 25px rgba(60, 224, 134, 0.5);
     transform: translateY(-1px);
 }
 
