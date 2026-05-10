@@ -18,17 +18,17 @@
     --sombra-hover: 0 8px 30px rgba(0, 0, 0, 0.15);
 
     /* --- Cores Vibrantes --- */
-    --cor-primaria: #3ce0a9;
-    --cor-primaria-hover: #2fd08d;
+    --cor-primaria: #267e61;
+    --cor-primaria-hover: #146443;
     --cor-secundaria: #e0245e;
     --cor-secundaria-hover: #c01d4e;
-    --cor-acento: #00c9a7;
+    --cor-acento: #1f803f;
     --cor-acento-hover: #00a88c;
     --cor-destaque: #f7b731;
     --cor-destaque-hover: #e5a620;
 
     /* --- Gradientes --- */
-    --gradiente-primario: linear-gradient(135deg, #3ce08e, #55f7ab);
+    --gradiente-primario: linear-gradient(135deg, #2e5e46, #39795b);
     --gradiente-secundario: linear-gradient(135deg, #e0245e, #f7436e);
     --gradiente-acento: linear-gradient(135deg, #00c9a7, #00d9b9);
     --gradiente-destaque: linear-gradient(135deg, #f7b731, #ffc94b);
